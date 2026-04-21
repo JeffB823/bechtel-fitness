@@ -1761,9 +1761,135 @@ Object.assign(window,{ProgramScreen});
 
 <!-- ─── CrossFit Screen ─── -->
 <script type="text/babel">
+const DEFAULT_CROSSFIT_WEEK={
+  source:'CrossFit Clintonville Member Site',
+  sourceUrl:'https://www.crossfitclintonville.com/member-site',
+  importedAt:'2026-04-20',
+  days:[
+    {
+      day:'Monday',
+      section:'WOD + Notes',
+      lines:[
+        'Strength cycle - Week 5',
+        'front squat',
+        '14 reps @ 55%',
+        '12 reps @ 60%',
+        '10 reps @ 65%',
+        '8 reps @ 70%',
+        '6 reps @ 75%',
+        'every 3:00',
+        'push press',
+        '14 reps @ 55%',
+        '12 reps @ 60%',
+        '10 reps @ 65%',
+        '8 reps @ 70%',
+        '6 reps @ 75%',
+        'every 3:00'
+      ]
+    },
+    {
+      day:'Tuesday',
+      section:'WOD + Notes',
+      lines:[
+        '5 rounds',
+        '4 min bike for max cals',
+        '4 min rest',
+        'during the 4 min rest;',
+        '10 chest to bar pull up',
+        '10 box jump over',
+        '10 sit up'
+      ],
+      notes:[
+        'This is a 40 minute workout.',
+        'Members can waterfall start if there are not enough bikes.',
+        'As soon as members hit their 4 min bike, they move directly into their rest volume.',
+        'Ideally members have around 90 seconds to 2+ minutes of rest after their volume.',
+        'Bikes must reset and the score is total cals across all 5 rounds.'
+      ]
+    },
+    {
+      day:'Wednesday',
+      section:'WOD + Notes',
+      lines:[
+        'Snatch day',
+        'complex',
+        '5 rounds - every 90 sec',
+        '1 power snatch',
+        '1 squat snatch w/ 2 sec pause at knee',
+        'complex',
+        '5 rounds - every 2:00',
+        '1 hang power snatch',
+        '1 hang squat snatch',
+        '1 touch and go power snatch',
+        '10 min EMOM',
+        '1 snatch (power or squat)'
+      ],
+      notes:[
+        'Spend time on all snatch work in the technical warm up.',
+        'Members can build in every complex and the EMOM.',
+        'Score is highest weight on the EMOM.'
+      ]
+    },
+    {
+      day:'Thursday',
+      section:'WOD + Notes',
+      lines:[
+        'bench press',
+        'max reps',
+        '25% = .5 sec off',
+        '50% = 1 sec off',
+        '100% = 5 sec off',
+        'WOD',
+        '2000m row',
+        'subtract time from bench press'
+      ],
+      notes:[
+        'Members get one bench set for max reps at 25%, 50%, or 100% bodyweight.',
+        'Each rep subtracts time from the 2k row depending on the chosen load.',
+        'Score is row time minus the bench-earned time.'
+      ]
+    },
+    {
+      day:'Friday',
+      section:'WOD',
+      lines:[
+        '3 rounds',
+        '25 double under',
+        '9 thruster (95/65) / (75/55)',
+        '25 double under',
+        '12 bar facing burpee',
+        '25 double under',
+        '15 toes to bar',
+        '3 min rest',
+        'round 2 = (115/80) / (85/60) and 18 toes to bar',
+        'round 3 = (135/95) / (95/65) and 21 toes to bar',
+        '20 min cap'
+      ],
+      extra:[
+        '3 rounds',
+        '500m row',
+        '10 strict ring dip'
+      ],
+      notes:[
+        'Sub 25 doubles for 40 singles.',
+        'Thruster weight and toes-to-bar reps increase each round.',
+        'Score is time to finish.'
+      ]
+    }
+  ]
+};
+
 function CrossfitScreen(){
-  const memberUrl='https://www.crossfitclintonville.com/member-site';
-  const [frameKey,setFrameKey]=useState(0);
+  const memberUrl=DEFAULT_CROSSFIT_WEEK.sourceUrl;
+  const [week,setWeek]=useState(()=>S.get('bf5_cf_week',DEFAULT_CROSSFIT_WEEK));
+  const [logs,setLogs]=useState(()=>S.get('bf5_cf_logs',{}));
+
+  useEffect(()=>S.set('bf5_cf_week',week),[week]);
+  useEffect(()=>S.set('bf5_cf_logs',logs),[logs]);
+
+  const updateLog=(day,patch)=>{
+    setLogs(prev=>({...prev,[day]:{...(prev[day]||{}),...patch}}));
+  };
 
   return(
     <div className="screen">
@@ -1771,35 +1897,107 @@ function CrossfitScreen(){
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
           <div>
             <div style={{fontSize:24,fontWeight:800,letterSpacing:'-.5px'}}>CrossFit WOD</div>
-            <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>Track workouts from the CrossFit Clintonville member site</div>
+            <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>Imported from your logged-in CrossFit Clintonville member page</div>
           </div>
           <span className="pill p-acc">Member</span>
         </div>
       </div>
 
       <div style={{padding:'0 16px 12px',display:'flex',gap:8,flexShrink:0}}>
-        <button className="btn-ghost" style={{flex:1}} onClick={()=>setFrameKey(k=>k+1)}>Refresh</button>
+        <button className="btn-ghost" style={{flex:1}} onClick={()=>setWeek(DEFAULT_CROSSFIT_WEEK)}>Reset Week</button>
         <button className="btn" style={{flex:1,padding:'12px 14px'}} onClick={()=>window.open(memberUrl,'_blank','noopener,noreferrer')}>Open Site</button>
       </div>
 
       <div style={{padding:'0 16px 12px',flexShrink:0}}>
         <div className="card2" style={{padding:'12px 14px'}}>
           <div style={{fontSize:12,color:'var(--t2)',lineHeight:1.6}}>
-            Sign in on the member site if needed. If the page does not load inside the app, use <span style={{color:'var(--acc)',fontWeight:700}}>Open Site</span> to view it directly.
+            This week is now stored inside the app so you can track completion, score, and notes here. Use <span style={{color:'var(--acc)',fontWeight:700}}>Open Site</span> any time you want to compare against the live member page.
           </div>
         </div>
       </div>
 
-      <div style={{flex:1,padding:'0 16px 16px',minHeight:0}}>
-        <div className="card" style={{height:'100%',overflow:'hidden'}}>
-          <iframe
-            key={frameKey}
-            title="CrossFit Clintonville Member Site"
-            src={memberUrl}
-            style={{width:'100%',height:'100%',border:'none',background:'#fff'}}
-            referrerPolicy="strict-origin-when-cross-origin"
-          />
+      <div className="scroller" style={{padding:'0 16px 20px'}}>
+        <div className="card" style={{padding:'14px 16px',marginBottom:12}}>
+          <div className="sec">Week Snapshot</div>
+          <div style={{display:'flex',justifyContent:'space-between',gap:10}}>
+            <div className="wc-stat">
+              <div className="wc-val">{week.days.length}</div>
+              <div className="wc-key">Days Loaded</div>
+            </div>
+            <div className="wc-stat">
+              <div className="wc-val">{week.days.filter(d=>logs[d.day]?.done).length}</div>
+              <div className="wc-key">Completed</div>
+            </div>
+            <div className="wc-stat">
+              <div className="wc-val" style={{fontSize:18}}>{week.importedAt.slice(5)}</div>
+              <div className="wc-key">Imported</div>
+            </div>
+          </div>
         </div>
+
+        {week.days.map(day=>{
+          const dayLog=logs[day.day]||{};
+          return(
+            <div key={day.day} className="card" style={{padding:'14px 16px',marginBottom:12}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,marginBottom:10}}>
+                <div>
+                  <div style={{fontSize:18,fontWeight:800,letterSpacing:'-.3px'}}>{day.day}</div>
+                  <div style={{fontSize:11,color:'var(--t3)',marginTop:2,textTransform:'uppercase',letterSpacing:'.06em'}}>{day.section}</div>
+                </div>
+                <button
+                  className={'btn'+(dayLog.done?' grn':' btn-ghost')}
+                  style={{width:'auto',padding:'10px 14px',fontSize:13,borderRadius:10}}
+                  onClick={()=>updateLog(day.day,{done:!dayLog.done,completedOn:!dayLog.done?todayStr():''})}
+                >
+                  {dayLog.done?'Completed':'Mark Done'}
+                </button>
+              </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:7,marginBottom:12}}>
+                {day.lines.map((line,idx)=>(
+                  <div key={idx} style={{display:'flex',gap:8,fontSize:13,color:'var(--t1)',lineHeight:1.55}}>
+                    <div style={{width:5,height:5,borderRadius:'50%',background:'var(--acc)',marginTop:8,flexShrink:0,opacity:.75}}/>
+                    <div>{line}</div>
+                  </div>
+                ))}
+              </div>
+
+              {day.extra?.length>0&&(
+                <div style={{background:'var(--s2)',border:'1px solid var(--bdr2)',borderRadius:12,padding:'12px 13px',marginBottom:12}}>
+                  <div style={{fontSize:11,color:'var(--grn)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.07em',marginBottom:8}}>Extra</div>
+                  {day.extra.map((line,idx)=>(
+                    <div key={idx} style={{fontSize:13,color:'var(--t1)',lineHeight:1.6}}>{line}</div>
+                  ))}
+                </div>
+              )}
+
+              {day.notes?.length>0&&(
+                <div style={{background:'var(--s2)',border:'1px solid var(--bdr2)',borderRadius:12,padding:'12px 13px',marginBottom:12}}>
+                  <div style={{fontSize:11,color:'var(--t2)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.07em',marginBottom:8}}>Coach Notes</div>
+                  {day.notes.map((note,idx)=>(
+                    <div key={idx} style={{fontSize:12,color:'var(--t2)',lineHeight:1.65,marginTop:idx?6:0}}>{note}</div>
+                  ))}
+                </div>
+              )}
+
+              <div style={{display:'grid',gap:10}}>
+                <input
+                  type="text"
+                  value={dayLog.score||''}
+                  onChange={e=>updateLog(day.day,{score:e.target.value})}
+                  placeholder="Score / time / weight"
+                  style={{background:'var(--s3)',border:'1px solid var(--bdr2)',borderRadius:10,color:'var(--t1)',padding:'12px 13px',fontSize:13,fontFamily:'inherit',outline:'none'}}
+                />
+                <textarea
+                  value={dayLog.notes||''}
+                  onChange={e=>updateLog(day.day,{notes:e.target.value})}
+                  placeholder="Workout notes, substitutions, scaling, or how it felt"
+                  style={{minHeight:88,resize:'vertical',background:'var(--s3)',border:'1px solid var(--bdr2)',borderRadius:12,color:'var(--t1)',padding:'12px 13px',fontSize:13,lineHeight:1.5,fontFamily:'inherit',outline:'none'}}
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
