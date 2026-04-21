@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bechtel Fit">
+<meta name="theme-color" content="#0a0a0d">
+<link id="apple-touch-icon" rel="apple-touch-icon">
+<title>Bechtel Fitness</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0d;--s1:#131318;--s2:#1a1a21;--s3:#22222b;--s4:#2a2a35;
+  --acc:#e8562a;--acc-s:rgba(232,86,42,.12);--acc-b:rgba(232,86,42,.28);
+  --grn:#2dbe6c;--grn-s:rgba(45,190,108,.12);--grn-b:rgba(45,190,108,.3);
+  --t1:#f0f0f5;--t2:#7a7a8e;--t3:#3e3e52;--t4:#20202e;
+  --bdr:#1e1e28;--bdr2:#28283a;
+  --nav:64px;--safe:env(safe-area-inset-bottom,0px);--top:env(safe-area-inset-top,0px);
+  --r:16px;--ri:10px;--rp:100px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+#root{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;overflow:hidden}
+input[type=number]{-moz-appearance:textfield}
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+select{-webkit-appearance:none}
+::-webkit-scrollbar{width:0;height:0}
+
+/* Layout */
+.screen{position:absolute;inset:0;bottom:calc(var(--nav) + var(--safe));display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+.scroller{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+/* Nav */
+.nav{position:absolute;bottom:0;left:0;right:0;height:calc(var(--nav) + var(--safe));background:var(--s1);border-top:1px solid var(--bdr);display:flex;align-items:flex-start;padding-top:8px;z-index:200}
+.ntab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--t3);font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;transition:color .2s;padding-top:4px}
+.ntab svg{width:22px;height:22px;stroke-width:1.9;transition:transform .2s}
+.ntab.on{color:var(--acc)}
+.ntab.on svg{transform:scale(1.1)}
+
+/* Pills */
+.pill{display:inline-flex;align-items:center;padding:4px 10px;border-radius:var(--rp);font-size:11px;font-weight:700;letter-spacing:.03em;white-space:nowrap}
+.p-acc{background:var(--acc-s);color:var(--acc);border:1px solid var(--acc-b)}
+.p-dim{background:var(--s3);color:var(--t2);border:1px solid var(--bdr2)}
+.p-grn{background:var(--grn-s);color:var(--grn);border:1px solid var(--grn-b)}
+.p-warn{background:rgba(255,195,0,.1);color:#ffc300;border:1px solid rgba(255,195,0,.2)}
+
+/* Primary button */
+.btn{background:var(--acc);color:#fff;border-radius:14px;font-size:15px;font-weight:700;padding:16px;width:100%;transition:opacity .15s,transform .1s;font-family:inherit;letter-spacing:.01em}
+.btn:active{opacity:.85;transform:scale(.98)}
+.btn:disabled{opacity:.28}
+.btn.grn{background:var(--grn)}
+.btn-ghost{background:var(--s3);color:var(--t1);border-radius:var(--ri);font-size:13px;font-weight:600;padding:9px 16px;border:1px solid var(--bdr2);font-family:inherit}
+.btn-ghost:active{opacity:.7}
+.btn-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--s3);border:1px solid var(--bdr2)}
+
+/* Cards */
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r)}
+.card2{background:var(--s2);border:1px solid var(--bdr2);border-radius:var(--ri)}
+
+/* Set rows — core of the app */
+.srow{display:grid;grid-template-columns:28px 54px 1fr 76px 52px;align-items:center;gap:6px;padding:6px 14px;min-height:62px;border-bottom:1px solid var(--bdr);transition:opacity .3s,background .2s}
+.srow:last-child{border-bottom:none}
+.srow.done{opacity:.35}
+.srow.active-row{background:rgba(232,86,42,.04)}
+.snum{font-size:12px;font-weight:800;color:var(--t3);text-align:center}
+.sprev{text-align:center}
+.sprev-w{font-size:14px;font-weight:700;color:var(--t3);line-height:1.2;font-variant-numeric:tabular-nums}
+.sprev-r{font-size:10px;color:var(--t3)}
+.sinput{background:var(--s3);border:1.5px solid var(--bdr2);border-radius:var(--ri);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:22px;font-weight:800;text-align:center;height:52px;width:100%;outline:none;font-variant-numeric:tabular-nums;transition:border-color .15s,background .15s;caret-color:var(--acc)}
+.sinput:focus{border-color:var(--acc);background:var(--s2)}
+.sinput.ai{border-color:rgba(232,86,42,.45)}
+.sinput:disabled{background:transparent;border-color:transparent;font-size:17px;color:var(--t2)}
+/* Check button */
+.ck{width:52px;height:52px;border-radius:50%;border:2.5px solid var(--t4);background:var(--s3);display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;font-family:inherit}
+.ck:active{transform:scale(.9)}
+.ck:disabled{opacity:.2}
+.ck.ready{border-color:var(--acc);background:var(--acc-s)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(232,86,42,.55)}70%{box-shadow:0 0 0 10px rgba(232,86,42,0)}100%{box-shadow:0 0 0 0 rgba(232,86,42,0)}}
+.ck.ready{animation:pulse 2.2s infinite}
+.ck.done{border-color:var(--grn);background:var(--grn);animation:none}
+@keyframes ckpop{0%{transform:scale(.6)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.ck.done svg{animation:ckpop .28s ease}
+
+/* Exercise card */
+.excard{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);margin-bottom:10px;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.excard.ex-on{border-color:rgba(232,86,42,.38);box-shadow:0 2px 24px rgba(232,86,42,.07)}
+.excard.ex-done{border-color:rgba(45,190,108,.28)}
+.exhdr{display:flex;align-items:center;padding:13px 14px;gap:10px;cursor:pointer;user-select:none;min-height:58px}
+.exname{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px}
+.exmeta{font-size:11px;color:var(--t2);margin-top:2px}
+.exdot{width:8px;height:8px;border-radius:50%;background:var(--s4);transition:background .2s,transform .15s}
+.exdot.d{background:var(--grn);transform:scale(1.1)}
+.exdot.cur{background:var(--acc);transform:scale(1.2)}
+.sethdr{display:grid;grid-template-columns:28px 54px 1fr 76px 52px;gap:6px;padding:2px 14px 6px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3)}
+.qa{display:flex;gap:5px;flex-wrap:wrap;padding:10px 14px 13px;align-items:center}
+.qa-lbl{font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.07em;width:100%}
+.qa-btn{padding:7px 11px;background:var(--s3);border-radius:8px;font-size:12px;font-weight:700;color:var(--t2);border:1px solid var(--bdr2);transition:all .12s;font-family:inherit}
+.qa-btn:active{background:var(--s2);color:var(--t1);transform:scale(.95)}
+
+/* Progress bar */
+.pbar{height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.pbar-f{height:100%;border-radius:2px;transition:width .4s ease}
+
+/* Mini rest timer */
+.mtimer{position:relative;height:52px;background:var(--s1);border-top:1px solid var(--bdr);display:flex;align-items:center;padding:0 14px;gap:12px;flex-shrink:0;cursor:pointer;overflow:hidden}
+.mtimer-bg{position:absolute;left:0;top:0;bottom:0;background:var(--acc-s);pointer-events:none;transition:width 1s linear}
+.mtimer-time{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-1.5px;color:var(--t1);position:relative;flex:1}
+.mtimer-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);position:relative}
+.mtimer-skip{font-size:13px;font-weight:700;color:var(--t2);padding:8px 14px;background:var(--s3);border-radius:8px;border:1px solid var(--bdr2);position:relative;font-family:inherit}
+
+/* Full timer */
+.tover{position:absolute;inset:0;background:rgba(10,10,13,.97);backdrop-filter:blur(20px);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.tring{position:relative;width:220px;height:220px}
+.tcenter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.ttime{font-size:64px;font-weight:800;letter-spacing:-4px;font-variant-numeric:tabular-nums;transition:color .3s}
+@keyframes tpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.ttime.ending{animation:tpulse .55s ease infinite;color:var(--acc)}
+.tsub{font-size:11px;color:var(--t2);font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.tpresets{display:flex;gap:8px}
+.tpre{background:var(--s2);color:var(--t2);border-radius:10px;font-size:14px;font-weight:700;padding:11px 18px;border:1px solid var(--bdr2);transition:all .15s;font-family:inherit}
+.tpre.sel{background:var(--acc);color:#fff;border-color:transparent}
+.tskip{background:var(--s2);color:var(--t2);border-radius:12px;font-size:15px;font-weight:700;padding:14px 40px;border:1px solid var(--bdr2);font-family:inherit}
+.tskip:active{opacity:.8}
+
+/* Sheets */
+.sheet{position:absolute;inset:0;z-index:250;display:flex;flex-direction:column;justify-content:flex-end}
+.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px)}
+.sheet-box{position:relative;background:var(--s1);border-radius:24px 24px 0 0;padding:20px;padding-bottom:calc(20px + var(--safe));max-height:90%;overflow-y:auto}
+.sheet-handle{width:36px;height:4px;background:var(--s3);border-radius:2px;margin:0 auto 18px}
+.wu-row{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid var(--bdr);gap:14px}
+.wu-row:last-of-type{border-bottom:none}
+
+/* Home */
+.home-hdr{padding:calc(var(--top) + 20px) 16px 16px;background:var(--s1);border-bottom:1px solid var(--bdr);flex-shrink:0}
+.greeting{font-size:22px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin-bottom:14px}
+.wdot{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+.wdot.logged{background:var(--grn-s);color:var(--grn);border:1px solid var(--grn-b)}
+.wdot.today{background:var(--acc-s);color:var(--acc);border:1px solid var(--acc-b)}
+.wdot.empty{background:var(--s3);color:var(--t3);border:1px solid var(--bdr2)}
+.stat-cell{flex:1;padding:13px 0;text-align:center;border-right:1px solid var(--bdr)}
+.stat-cell:last-child{border-right:none}
+.stat-val{font-size:22px;font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.stat-key{font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+.pr-row{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.pr-row:last-child{border-bottom:none}
+
+/* Progress */
+.ex-chip{padding:8px 14px;border-radius:var(--rp);font-size:12px;font-weight:700;background:var(--s3);color:var(--t2);border:1.5px solid transparent;cursor:pointer;font-family:inherit;transition:all .15s}
+.ex-chip.sel{background:var(--acc-s);color:var(--acc);border-color:var(--acc-b)}
+.chart-svg{width:100%;display:block}
+
+/* Program */
+.prog-tab{padding:8px 16px;border-radius:var(--rp);font-size:12px;font-weight:700;background:var(--s3);color:var(--t2);white-space:nowrap;border:none;font-family:inherit;transition:all .15s}
+.prog-tab.sel{background:var(--acc);color:#fff}
+
+/* Workout complete */
+.wc-stat{background:var(--s2);border:1px solid var(--bdr2);border-radius:12px;padding:14px;text-align:center;flex:1}
+.wc-val{font-size:26px;font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.wc-key{font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
+
+/* Sec label */
+.sec{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px}
+
+/* Anims */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .32s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.slide-up{animation:slideUp .28s cubic-bezier(.32,.72,0,1)}
+@keyframes prPop{0%{transform:scale(1.6);opacity:0}60%{transform:scale(.88)}100%{transform:scale(1);opacity:1}}
+.pr-pop{animation:prPop .28s ease}
+</style>
+
+<script>
+// Generate PWA icon on canvas
+function genIcon(size) {
+  var c = document.createElement('canvas');
+  c.width = c.height = size; var x = c.getContext('2d'); var s = size;
+  var r = s * 0.19;
+  x.beginPath();
+  x.moveTo(r,0); x.lineTo(s-r,0); x.arcTo(s,0,s,r,r);
+  x.lineTo(s,s-r); x.arcTo(s,s,s-r,s,r);
+  x.lineTo(r,s); x.arcTo(0,s,0,s-r,r);
+  x.lineTo(0,r); x.arcTo(0,0,r,0,r); x.closePath();
+  x.fillStyle='#131318'; x.fill();
+  x.strokeStyle='#e8562a'; x.lineWidth=s*.02; x.globalAlpha=.5; x.stroke(); x.globalAlpha=1;
+  x.fillStyle='rgba(255,255,255,0.07)';
+  x.beginPath(); x.roundRect(s*.1,s*.45,s*.8,s*.08,s*.04); x.fill();
+  x.fillStyle='#e8562a';
+  x.beginPath(); x.roundRect(s*.09,s*.355,s*.085,s*.275,s*.02); x.fill();
+  x.fillStyle='#b8431f';
+  x.beginPath(); x.roundRect(s*.035,s*.39,s*.058,s*.205,s*.015); x.fill();
+  x.fillStyle='#e8562a';
+  x.beginPath(); x.roundRect(s*.825,s*.355,s*.085,s*.275,s*.02); x.fill();
+  x.fillStyle='#b8431f';
+  x.beginPath(); x.roundRect(s*.907,s*.39,s*.058,s*.205,s*.015); x.fill();
+  x.fillStyle='#f0f0f5';
+  x.font='900 '+(s*.52)+'px "Arial Black",Arial,sans-serif';
+  x.textAlign='center'; x.textBaseline='alphabetic';
+  x.fillText('B',s*.505,s*.618);
+  x.fillStyle='#e8562a';
+  x.font='700 '+(s*.086)+'px Arial,sans-serif';
+  x.textBaseline='middle';
+  x.fillText('FITNESS',s*.5,s*.853);
+  return c;
+}
+window.addEventListener('DOMContentLoaded', function() {
+  try {
+    var icon = genIcon(512);
+    var url = icon.toDataURL('image/png');
+    document.getElementById('apple-touch-icon').href = url;
+    var mf = {name:'Bechtel Fitness',short_name:'BFit',display:'standalone',background_color:'#0a0a0d',theme_color:'#0a0a0d',start_url:window.location.href,orientation:'portrait-primary',icons:[{src:url,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
+    var mb = new Blob([JSON.stringify(mf)],{type:'application/manifest+json'});
+    var ml = document.createElement('link'); ml.rel='manifest'; ml.href=URL.createObjectURL(mb);
+    document.head.appendChild(ml);
+  } catch(e){}
+});
+</script>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+window.WORKOUT_DATA = {
+  phases: [
+    {
+      id: 1, label: "Phase 1", weekRange: "Weeks 1–8",
+      days: [
+        { dayNum:1, name:"Chest & Abs", muscleGroup:"chest", exercises:[
+            {name:"Incline Barbell Bench Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Incline Dumbbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Flat Barbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Face Pull",sets:3,repRange:"8-10"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:2, name:"Back & Calves", muscleGroup:"back", exercises:[
+            {name:"Barbell Deadlift",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Barbell Row",sets:3,repRange:"4-6"},
+            {name:"Wide-Grip Pull-Up / Chin-Up",sets:3,repRange:"4-6"},
+            {name:"Close-Grip Lat Pulldown",sets:3,repRange:"4-6",optional:true},
+            {name:"Barbell Shrug",sets:2,repRange:"4-6",optional:true},
+            {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
+            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+        { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
+            {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Side Lateral Raise",sets:3,repRange:"4-6"},
+            {name:"Bent-Over Rear Delt Raise",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:4, name:"Legs", muscleGroup:"legs", exercises:[
+            {name:"Barbell Squat",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Leg Press",sets:3,repRange:"4-6"},
+            {name:"Romanian Deadlift",sets:3,repRange:"4-6"},
+            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+        { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
+            {name:"Incline Barbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
+            {name:"Barbell Curl",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Close-Grip Bench Press",sets:3,repRange:"4-6"},
+            {name:"Alternating Dumbbell Curl",sets:3,repRange:"4-6"},
+            {name:"Seated Triceps Press",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]}
+      ]
+    },
+    {
+      id: 2, label: "Phase 2", weekRange: "Weeks 10–17",
+      days: [
+        { dayNum:1, name:"Chest & Abs", muscleGroup:"chest", exercises:[
+            {name:"Incline Dumbbell Bench Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Flat Barbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Flat Dumbbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Face Pull",sets:3,repRange:"8-10"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:2, name:"Back & Calves", muscleGroup:"back", exercises:[
+            {name:"Barbell Deadlift",warmup:true,sets:3,repRange:"4-6"},
+            {name:"One-Arm Dumbbell Row",sets:3,repRange:"4-6"},
+            {name:"Front Lat Pulldown",sets:3,repRange:"4-6"},
+            {name:"Seated Cable Row",sets:3,repRange:"4-6",optional:true},
+            {name:"Barbell Shrug",sets:2,repRange:"4-6",optional:true},
+            {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
+            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+        { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
+            {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Side Lateral Raise",sets:3,repRange:"4-6"},
+            {name:"Seated Rear Delt Raise",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:4, name:"Legs", muscleGroup:"legs", exercises:[
+            {name:"Barbell Squat",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Barbell Lunge",sets:3,repRange:"4-6"},
+            {name:"Front Squat",sets:3,repRange:"4-6"},
+            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+        { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
+            {name:"Incline Dumbbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
+            {name:"Alternating Dumbbell Curl",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Close-Grip Bench Press",sets:3,repRange:"4-6"},
+            {name:"Barbell Curl",sets:3,repRange:"4-6"},
+            {name:"Lying Triceps Press",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]}
+      ]
+    },
+    {
+      id: 3, label: "Phase 3", weekRange: "Weeks 19–26",
+      days: [
+        { dayNum:1, name:"Chest & Abs", muscleGroup:"chest", exercises:[
+            {name:"Incline Dumbbell Bench Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Incline Barbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Flat Dumbbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Face Pull",sets:3,repRange:"8-10"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:2, name:"Back & Calves", muscleGroup:"back", exercises:[
+            {name:"Barbell Deadlift",warmup:true,sets:3,repRange:"4-6"},
+            {name:"T-Bar Row",sets:3,repRange:"4-6"},
+            {name:"Seated Cable Row",sets:3,repRange:"4-6"},
+            {name:"Chin-Up",sets:3,repRange:"4-6",optional:true},
+            {name:"Barbell Shrug",sets:2,repRange:"4-6",optional:true},
+            {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
+            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+        { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
+            {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Seated Dumbbell Press",sets:3,repRange:"4-6"},
+            {name:"Side Lateral Raise",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:4, name:"Legs", muscleGroup:"legs", exercises:[
+            {name:"Barbell Squat",warmup:true,sets:6,repRange:"4-6"},
+            {name:"Dumbbell Lunge",sets:3,repRange:"4-6"},
+            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+        { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
+            {name:"Flat Barbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
+            {name:"Barbell Curl",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Close-Grip Bench Press",sets:3,repRange:"4-6"},
+            {name:"Hammer Curl",sets:3,repRange:"4-6"},
+            {name:"Triceps Pushdown",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]}
+      ]
+    },
+    {
+      id: 4, label: "Phase 4", weekRange: "Weeks 28–35",
+      days: [
+        { dayNum:1, name:"Chest & Abs", muscleGroup:"chest", exercises:[
+            {name:"Flat Barbell Bench Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Flat Dumbbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Incline Dumbbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Incline Barbell Bench Press",sets:3,repRange:"4-6",optional:true},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:2, name:"Back & Calves", muscleGroup:"back", exercises:[
+            {name:"Barbell Deadlift",warmup:true,sets:6,repRange:"4-6"},
+            {name:"Barbell Row",sets:3,repRange:"4-6"},
+            {name:"Wide-Grip Pull-Up / Chin-Up",sets:3,repRange:"4-6",optional:true},
+            {name:"Barbell Shrug",sets:2,repRange:"4-6",optional:true},
+            {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
+            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+        { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
+            {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Side Lateral Raise",sets:3,repRange:"4-6"},
+            {name:"Face Pull",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:4, name:"Legs", muscleGroup:"legs", exercises:[
+            {name:"Barbell Front Squat",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Barbell Squat",sets:3,repRange:"4-6"},
+            {name:"Lying Hamstring Curl",sets:3,repRange:"4-6"},
+            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+        { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
+            {name:"Incline Barbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
+            {name:"E-Z Bar Curl",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Seated Triceps Press",sets:3,repRange:"4-6"},
+            {name:"Alternating Dumbbell Curl",sets:3,repRange:"4-6"},
+            {name:"Dip (Triceps Version)",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]}
+      ]
+    },
+    {
+      id: 5, label: "Phase 5", weekRange: "Weeks 37–44",
+      days: [
+        { dayNum:1, name:"Chest & Abs", muscleGroup:"chest", exercises:[
+            {name:"Incline Barbell Bench Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Incline Dumbbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Flat Barbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Face Pull",sets:3,repRange:"8-10"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:2, name:"Back & Calves", muscleGroup:"back", exercises:[
+            {name:"Barbell Deadlift",warmup:true,sets:3,repRange:"4-6"},
+            {name:"One-Arm Dumbbell Row",sets:3,repRange:"4-6"},
+            {name:"Seated Cable Row",sets:3,repRange:"4-6"},
+            {name:"Chin-Up",sets:3,repRange:"4-6",optional:true},
+            {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
+            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+        { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
+            {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Side Lateral Raise",sets:3,repRange:"4-6"},
+            {name:"Barbell Rear Delt Row",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:4, name:"Legs", muscleGroup:"legs", exercises:[
+            {name:"Barbell Squat",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Hack Squat",sets:3,repRange:"4-6"},
+            {name:"Romanian Deadlift",sets:3,repRange:"4-6"},
+            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+        { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
+            {name:"Incline Barbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
+            {name:"Barbell Curl",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Close-Grip Bench Press",sets:3,repRange:"4-6"},
+            {name:"Chin-Up",sets:3,repRange:"4-6"},
+            {name:"Seated Triceps Press",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]}
+      ]
+    },
+    {
+      id: 6, label: "Phase 6", weekRange: "Weeks 46–53",
+      days: [
+        { dayNum:1, name:"Chest & Abs", muscleGroup:"chest", exercises:[
+            {name:"Flat Barbell Bench Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Incline Barbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Flat Dumbbell Bench Press",sets:3,repRange:"4-6"},
+            {name:"Dip (Chest Version)",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:2, name:"Back & Calves", muscleGroup:"back", exercises:[
+            {name:"Barbell Deadlift",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Wide-Grip Pull-Up",sets:3,repRange:"4-6"},
+            {name:"Barbell Row",sets:3,repRange:"4-6"},
+            {name:"Close-Grip Lat Pulldown",sets:3,repRange:"4-6",optional:true},
+            {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
+            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+        { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
+            {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Side Lateral Raise",sets:3,repRange:"4-6"},
+            {name:"Face Pull",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
+        { dayNum:4, name:"Legs", muscleGroup:"legs", exercises:[
+            {name:"Barbell Front Squat",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Barbell Squat",sets:3,repRange:"4-6"},
+            {name:"Barbell Lunge",sets:3,repRange:"4-6"},
+            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+        { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
+            {name:"Incline Dumbbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
+            {name:"Alternating Dumbbell Curl",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Close-Grip Bench Press",sets:3,repRange:"4-6"},
+            {name:"Hammer Curl",sets:3,repRange:"4-6"},
+            {name:"Triceps Pushdown",sets:3,repRange:"4-6"},
+            {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]}
+      ]
+    }
+  ]
+};
+window.getWarmupSets = function(w) {
+  var wt = parseFloat(w)||0;
+  return [
+    {label:"Set 1",pct:.5,reps:12,rest:"1 min"},
+    {label:"Set 2",pct:.5,reps:10,rest:"1 min"},
+    {label:"Set 3",pct:.7,reps:4, rest:"1 min"},
+    {label:"Set 4",pct:.9,reps:1, rest:"2–3 min"}
+  ].map(function(s){ return Object.assign({},s,{weight:Math.round(wt*s.pct/5)*5}); });
+};
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- ─── Utilities ─── -->
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+const S = {
+  get:(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch{return d;}},
+  set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+};
+const todayStr=()=>new Date().toISOString().slice(0,10);
+const vibrate=(p=30)=>{try{navigator.vibrate&&navigator.vibrate(p);}catch{}};
+
+function playBeep(type) {
+  try {
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const seq=type==='end'
+      ?[{f:880,t:0,d:.12},{f:1100,t:.18,d:.12},{f:880,t:.36,d:.2}]
+      :[{f:500,t:0,d:.07},{f:660,t:.09,d:.07}];
+    seq.forEach(({f,t,d})=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.frequency.value=f;o.type='sine';
+      const T=ctx.currentTime+t;
+      g.gain.setValueAtTime(.18,T);
+      g.gain.exponentialRampToValueAtTime(.001,T+d);
+      o.start(T);o.stop(T+d+.05);
+    });
+    setTimeout(()=>ctx.close(),1500);
+  }catch{}
+}
+
+function getGreeting(){
+  const h=new Date().getHours();
+  if(h<5)return'Still grinding 🌙';
+  if(h<12)return'Good morning 🌅';
+  if(h<17)return'Good afternoon ☀️';
+  if(h<21)return'Good evening 🌆';
+  return'Night session 🌙';
+}
+
+function useStore(){
+  const [settings,_ss]=useState(()=>S.get('bf5_s',{startDate:todayStr(),currentPhase:1,currentDayIndex:0}));
+  const [logs,_sl]=useState(()=>S.get('bf5_l',{}));
+  const setSettings=u=>{const n=typeof u==='function'?u(settings):{...settings,...u};_ss(n);S.set('bf5_s',n);};
+  const setLogs=u=>{const n=typeof u==='function'?u(logs):u;_sl(n);S.set('bf5_l',n);};
+
+  const getLastSession=useCallback(name=>{
+    const e=Object.entries(logs).sort((a,b)=>b[0].localeCompare(a[0]));
+    for(const[,l]of e){const ex=l.exercises?.find(e=>e.name===name);if(ex?.sets?.length)return ex.sets;}
+    return null;
+  },[logs]);
+
+  const getLastWeight=useCallback(name=>{
+    return getLastSession(name)?.find(s=>s.weight>0)?.weight||null;
+  },[getLastSession]);
+
+  const getPR=useCallback(name=>{
+    let max=0;
+    for(const l of Object.values(logs)){
+      const ex=l.exercises?.find(e=>e.name===name);
+      if(ex?.sets)ex.sets.forEach(s=>{if(s.weight>max)max=s.weight;});
+    }
+    return max||null;
+  },[logs]);
+
+  const getHistory=useCallback(name=>{
+    return Object.entries(logs)
+      .filter(([,l])=>l.exercises?.some(e=>e.name===name))
+      .map(([date,l])=>{
+        const ex=l.exercises.find(e=>e.name===name);
+        const w=ex?.sets?Math.max(0,...ex.sets.map(s=>s.weight||0)):0;
+        return {date,weight:w};
+      }).sort((a,b)=>a.date.localeCompare(b.date));
+  },[logs]);
+
+  const getStreak=useCallback(()=>{
+    let streak=0,d=new Date();d.setHours(0,0,0,0);
+    for(let i=0;i<60;i++){
+      const k=d.toISOString().slice(0,10);
+      if(logs[k]){streak++;}else if(i>0)break;
+      d.setDate(d.getDate()-1);
+    }
+    return streak;
+  },[logs]);
+
+  const getWeekDays=useCallback(()=>{
+    const lbl=['Su','Mo','Tu','We','Th','Fr','Sa'];
+    const today=new Date();today.setHours(0,0,0,0);
+    const dow=today.getDay();
+    return Array(7).fill(null).map((_,i)=>{
+      const d=new Date(today);d.setDate(today.getDate()-dow+i);
+      const k=d.toISOString().slice(0,10);
+      return {label:lbl[d.getDay()],key:k,logged:!!logs[k],isToday:k===todayStr()};
+    });
+  },[logs]);
+
+  const getWeeklyVolume=useCallback(()=>{
+    const today=new Date();today.setHours(0,0,0,0);
+    const dow=today.getDay();
+    return Array(7).fill(null).map((_,i)=>{
+      const d=new Date(today);d.setDate(today.getDate()-dow+i);
+      const k=d.toISOString().slice(0,10);
+      const log=logs[k];
+      if(!log)return 0;
+      return log.exercises?.reduce((a,ex)=>a+(ex.sets?.reduce((b,s)=>b+(s.weight||0)*(s.reps||0),0)||0),0)||0;
+    });
+  },[logs]);
+
+  const getAllPRs=useCallback(()=>{
+    const prs={};
+    for(const l of Object.values(logs)){
+      l.exercises?.forEach(ex=>{
+        if(!prs[ex.name])prs[ex.name]=0;
+        ex.sets?.forEach(s=>{if(s.weight>prs[ex.name])prs[ex.name]=s.weight;});
+      });
+    }
+    return Object.entries(prs).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+  },[logs]);
+
+  return{settings,setSettings,logs,setLogs,getLastSession,getLastWeight,getPR,getHistory,getStreak,getWeekDays,getWeeklyVolume,getAllPRs};
+}
+
+Object.assign(window,{useStore,playBeep,vibrate,S,todayStr,getGreeting});
+</script>
+
+<!-- ─── Logo + Nav ─── -->
+<script type="text/babel">
+function LogoMark({size=44}){
+  return(
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <rect width="100" height="100" rx="20" fill="#131318"/>
+      <rect width="100" height="100" rx="20" fill="none" stroke="#e8562a" strokeWidth="2.2" opacity=".5"/>
+      <rect x="10" y="44" width="80" height="9" rx="4.5" fill="white" opacity=".07"/>
+      <rect x="9" y="35" width="9" height="28" rx="2.5" fill="#e8562a"/>
+      <rect x="2.5" y="39" width="7.5" height="20" rx="2" fill="#b8431f"/>
+      <rect x="82" y="35" width="9" height="28" rx="2.5" fill="#e8562a"/>
+      <rect x="90" y="39" width="7.5" height="20" rx="2" fill="#b8431f"/>
+      <text x="51" y="65" textAnchor="middle" fontSize="52" fontWeight="900" fill="#f0f0f5" fontFamily="Arial Black,Arial,sans-serif">B</text>
+      <text x="50" y="88" textAnchor="middle" fontSize="10" fontWeight="700" fill="#e8562a" fontFamily="Arial,sans-serif" letterSpacing="2.5">FITNESS</text>
+    </svg>
+  );
+}
+
+function BottomNav({screen,setScreen}){
+  const tabs=[
+    {id:'home',label:'Home',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21V12h6v9"/></svg>},
+    {id:'today',label:'Workout',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M6.5 6.5h11M6.5 17.5h11M4 12h16M8 3v3M16 3v3M8 18v3M16 18v3"/></svg>},
+    {id:'history',label:'Progress',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>},
+    {id:'plan',label:'Program',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>},
+  ];
+  return(
+    <nav className="nav">
+      {tabs.map(t=>(
+        <button key={t.id} className={'ntab'+(screen===t.id?' on':'')} onClick={()=>setScreen(t.id)}>
+          {t.icon}{t.label}
+        </button>
+      ))}
+    </nav>
+  );
+}
+Object.assign(window,{LogoMark,BottomNav});
+</script>
+
+<!-- ─── Shared Components ─── -->
+<script type="text/babel">
+function TimerOverlay({duration:initDur, onDismiss, label}){
+  const [dur,setDur]=useState(initDur);
+  const [rem,setRem]=useState(initDur);
+  const ref=useRef();
+  useEffect(()=>{
+    ref.current=setInterval(()=>{
+      setRem(r=>{
+        if(r<=1){clearInterval(ref.current);playBeep('end');vibrate([50,30,50]);return 0;}
+        if(r===11){vibrate(20);}
+        return r-1;
+      });
+    },1000);
+    return()=>clearInterval(ref.current);
+  },[dur]);
+  const m=Math.floor(rem/60),s=rem%60;
+  const circ=2*Math.PI*96,off=circ*(1-rem/dur);
+  return(
+    <div className="tover slide-up">
+      <div style={{fontSize:11,color:'var(--t2)',fontWeight:700,letterSpacing:'.12em',textTransform:'uppercase'}}>Rest Timer</div>
+      <div className="tring">
+        <svg width="220" height="220" viewBox="0 0 220 220" style={{position:'absolute',inset:0,transform:'rotate(-90deg)'}}>
+          <circle fill="none" stroke="var(--s3)" strokeWidth="9" cx="110" cy="110" r="96"/>
+          <circle fill="none" stroke={rem<=10?'var(--acc)':'var(--grn)'} strokeWidth="9" strokeLinecap="round"
+            cx="110" cy="110" r="96" strokeDasharray={circ} strokeDashoffset={off}
+            style={{transition:'stroke-dashoffset 1s linear,stroke .3s'}}/>
+        </svg>
+        <div className="tcenter">
+          <div className={'ttime'+(rem<=10?' ending':'')}>{m}:{s.toString().padStart(2,'0')}</div>
+          <div className="tsub">{rem===0?'Go!':label||'Rest'}</div>
+        </div>
+      </div>
+      <div className="tpresets">
+        {[60,90,120,180].map(sec=>(
+          <button key={sec} className={'tpre'+(dur===sec?' sel':'')}
+            onClick={()=>{clearInterval(ref.current);setDur(sec);setRem(sec);}}>
+            {sec<120?sec+'s':sec/60+'m'}
+          </button>
+        ))}
+      </div>
+      <button className="tskip" onClick={onDismiss}>{rem===0?'Start Next Set →':'Skip Rest'}</button>
+    </div>
+  );
+}
+
+function MiniTimer({duration,remaining,onExpand,onDismiss}){
+  const m=Math.floor(remaining/60),s=remaining%60;
+  const pct=(remaining/duration)*100;
+  return(
+    <div className="mtimer" onClick={onExpand}>
+      <div className="mtimer-bg" style={{width:pct+'%'}}/>
+      <svg style={{position:'relative',flexShrink:0,transform:'rotate(-90deg)'}} width="32" height="32" viewBox="0 0 32 32">
+        <circle fill="none" stroke="var(--s4)" strokeWidth="3" cx="16" cy="16" r="13"/>
+        <circle fill="none" stroke="var(--grn)" strokeWidth="3" strokeLinecap="round"
+          cx="16" cy="16" r="13"
+          strokeDasharray={2*Math.PI*13}
+          strokeDashoffset={2*Math.PI*13*(1-remaining/duration)}
+          style={{transition:'stroke-dashoffset 1s linear'}}/>
+      </svg>
+      <span className="mtimer-lbl">Rest</span>
+      <span className="mtimer-time">{m}:{s.toString().padStart(2,'0')}</span>
+      <button className="mtimer-skip" onClick={e=>{e.stopPropagation();onDismiss();}}>Skip</button>
+    </div>
+  );
+}
+
+function WarmupSheet({exerciseName,workingWeight,onClose}){
+  const [wt,setWt]=useState(workingWeight||'');
+  const sets=window.getWarmupSets(wt);
+  // Plate calculator
+  const plateInfo=useMemo(()=>{
+    const total=parseFloat(wt)||0;
+    if(total<45)return null;
+    const perSide=(total-45)/2;
+    const avail=[45,35,25,10,5,2.5];
+    const result=[];let rem=perSide;
+    avail.forEach(p=>{const n=Math.floor(rem/p);if(n>0){result.push({p,n});rem-=n*p;}});
+    return{perSide,plates:result};
+  },[wt]);
+
+  return(
+    <div className="sheet">
+      <div className="sheet-bg" onClick={onClose}/>
+      <div className="sheet-box slide-up">
+        <div className="sheet-handle"/>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20}}>
+          <div>
+            <div style={{fontSize:17,fontWeight:800}}>Warm-Up Calculator</div>
+            <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>{exerciseName}</div>
+          </div>
+          <button className="btn-ghost" onClick={onClose}>Done</button>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:10,background:'var(--s2)',borderRadius:12,padding:'12px 14px',marginBottom:4}}>
+          <span style={{fontSize:13,color:'var(--t2)',flex:1}}>Working weight (lbs)</span>
+          <button onClick={()=>setWt(v=>Math.max(0,(parseFloat(v)||0)-5))}
+            style={{width:36,height:36,borderRadius:8,background:'var(--s3)',border:'1px solid var(--bdr2)',color:'var(--t1)',fontSize:20,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'inherit'}}>−</button>
+          <input type="number" inputMode="decimal" value={wt} onChange={e=>setWt(e.target.value)}
+            style={{background:'var(--s3)',border:'1.5px solid var(--bdr2)',borderRadius:10,color:'var(--t1)',fontFamily:'inherit',fontSize:20,fontWeight:800,textAlign:'center',width:88,height:44,outline:'none'}}
+            placeholder="lbs"/>
+          <button onClick={()=>setWt(v=>(parseFloat(v)||0)+5)}
+            style={{width:36,height:36,borderRadius:8,background:'var(--s3)',border:'1px solid var(--bdr2)',color:'var(--t1)',fontSize:20,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'inherit'}}>+</button>
+        </div>
+        {plateInfo&&plateInfo.perSide>0&&(
+          <div style={{fontSize:11,color:'var(--t2)',textAlign:'right',padding:'4px 2px 12px'}}>
+            Plates per side: {plateInfo.plates.map(({p,n})=>n+'×'+p).join(' + ')||'bar only'}
+          </div>
+        )}
+        {sets.map((set,i)=>(
+          <div key={i} className="wu-row">
+            <div style={{width:38,fontSize:11,color:'var(--t2)',fontWeight:700}}>{Math.round(set.pct*100)}%</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:26,fontWeight:800,fontVariantNumeric:'tabular-nums'}}>{set.weight>0?set.weight+' lbs':'— lbs'}</div>
+              <div style={{fontSize:12,color:'var(--t2)'}}>{set.reps} reps</div>
+            </div>
+            <div style={{fontSize:11,color:'var(--t3)',fontWeight:600,textAlign:'right'}}>{set.rest}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window,{TimerOverlay,MiniTimer,WarmupSheet});
+</script>
+
+<!-- ─── Home Screen ─── -->
+<script type="text/babel">
+function HomeScreen({store,setScreen}){
+  const {settings,setSettings,logs,getStreak,getWeekDays,getWeeklyVolume,getAllPRs}=store;
+  const phase=WORKOUT_DATA.phases.find(p=>p.id===settings.currentPhase)||WORKOUT_DATA.phases[0];
+  const dayData=phase.days[settings.currentDayIndex];
+  const [showCfg,setShowCfg]=useState(false);
+  const streak=getStreak();
+  const weekDays=getWeekDays();
+  const weekVol=getWeeklyVolume();
+  const totalVol=weekVol.reduce((a,v)=>a+v,0);
+  const prs=getAllPRs().slice(0,5);
+  const totalWorkouts=Object.keys(logs).length;
+  const startDate=new Date(settings.startDate);
+  const weekNum=Math.max(1,Math.floor((Date.now()-startDate.getTime())/604800000)+1);
+  const phaseWeek=Math.max(1,weekNum-(settings.currentPhase-1)*9);
+  const phasePct=Math.min(100,Math.round((Math.min(phaseWeek,8)/8)*100));
+  const isDeload=phaseWeek===9;
+
+  return(
+    <div className="screen fade-up" style={{overflowY:'auto'}}>
+      {/* Header */}
+      <div className="home-hdr">
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:18}}>
+          <div style={{display:'flex',alignItems:'center',gap:12}}>
+            <LogoMark size={44}/>
+            <div>
+              <div style={{fontSize:18,fontWeight:800,letterSpacing:'-.2px',lineHeight:1}}>BECHTEL</div>
+              <div style={{fontSize:11,fontWeight:700,color:'var(--acc)',letterSpacing:'.22em',marginTop:1}}>FITNESS</div>
+            </div>
+          </div>
+          <button className="btn-icon" onClick={()=>setShowCfg(true)}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+        </div>
+        <div className="greeting">{getGreeting()}</div>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+          <div style={{display:'flex',gap:5}}>
+            {weekDays.map((d,i)=>(
+              <div key={i} className={'wdot'+(d.logged?' logged':d.isToday?' today':' empty')}>{d.label}</div>
+            ))}
+          </div>
+          {streak>0&&(
+            <div style={{fontSize:13,fontWeight:700,color:'var(--acc)'}}>🔥 {streak}-day streak</div>
+          )}
+        </div>
+      </div>
+
+      {/* Stats strip */}
+      <div style={{display:'flex',background:'var(--bg)',borderBottom:'1px solid var(--bdr)',flexShrink:0}}>
+        {[
+          {val:phase.label.replace('Phase ','P'),key:'Phase',color:'var(--acc)'},
+          {val:phaseWeek+'/8',key:'Week'},
+          {val:totalWorkouts,key:'Sessions'},
+          {val:totalVol>0?(totalVol>=1000?Math.round(totalVol/1000)+'k':totalVol):'—',key:'Wk Vol'},
+        ].map(({val,key,color})=>(
+          <div key={key} className="stat-cell">
+            <div className="stat-val" style={{color:color||'var(--t1)'}}>{val}</div>
+            <div className="stat-key">{key}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Body */}
+      <div style={{padding:'0 16px 100px'}}>
+        {/* Today card */}
+        <div className="card" style={{marginTop:16,marginBottom:12,overflow:'hidden'}}>
+          <div style={{padding:'11px 14px',borderBottom:'1px solid var(--bdr)',display:'flex',alignItems:'center',gap:7}}>
+            <span className="pill p-acc">{phase.label}</span>
+            <span className="pill p-dim">Wk {phaseWeek}/8</span>
+            {isDeload&&<span className="pill p-warn">Deload Week</span>}
+          </div>
+          <div style={{padding:'14px 14px 0'}}>
+            <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:8,marginBottom:12}}>
+              <div>
+                <div style={{fontSize:11,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.07em',marginBottom:5}}>Today's Workout</div>
+                <div style={{fontSize:22,fontWeight:800,letterSpacing:'-.4px',lineHeight:1.15}}>{dayData.name}</div>
+                <div style={{fontSize:12,color:'var(--t2)',marginTop:4}}>
+                  Day {dayData.dayNum} · {dayData.exercises.filter(e=>!e.isAbs).length} exercises · {dayData.exercises.filter(e=>!e.isAbs).reduce((a,e)=>a+e.sets,0)} sets
+                </div>
+              </div>
+              <div style={{width:42,height:42,borderRadius:12,background:'var(--acc-s)',border:'1px solid var(--acc-b)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+              </div>
+            </div>
+            {dayData.exercises.filter(e=>!e.isAbs).slice(0,3).map((ex,i)=>(
+              <div key={i} style={{display:'flex',alignItems:'center',gap:8,fontSize:13,color:'var(--t2)',paddingBottom:6}}>
+                <div style={{width:5,height:5,borderRadius:'50%',background:'var(--acc)',opacity:.65,flexShrink:0}}/>
+                <span style={{flex:1}}>{ex.name}</span>
+                <span style={{fontSize:11,color:'var(--t3)',fontWeight:600}}>{ex.sets}×{ex.repRange}</span>
+              </div>
+            ))}
+            {dayData.exercises.filter(e=>!e.isAbs).length>3&&(
+              <div style={{fontSize:12,color:'var(--t3)',paddingLeft:13,paddingBottom:6}}>+{dayData.exercises.filter(e=>!e.isAbs).length-3} more</div>
+            )}
+          </div>
+          <div style={{padding:'12px 14px 14px'}}>
+            <button className="btn" onClick={()=>setScreen('today')}>{isDeload?'View Deload Week':'Start Workout →'}</button>
+          </div>
+          {/* Phase progress */}
+          <div style={{padding:'12px 14px',borderTop:'1px solid var(--bdr)'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+              <div style={{fontSize:11,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.07em'}}>{phase.label} · {phase.weekRange}</div>
+              <div style={{fontSize:12,fontWeight:800,color:'var(--acc)'}}>{phasePct}%</div>
+            </div>
+            <div className="pbar"><div className="pbar-f" style={{width:phasePct+'%',background:'var(--acc)'}}/></div>
+            <div style={{display:'flex',justifyContent:'space-between',marginTop:9}}>
+              {Array(8).fill(null).map((_,i)=>(
+                <div key={i} style={{width:9,height:9,borderRadius:'50%',
+                  background:i<phaseWeek-1?'var(--grn)':i===phaseWeek-1?'var(--acc)':'var(--s4)',
+                  outline:i===phaseWeek-1?'2px solid var(--acc)':'none',outlineOffset:2,transition:'background .3s'}}/>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* PRs */}
+        {prs.length>0&&(
+          <div className="card" style={{padding:'14px 16px',marginBottom:12}}>
+            <div className="sec">Personal Records</div>
+            {prs.map(([name,weight],i)=>(
+              <div key={i} className="pr-row">
+                <div style={{flex:1,fontSize:13,color:'var(--t1)',fontWeight:500}}>{name}</div>
+                <div style={{fontSize:20,fontWeight:800,color:'var(--acc)',fontVariantNumeric:'tabular-nums'}}>{weight}</div>
+                <div style={{fontSize:11,color:'var(--t3)',marginLeft:4,marginTop:3}}>lbs</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Day switcher */}
+        <div className="card" style={{padding:'14px 16px'}}>
+          <div className="sec">Switch Day</div>
+          <div style={{display:'flex',flexDirection:'column',gap:7}}>
+            {phase.days.map((d,i)=>(
+              <button key={i} onClick={()=>setSettings({currentDayIndex:i})}
+                style={{display:'flex',alignItems:'center',padding:'10px 12px',borderRadius:10,
+                  border:'1.5px solid '+(i===settings.currentDayIndex?'var(--acc-b)':'var(--bdr2)'),
+                  background:i===settings.currentDayIndex?'var(--acc-s)':'var(--s2)',
+                  fontFamily:'inherit',textAlign:'left',gap:10,width:'100%',cursor:'pointer'}}>
+                <div style={{width:28,height:28,borderRadius:8,background:'var(--s3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:800,color:i===settings.currentDayIndex?'var(--acc)':'var(--t3)',flexShrink:0}}>{d.dayNum}</div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:13,fontWeight:700,color:i===settings.currentDayIndex?'var(--t1)':'var(--t2)'}}>{d.name}</div>
+                  <div style={{fontSize:11,color:'var(--t3)',marginTop:1}}>{d.exercises.filter(e=>!e.isAbs).length} exercises</div>
+                </div>
+                {i===settings.currentDayIndex&&<div style={{width:6,height:6,borderRadius:'50%',background:'var(--acc)'}}/>}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Settings sheet */}
+      {showCfg&&(
+        <div className="sheet">
+          <div className="sheet-bg" onClick={()=>setShowCfg(false)}/>
+          <div className="sheet-box slide-up">
+            <div className="sheet-handle"/>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20}}>
+              <div style={{fontSize:18,fontWeight:800}}>Settings</div>
+              <button className="btn-ghost" onClick={()=>setShowCfg(false)}>Done</button>
+            </div>
+            {[
+              {label:'Phase',sub:phase.weekRange,ctrl:(
+                <select value={settings.currentPhase} onChange={e=>setSettings({currentPhase:parseInt(e.target.value),currentDayIndex:0})}
+                  style={{background:'var(--s3)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:9,padding:'8px 12px',fontSize:13,fontFamily:'inherit'}}>
+                  {WORKOUT_DATA.phases.map(p=><option key={p.id} value={p.id}>{p.label} — {p.weekRange}</option>)}
+                </select>)},
+              {label:'Current Day',ctrl:(
+                <select value={settings.currentDayIndex} onChange={e=>setSettings({currentDayIndex:parseInt(e.target.value)})}
+                  style={{background:'var(--s3)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:9,padding:'8px 12px',fontSize:13,fontFamily:'inherit'}}>
+                  {phase.days.map((d,i)=><option key={i} value={i}>Day {d.dayNum} — {d.name}</option>)}
+                </select>)},
+              {label:'Start Date',ctrl:(
+                <input type="date" value={settings.startDate} onChange={e=>setSettings({startDate:e.target.value})}
+                  style={{background:'var(--s3)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:9,padding:'8px 12px',fontSize:13,fontFamily:'inherit'}}/>)},
+            ].map(({label,sub,ctrl})=>(
+              <div key={label} style={{padding:'14px 0',borderBottom:'1px solid var(--bdr)',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+                <div>
+                  <div style={{fontSize:14,fontWeight:600}}>{label}</div>
+                  {sub&&<div style={{fontSize:11,color:'var(--t3)',marginTop:1}}>{sub}</div>}
+                </div>
+                {ctrl}
+              </div>
+            ))}
+            <div style={{padding:'14px 0',fontSize:12,color:'var(--t2)',lineHeight:1.7}}>
+              <span style={{color:'var(--t1)',fontWeight:700}}>Bigger Leaner Stronger</span> Year One Challenge · Michael Matthews · 5-day split · 6 phases · 52 weeks
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+Object.assign(window,{HomeScreen});
+</script>
+
+<!-- ─── Workout Screen ─── -->
+<script type="text/babel">
+function SetRow({setNum,prev,data,onUpdate,onComplete,isNext}){
+  const done=data.done;
+  return(
+    <div className={'srow'+(done?' done':isNext?' active-row':'')}>
+      <div className="snum">{setNum}</div>
+      <div className="sprev">
+        {prev
+          ?<><div className="sprev-w">{prev.weight}</div><div className="sprev-r">x{prev.reps}</div></>
+          :<div className="sprev-w" style={{fontSize:11}}>—</div>}
+      </div>
+      <input className={'sinput'+(isNext?' ai':'')} type="number" inputMode="decimal"
+        value={data.weight} disabled={done}
+        onChange={e=>onUpdate('weight',e.target.value)} placeholder="—"/>
+      <input className={'sinput'+(isNext?' ai':'')} type="number" inputMode="numeric"
+        value={data.reps} disabled={done}
+        onChange={e=>onUpdate('reps',e.target.value)} placeholder="—"/>
+      <button className={'ck'+(done?' done':isNext?' ready':'')}
+        disabled={!isNext&&!done}
+        onClick={()=>{if(isNext&&!done){vibrate(35);onComplete();}}}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke={done?'white':'currentColor'} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
+          style={{opacity:done?1:isNext?.55:.1,color:'var(--t2)'}}>
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </button>
+    </div>
+  );
+}
+
+function ExCard({exercise,exSets,onUpdateSet,onCompleteSet,lastSession,pr,workoutStarted,expanded,onToggle}){
+  const [showWU,setShowWU]=useState(false);
+  const doneCount=exSets.filter(s=>s.done).length;
+  const allDone=doneCount===exSets.length&&exSets.length>0;
+  const nextIdx=exSets.findIndex(s=>!s.done);
+  const adjustAll=delta=>{
+    exSets.forEach((_,i)=>{
+      if(!exSets[i].done)onUpdateSet(i,'weight',Math.max(0,(parseFloat(exSets[i].weight)||0)+delta));
+    });
+  };
+
+  if(exercise.isAbs){
+    return(
+      <div className={'excard'+(allDone?' ex-done':'')} style={{marginBottom:10}}>
+        <div className="exhdr" onClick={onToggle}>
+          <div style={{flex:1,minWidth:0}}>
+            <div className="exname">Ab Circuit x{exercise.sets}</div>
+            <div className="exmeta">Weighted + 2 unweighted · 2–3 min rest</div>
+          </div>
+          {allDone&&<span className="pill p-grn" style={{marginRight:8}}>Done</span>}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" strokeWidth="2"
+            style={{transform:expanded?'rotate(180deg)':'none',transition:'transform .2s',flexShrink:0}}>
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+        {expanded&&(
+          <div style={{padding:'4px 14px 14px'}}>
+            <div style={{fontSize:12,color:'var(--t2)',lineHeight:1.8,marginBottom:12}}>
+              <b style={{color:'var(--t1)'}}>1.</b> Weighted (cable crunch / captain's chair / hanging raise) — 10–12 reps<br/>
+              <b style={{color:'var(--t1)'}}>2.</b> Unweighted to failure<br/>
+              <b style={{color:'var(--t1)'}}>3.</b> Unweighted to failure — rest 2–3 min · repeat x{exercise.sets}
+            </div>
+            {workoutStarted&&(
+              <button className={'btn'+(allDone?' grn':' btn-ghost')} style={{borderRadius:10,fontSize:13}}
+                onClick={()=>{vibrate(35);onCompleteSet(0);}}>
+                {allDone?'✓ Completed':'Mark Complete'}
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return(
+    <div className={'excard'+(allDone?' ex-done':expanded&&workoutStarted?' ex-on':'')} style={{marginBottom:10}}>
+      <div className="exhdr" onClick={onToggle}>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{display:'flex',alignItems:'center',gap:7}}>
+            <div className="exname">{exercise.name}</div>
+            {exercise.optional&&<span style={{fontSize:9,fontWeight:700,color:'var(--t3)',letterSpacing:'.05em'}}>OPT</span>}
+          </div>
+          <div className="exmeta">{exercise.sets}x{exercise.repRange}{pr?' · PR '+pr+' lbs':''}</div>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
+          {allDone?(
+            <div style={{width:22,height:22,borderRadius:'50%',background:'var(--grn)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          ):(
+            <div style={{display:'flex',gap:4}}>
+              {exSets.map((s,i)=>(
+                <div key={i} className={'exdot'+(s.done?' d':i===nextIdx&&workoutStarted?' cur':'')}/>
+              ))}
+            </div>
+          )}
+          {exercise.warmup&&!allDone&&(
+            <button style={{padding:'4px 9px',borderRadius:7,background:'var(--s3)',border:'1px solid var(--bdr2)',fontSize:10,fontWeight:700,color:'var(--t2)',letterSpacing:'.04em',fontFamily:'inherit'}}
+              onClick={e=>{e.stopPropagation();setShowWU(true);}}>WU</button>
+          )}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" strokeWidth="2"
+            style={{transform:expanded?'rotate(180deg)':'none',transition:'transform .2s'}}>
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+      </div>
+
+      {expanded&&(
+        <>
+          <div className="sethdr"><div/><div style={{textAlign:'center'}}>PREV</div><div style={{textAlign:'center'}}>WEIGHT</div><div style={{textAlign:'center'}}>REPS</div><div/></div>
+          <div style={{borderTop:'1px solid var(--bdr)'}}>
+            {exSets.map((s,i)=>(
+              <SetRow key={i} setNum={i+1}
+                prev={lastSession?.[i]||null}
+                data={s}
+                onUpdate={(f,v)=>onUpdateSet(i,f,v)}
+                onComplete={()=>onCompleteSet(i)}
+                isNext={workoutStarted&&!s.done&&i===nextIdx}/>
+            ))}
+          </div>
+          {workoutStarted&&!allDone&&(
+            <div className="qa">
+              <div className="qa-lbl">Adjust weight (lbs)</div>
+              {[-10,-5,-2.5,2.5,5,10].map(d=>(
+                <button key={d} className="qa-btn" onClick={()=>adjustAll(d)}>{d>0?'+':''}{d}</button>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      {showWU&&<WarmupSheet exerciseName={exercise.name} workingWeight={exSets[0]?.weight} onClose={()=>setShowWU(false)}/>}
+    </div>
+  );
+}
+
+function useElapsed(running){
+  const [t,setT]=useState(0);
+  const ref=useRef(null);
+  useEffect(()=>{
+    if(running){
+      const start=Date.now()-t*1000;
+      ref.current=setInterval(()=>setT(Math.floor((Date.now()-start)/1000)),1000);
+      return()=>clearInterval(ref.current);
+    }
+  },[running]);
+  return t;
+}
+
+function WorkoutScreen({store}){
+  const {settings,setSettings,setLogs,getLastSession,getLastWeight,getPR}=store;
+  const phase=WORKOUT_DATA.phases.find(p=>p.id===settings.currentPhase)||WORKOUT_DATA.phases[0];
+  const dayData=phase.days[settings.currentDayIndex];
+  const [started,setStarted]=useState(false);
+  const [done,setDone]=useState(false);
+  const [sets,setSets]=useState({});
+  const [timer,setTimer]=useState(null);
+  const [expanded,setExpanded]=useState({});
+  const timerRef=useRef();
+  const elapsed=useElapsed(started&&!done);
+  const em=Math.floor(elapsed/60),es=elapsed%60;
+
+  useEffect(()=>{
+    const init={},exp={};
+    dayData.exercises.forEach((ex,i)=>{
+      if(ex.isAbs){init[ex.name]=[{weight:0,reps:0,done:false}];}
+      else{const lw=getLastWeight(ex.name)||'';init[ex.name]=Array(ex.sets).fill(null).map(()=>({weight:lw,reps:'',done:false}));}
+      exp[i]=i===0;
+    });
+    setSets(init);setExpanded(exp);setStarted(false);setDone(false);setTimer(null);
+  },[settings.currentDayIndex,settings.currentPhase]);
+
+  useEffect(()=>{
+    if(timer&&!timer.full){
+      timerRef.current=setInterval(()=>{
+        setTimer(t=>{
+          if(!t||t.rem<=0){clearInterval(timerRef.current);return t?{...t,rem:0}:null;}
+          if(t.rem===1){playBeep('end');vibrate([50,30,50]);}
+          return{...t,rem:t.rem-1};
+        });
+      },1000);
+      return()=>clearInterval(timerRef.current);
+    }
+  },[timer&&timer.dur]);
+
+  const updateSet=(exName,i,f,v)=>{
+    setSets(prev=>{
+      const n={...prev,[exName]:[...prev[exName]]};
+      n[exName][i]={...n[exName][i],[f]:v};
+      if(f==='weight')n[exName]=n[exName].map((s,j)=>j>i&&!s.weight?{...s,weight:v}:s);
+      return n;
+    });
+  };
+
+  const completeSet=(exName,i)=>{
+    let allExDone=false;
+    setSets(prev=>{
+      const n={...prev,[exName]:[...prev[exName]]};
+      n[exName][i]={...n[exName][i],done:true};
+      allExDone=n[exName].every(s=>s.done);
+      return n;
+    });
+    const ex=dayData.exercises.find(e=>e.name===exName);
+    const dur=ex?.repRange==='8-10'?90:180;
+    clearInterval(timerRef.current);
+    setTimer({dur,rem:dur,full:false,label:exName});
+    // Auto-collapse done exercise, expand next
+    setTimeout(()=>{
+      const exIdx=dayData.exercises.findIndex(e=>e.name===exName);
+      setSets(cur=>{
+        if(cur[exName]?.every(s=>s.done)){
+          const nextIdx=dayData.exercises.findIndex((e,j)=>j>exIdx&&!(cur[e.name]||[]).every(s=>s.done));
+          setExpanded(p=>{const n2={...p};n2[exIdx]=false;if(nextIdx>-1)n2[nextIdx]=true;return n2;});
+        }
+        return cur;
+      });
+    },350);
+  };
+
+  const finishWorkout=()=>{
+    const totalVol=Object.values(sets).reduce((a,ss)=>
+      a+ss.filter(s=>s.done).reduce((b,s)=>b+(parseFloat(s.weight)||0)*(parseInt(s.reps)||0),0),0);
+    const prHit=dayData.exercises.filter(ex=>{
+      const pr=getPR(ex.name);
+      return pr&&(sets[ex.name]||[]).some(s=>s.done&&parseFloat(s.weight)>pr);
+    }).map(e=>e.name);
+    const entry={
+      phase:settings.currentPhase,dayNum:dayData.dayNum,dayName:dayData.name,
+      duration:elapsed,volume:totalVol,prsHit:prHit,
+      exercises:dayData.exercises.map(ex=>({
+        name:ex.name,
+        sets:(sets[ex.name]||[]).filter(s=>s.done).map(s=>({weight:parseFloat(s.weight)||0,reps:parseInt(s.reps)||0}))
+      }))
+    };
+    setLogs(p=>({...p,[todayStr()]:entry}));
+    setSettings({currentDayIndex:(settings.currentDayIndex+1)%5});
+    setDone({elapsed,totalVol,prHit});
+  };
+
+  const startDate=new Date(settings.startDate);
+  const weekNum=Math.floor((Date.now()-startDate.getTime())/604800000)+1;
+  const phaseWeek=weekNum-(settings.currentPhase-1)*9;
+  const isDeload=phaseWeek===9;
+  const isStrength=phaseWeek%4===0&&phaseWeek<9;
+  const totalSets=dayData.exercises.reduce((a,ex)=>a+(ex.isAbs?1:ex.sets),0);
+  const doneSets=Object.values(sets).reduce((a,ss)=>a+ss.filter(s=>s.done).length,0);
+  const pct=totalSets>0?Math.round((doneSets/totalSets)*100):0;
+  const allComplete=dayData.exercises.every(ex=>(sets[ex.name]||[]).every(s=>s.done));
+
+  if(done){
+    const d=done;
+    const dm=Math.floor(d.elapsed/60),ds=d.elapsed%60;
+    return(
+      <div className="screen fade-up" style={{alignItems:'center',justifyContent:'center',padding:24,gap:20}}>
+        <div style={{width:88,height:88,borderRadius:'50%',background:'var(--grn-s)',border:'2px solid var(--grn)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:42}}>💪</div>
+        <div style={{textAlign:'center'}}>
+          <div style={{fontSize:28,fontWeight:800,letterSpacing:'-.5px'}}>Session Complete</div>
+          <div style={{fontSize:14,color:'var(--t2)',marginTop:6}}>{dayData.name}</div>
+        </div>
+        <div style={{display:'flex',gap:10,width:'100%'}}>
+          <div className="wc-stat"><div className="wc-val">{dm}:{ds.toString().padStart(2,'0')}</div><div className="wc-key">Duration</div></div>
+          <div className="wc-stat"><div className="wc-val">{d.totalVol>0?(d.totalVol>=1000?Math.round(d.totalVol/1000)+'k':d.totalVol):'—'}</div><div className="wc-key">Volume lbs</div></div>
+          <div className="wc-stat"><div className="wc-val" style={{color:'var(--acc)'}}>{d.prHit?.length||0}</div><div className="wc-key">New PRs</div></div>
+        </div>
+        {d.prHit?.length>0&&(
+          <div style={{background:'var(--acc-s)',border:'1px solid var(--acc-b)',borderRadius:12,padding:'12px 16px',width:'100%'}}>
+            <div style={{fontSize:11,fontWeight:700,color:'var(--acc)',textTransform:'uppercase',letterSpacing:'.07em',marginBottom:6}}>🏆 New PRs Hit</div>
+            {d.prHit.map(n=><div key={n} style={{fontSize:13,color:'var(--t1)',marginTop:4}}>· {n}</div>)}
+          </div>
+        )}
+        <div style={{background:'var(--s2)',border:'1px solid var(--bdr2)',borderRadius:12,padding:'14px 20px',textAlign:'center',width:'100%'}}>
+          <div style={{fontSize:11,color:'var(--t2)',textTransform:'uppercase',letterSpacing:'.07em',marginBottom:4}}>Up Next</div>
+          <div style={{fontSize:15,fontWeight:700}}>Day {phase.days[settings.currentDayIndex].dayNum} · {phase.days[settings.currentDayIndex].name}</div>
+        </div>
+        <button className="btn grn" onClick={()=>setDone(false)}>Continue →</button>
+      </div>
+    );
+  }
+
+  return(
+    <div className="screen">
+      <div style={{padding:'14px 16px 8px',flexShrink:0}}>
+        <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:9}}>
+          <span className="pill p-acc">{phase.label}</span>
+          <span className="pill p-dim">Wk {Math.max(1,phaseWeek)}/8</span>
+          {isDeload&&<span className="pill p-warn">Deload</span>}
+          {isStrength&&<span className="pill p-dim">Strength Wk</span>}
+          {started&&<span style={{marginLeft:'auto',fontSize:21,fontWeight:800,color:'var(--acc)',fontVariantNumeric:'tabular-nums',letterSpacing:'-1px'}}>{em}:{es.toString().padStart(2,'0')}</span>}
+        </div>
+        <div style={{fontSize:22,fontWeight:800,letterSpacing:'-.5px',lineHeight:1.1}}>{dayData.name}</div>
+        <div style={{fontSize:12,color:'var(--t2)',marginTop:3}}>
+          {dayData.exercises.filter(e=>!e.isAbs).length} exercises · {dayData.exercises.filter(e=>!e.isAbs).reduce((a,e)=>a+e.sets,0)} sets
+        </div>
+      </div>
+
+      {started&&(
+        <div style={{padding:'6px 16px 10px',flexShrink:0}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+            <div style={{fontSize:10,fontWeight:700,color:'var(--t3)',textTransform:'uppercase',letterSpacing:'.07em'}}>{doneSets}/{totalSets} sets</div>
+            <div style={{fontSize:10,fontWeight:700,color:pct===100?'var(--grn)':'var(--acc)'}}>{pct}%</div>
+          </div>
+          <div className="pbar"><div className="pbar-f" style={{width:pct+'%',background:pct===100?'var(--grn)':'var(--acc)'}}/></div>
+        </div>
+      )}
+
+      <div style={{display:'flex',gap:5,padding:'0 16px 10px',overflowX:'auto',flexShrink:0}}>
+        {phase.days.map((d,i)=>(
+          <button key={i}
+            style={{flexShrink:0,padding:'7px 12px',borderRadius:9,fontSize:12,fontWeight:700,
+              background:i===settings.currentDayIndex?'var(--acc-s)':'var(--s3)',
+              color:i===settings.currentDayIndex?'var(--acc)':'var(--t3)',
+              border:'1.5px solid '+(i===settings.currentDayIndex?'var(--acc-b)':'transparent'),
+              opacity:started&&i!==settings.currentDayIndex?.4:1,
+              whiteSpace:'nowrap',fontFamily:'inherit',cursor:started?'default':'pointer'}}
+            disabled={started}
+            onClick={()=>!started&&setSettings({currentDayIndex:i})}>
+            {d.dayNum} · {d.name.split(' ')[0]}
+          </button>
+        ))}
+      </div>
+
+      <div className="scroller" style={{padding:'0 16px'}}>
+        {isDeload?(
+          <div className="card" style={{padding:24,textAlign:'center',marginTop:8}}>
+            <div style={{fontSize:40,marginBottom:12}}>🏖</div>
+            <div style={{fontSize:20,fontWeight:800,marginBottom:8}}>Deload Week</div>
+            <div style={{fontSize:13,color:'var(--t2)',lineHeight:1.75}}>No resistance training. Light cardio is fine.<br/>Recovery is where growth happens.</div>
+          </div>
+        ):(
+          <>
+            {dayData.exercises.map((ex,i)=>(
+              <ExCard key={ex.name+i}
+                exercise={ex}
+                exSets={sets[ex.name]||[]}
+                onUpdateSet={(si,f,v)=>updateSet(ex.name,si,f,v)}
+                onCompleteSet={si=>completeSet(ex.name,si)}
+                lastSession={getLastSession(ex.name)}
+                pr={getPR(ex.name)}
+                workoutStarted={started}
+                expanded={!!expanded[i]}
+                onToggle={()=>setExpanded(p=>({...p,[i]:!p[i]}))}/>
+            ))}
+            <div style={{height:8}}/>
+            {!started?(
+              <button className="btn" onClick={()=>setStarted(true)}>Start Workout</button>
+            ):(
+              <button className={'btn'+(allComplete?' grn':'')} onClick={allComplete?finishWorkout:null} disabled={!allComplete}>
+                {allComplete?'Finish Session ✓':'Complete All Sets to Finish'}
+              </button>
+            )}
+            <div style={{height:24}}/>
+          </>
+        )}
+      </div>
+
+      {timer&&!timer.full&&timer.rem>0&&(
+        <MiniTimer duration={timer.dur} remaining={timer.rem}
+          onExpand={()=>setTimer(t=>t?{...t,full:true}:null)}
+          onDismiss={()=>{clearInterval(timerRef.current);setTimer(null);}}/>
+      )}
+      {timer?.full&&(
+        <TimerOverlay duration={timer.dur} label={timer.label}
+          onDismiss={()=>{clearInterval(timerRef.current);setTimer(null);}}/>
+      )}
+    </div>
+  );
+}
+Object.assign(window,{WorkoutScreen,ExCard,SetRow});
+</script>
+
+<!-- ─── Progress Screen ─── -->
+<script type="text/babel">
+function LineChart({data}){
+  if(!data||data.length<2)return(
+    <div style={{height:130,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',color:'var(--t3)',fontSize:13,gap:8}}>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--t4)" strokeWidth="1.5" strokeLinecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Log 2+ sessions to chart progress
+    </div>
+  );
+  const W=340,H=140,pl=40,pb=28,pt=12,pr=12;
+  const iW=W-pl-pr,iH=H-pt-pb;
+  const ws=data.map(d=>d.weight);
+  const mn=Math.min(...ws),mx=Math.max(...ws),range=mx-mn||1;
+  const pts=data.map((d,i)=>({
+    x:pl+(i/(data.length-1))*iW,
+    y:pt+iH-((d.weight-mn)/range)*iH,
+    date:d.date,weight:d.weight
+  }));
+  const pathD=pts.map((p,i)=>(i===0?'M':'L')+p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ');
+  const areaD=pathD+' L'+pts[pts.length-1].x+','+(pt+iH)+' L'+pts[0].x+','+(pt+iH)+' Z';
+  return(
+    <svg viewBox={'0 0 '+W+' '+H} className="chart-svg">
+      <defs>
+        <linearGradient id="cg1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#e8562a" stopOpacity=".25"/>
+          <stop offset="100%" stopColor="#e8562a" stopOpacity="0"/>
+        </linearGradient>
+      </defs>
+      {[0,.5,1].map((t,i)=>{
+        const y=pt+iH-t*iH,v=Math.round(mn+t*range);
+        return(
+          <g key={i}>
+            <line x1={pl} y1={y} x2={pl+iW} y2={y} stroke="var(--bdr2)" strokeWidth="1" strokeDasharray="3,3"/>
+            <text x={pl-6} y={y+4} fill="var(--t3)" fontSize="9" textAnchor="end">{v}</text>
+          </g>
+        );
+      })}
+      <path d={areaD} fill="url(#cg1)"/>
+      <path d={pathD} fill="none" stroke="var(--acc)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      {pts.map((p,i)=><circle key={i} cx={p.x} cy={p.y} r="4.5" fill="var(--bg)" stroke="var(--acc)" strokeWidth="2.5"/>)}
+      {pts.filter((_,i)=>i===0||i===pts.length-1||(pts.length>3&&i===Math.floor(pts.length/2))).map((p,i)=>(
+        <text key={i} x={Math.max(24,Math.min(316,p.x))} y={H-5} fill="var(--t3)" fontSize="9" textAnchor="middle">{p.date.slice(5)}</text>
+      ))}
+    </svg>
+  );
+}
+
+function VolumeChart({data}){
+  const max=Math.max(...data,1);
+  const days=['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const todayDow=new Date().getDay();
+  return(
+    <div style={{display:'flex',gap:6,alignItems:'flex-end',height:80,padding:'0 4px'}}>
+      {data.map((v,i)=>{
+        const h=v>0?Math.max(8,Math.round((v/max)*64)):3;
+        const isT=i===todayDow;
+        return(
+          <div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
+            <div style={{width:'100%',borderRadius:4,height:h,minHeight:3,transition:'height .5s ease',
+              background:isT?(v>0?'var(--acc)':'var(--acc-s)'):v>0?'var(--s4)':'var(--s3)'}}/>
+            <div style={{fontSize:9,fontWeight:700,color:isT?'var(--acc)':'var(--t3)',textTransform:'uppercase',letterSpacing:'.03em'}}>{days[i]}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function HistoryScreen({store}){
+  const {logs,getHistory,getPR,getWeeklyVolume}=store;
+  const [sel,setSel]=useState('');
+  const allEx=useMemo(()=>{
+    const s=new Set();
+    Object.values(logs).forEach(l=>l.exercises?.forEach(e=>{if(e.sets?.length)s.add(e.name);}));
+    return[...s].sort();
+  },[logs]);
+  const hist=sel?getHistory(sel):[];
+  const pr=sel?getPR(sel):null;
+  const weekVol=getWeeklyVolume();
+  const totalVol=weekVol.reduce((a,v)=>a+v,0);
+  const logDays=Object.entries(logs).sort((a,b)=>b[0].localeCompare(a[0]));
+
+  return(
+    <div className="screen">
+      <div style={{padding:'16px 16px 10px',flexShrink:0}}>
+        <div style={{fontSize:24,fontWeight:800,letterSpacing:'-.5px'}}>Progress</div>
+        <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>Track your strength over time</div>
+      </div>
+      <div className="scroller" style={{padding:'0 16px 20px'}}>
+        <div className="card" style={{padding:16,marginBottom:12}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14}}>
+            <div className="sec" style={{marginBottom:0}}>This Week's Volume</div>
+            <div style={{fontSize:16,fontWeight:800,fontVariantNumeric:'tabular-nums',color:totalVol>0?'var(--t1)':'var(--t3)'}}>
+              {totalVol>0?(totalVol>=1000?Math.round(totalVol/1000)+'k lbs':totalVol+' lbs'):'No sessions yet'}
+            </div>
+          </div>
+          <VolumeChart data={weekVol}/>
+        </div>
+
+        <div className="card" style={{padding:16,marginBottom:12}}>
+          <div className="sec">Exercise Progress</div>
+          {allEx.length===0?(
+            <div style={{fontSize:13,color:'var(--t2)'}}>Log workouts to track progress here.</div>
+          ):(
+            <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom:sel?16:0}}>
+              {allEx.map(n=>(
+                <button key={n} className={'ex-chip'+(sel===n?' sel':'')} onClick={()=>setSel(sel===n?'':n)}>{n}</button>
+              ))}
+            </div>
+          )}
+          {sel&&(
+            <>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14}}>
+                <div style={{fontSize:14,fontWeight:700,flex:1,marginRight:8}}>{sel}</div>
+                <div style={{display:'flex',gap:16}}>
+                  <div style={{textAlign:'center'}}>
+                    <div style={{fontSize:22,fontWeight:800,color:'var(--acc)',fontVariantNumeric:'tabular-nums'}}>{pr||'—'}</div>
+                    <div style={{fontSize:9,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>PR LBS</div>
+                  </div>
+                  <div style={{width:1,background:'var(--bdr)'}}/>
+                  <div style={{textAlign:'center'}}>
+                    <div style={{fontSize:22,fontWeight:800,fontVariantNumeric:'tabular-nums'}}>{hist.length}</div>
+                    <div style={{fontSize:9,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>SESSIONS</div>
+                  </div>
+                </div>
+              </div>
+              <LineChart data={hist}/>
+            </>
+          )}
+        </div>
+
+        <div className="sec">Recent Sessions</div>
+        {logDays.length===0?(
+          <div className="card" style={{padding:20,textAlign:'center',color:'var(--t2)',fontSize:13}}>No sessions logged yet — Start Workout!</div>
+        ):logDays.slice(0,10).map(([date,log])=>{
+          const vol=log.volume||log.exercises?.reduce((a,ex)=>a+(ex.sets?.reduce((b,s)=>b+(s.weight||0)*(s.reps||0),0)||0),0)||0;
+          const dm=log.duration?Math.floor(log.duration/60):null;
+          const ds2=log.duration?log.duration%60:null;
+          return(
+            <div key={date} className="card" style={{padding:14,marginBottom:8}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:5}}>
+                <div style={{fontWeight:700,fontSize:14}}>{log.dayName||'Workout'}</div>
+                <div style={{display:'flex',gap:8,alignItems:'center'}}>
+                  {dm!==null&&<div style={{fontSize:11,color:'var(--t2)'}}>{dm}:{ds2.toString().padStart(2,'0')}</div>}
+                  <div style={{fontSize:11,color:'var(--t3)'}}>{date}</div>
+                </div>
+              </div>
+              {vol>0&&<div style={{fontSize:11,color:'var(--acc)',fontWeight:700,marginBottom:5}}>{vol>=1000?Math.round(vol/1000)+'k':vol} lbs volume</div>}
+              <div style={{fontSize:11,color:'var(--t2)',lineHeight:1.7}}>
+                {log.exercises?.filter(e=>e.sets?.length>0).slice(0,3).map(e=>e.name+' ('+e.sets.map(s=>s.weight+'x'+s.reps).join(', ')+')').join(' · ')}
+                {(log.exercises?.filter(e=>e.sets?.length>0).length||0)>3&&' …'}
+              </div>
+              {log.prsHit?.length>0&&<div style={{marginTop:6,fontSize:11,color:'var(--acc)',fontWeight:700}}>🏆 PR: {log.prsHit.join(', ')}</div>}
+            </div>
+          );
+        })}
+        <div style={{height:16}}/>
+      </div>
+    </div>
+  );
+}
+Object.assign(window,{HistoryScreen,LineChart,VolumeChart});
+</script>
+
+<!-- ─── Program Screen ─── -->
+<script type="text/babel">
+function ProgramScreen({store}){
+  const {settings}=store;
+  const [selPhase,setSelPhase]=useState(settings.currentPhase);
+  const dp=WORKOUT_DATA.phases.find(p=>p.id===selPhase)||WORKOUT_DATA.phases[0];
+  const dotColors=['var(--acc)','oklch(65% .18 240)','oklch(65% .18 290)','var(--grn)','oklch(65% .18 55)'];
+
+  return(
+    <div className="screen">
+      <div style={{padding:'16px 16px 10px',flexShrink:0}}>
+        <div style={{fontSize:24,fontWeight:800,letterSpacing:'-.5px'}}>Program</div>
+        <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>BLS Year One · 5-Day · 6 Phases</div>
+      </div>
+      <div className="scroller" style={{padding:'0 16px 20px'}}>
+        <div style={{display:'flex',gap:6,marginBottom:14,overflowX:'auto',paddingBottom:2}}>
+          {WORKOUT_DATA.phases.map(p=>(
+            <button key={p.id} className={'prog-tab'+(selPhase===p.id?' sel':'')} onClick={()=>setSelPhase(p.id)}>{p.label}</button>
+          ))}
+        </div>
+
+        <div className="card2" style={{padding:'12px 16px',marginBottom:14,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+          <div>
+            <div style={{fontWeight:700,fontSize:15,letterSpacing:'-.2px'}}>{dp.label} · {dp.weekRange}</div>
+            <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>8 weeks training + 1 deload week</div>
+          </div>
+          {selPhase===settings.currentPhase&&<span className="pill p-acc">Current</span>}
+        </div>
+
+        {dp.days.map((day,di)=>(
+          <div key={di} className="card" style={{marginBottom:10,overflow:'hidden'}}>
+            <div style={{padding:'12px 14px',display:'flex',alignItems:'center',gap:10,borderBottom:'1px solid var(--bdr)'}}>
+              <div style={{width:36,height:36,borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:800,color:dotColors[di],background:dotColors[di]+'20',flexShrink:0}}>{day.dayNum}</div>
+              <div>
+                <div style={{fontWeight:700,fontSize:14,letterSpacing:'-.2px'}}>Day {day.dayNum} — {day.name}</div>
+                <div style={{fontSize:11,color:'var(--t2)',marginTop:1}}>{day.exercises.filter(e=>!e.isAbs).length} exercises · {day.exercises.filter(e=>!e.isAbs).reduce((a,e)=>a+e.sets,0)} sets</div>
+              </div>
+            </div>
+            <div style={{padding:'6px 14px 10px'}}>
+              {day.exercises.map((ex,ei)=>(
+                <div key={ei} style={{display:'flex',alignItems:'center',padding:'8px 0',borderBottom:ei<day.exercises.length-1?'1px solid var(--bdr)':'none',gap:8}}>
+                  <div style={{flex:1,fontSize:13,color:ex.optional?'var(--t3)':'var(--t1)',fontWeight:ex.warmup?600:400}}>{ex.name}{ex.optional?' (opt)':''}</div>
+                  {!ex.isAbs&&<div style={{fontSize:11,color:'var(--t3)',fontWeight:700,flexShrink:0}}>{ex.warmup?'★ ':''}{ex.sets}x{ex.repRange}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <div className="sec" style={{marginTop:8}}>Training Rules</div>
+        <div className="card" style={{overflow:'hidden',marginBottom:20}}>
+          {[
+            ['Rep Ranges','Heavy: 4–6 reps at ~85% 1RM · Accessory: 8–10 reps'],
+            ['Rest (heavy)','3–4 minutes between sets'],
+            ['Rest (light)','1–2 minutes between sets'],
+            ['Progression','Add 10 lbs when you hit top of rep range'],
+            ['Tempo','2 sec down · 1 sec pause · 1–2 sec up'],
+            ['Strength Wk','Every 4th week — same weights, fewer sets'],
+            ['Deload','Week 9 of each phase — no resistance training'],
+          ].map(([k,v])=>(
+            <div key={k} style={{display:'flex',padding:'11px 14px',borderBottom:'1px solid var(--bdr)',gap:12,alignItems:'flex-start'}}>
+              <div style={{fontSize:12,fontWeight:700,color:'var(--t2)',width:106,flexShrink:0}}>{k}</div>
+              <div style={{fontSize:12,color:'var(--t1)',lineHeight:1.55,flex:1}}>{v}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+Object.assign(window,{ProgramScreen});
+</script>
+
+<!-- ─── App Root ─── -->
+<script type="text/babel">
+function App(){
+  const [screen,setScreen]=useState(()=>S.get('bf5_sc','home'));
+  const store=useStore();
+  useEffect(()=>S.set('bf5_sc',screen),[screen]);
+  return(
+    <>
+      {screen==='home'    &&<HomeScreen store={store} setScreen={setScreen}/>}
+      {screen==='today'   &&<WorkoutScreen store={store}/>}
+      {screen==='history' &&<HistoryScreen store={store}/>}
+      {screen==='plan'    &&<ProgramScreen store={store}/>}
+      <BottomNav screen={screen} setScreen={setScreen}/>
+    </>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
