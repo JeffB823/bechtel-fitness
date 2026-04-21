@@ -1,0 +1,356 @@
+// BLS Year One Challenge - 5-Day Split, All 6 Phases
+window.WORKOUT_DATA = {
+  phases: [
+    {
+      id: 1, label: "Phase 1", weekRange: "Weeks 1–8",
+      days: [
+        {
+          dayNum: 1, name: "Chest & Abs", muscleGroup: "chest",
+          exercises: [
+            { name: "Incline Barbell Bench Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Incline Dumbbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Flat Barbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Face Pull", sets: 3, repRange: "8-10" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 2, name: "Back & Calves", muscleGroup: "back",
+          exercises: [
+            { name: "Barbell Deadlift", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Barbell Row", sets: 3, repRange: "4-6" },
+            { name: "Wide-Grip Pull-Up / Chin-Up", sets: 3, repRange: "4-6" },
+            { name: "Close-Grip Lat Pulldown", sets: 3, repRange: "4-6", optional: true },
+            { name: "Barbell Shrug", sets: 2, repRange: "4-6", optional: true },
+            { name: "Standing Calf Raise", sets: 3, repRange: "4-6" },
+            { name: "Seated Calf Raise", sets: 3, repRange: "4-6" },
+          ]
+        },
+        {
+          dayNum: 3, name: "Shoulders & Abs", muscleGroup: "shoulders",
+          exercises: [
+            { name: "Barbell Military Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Side Lateral Raise", sets: 3, repRange: "4-6" },
+            { name: "Bent-Over Rear Delt Raise", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 4, name: "Legs", muscleGroup: "legs",
+          exercises: [
+            { name: "Barbell Squat", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Leg Press", sets: 3, repRange: "4-6" },
+            { name: "Romanian Deadlift", sets: 3, repRange: "4-6" },
+            { name: "Leg Press Calf Raise", sets: 3, repRange: "8-10" },
+            { name: "Donkey Calf Raise", sets: 3, repRange: "8-10" },
+          ]
+        },
+        {
+          dayNum: 5, name: "Upper Body & Abs", muscleGroup: "upper",
+          exercises: [
+            { name: "Incline Barbell Bench Press", warmup: true, sets: 3, repRange: "8-10" },
+            { name: "Barbell Curl", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Close-Grip Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Alternating Dumbbell Curl", sets: 3, repRange: "4-6" },
+            { name: "Seated Triceps Press", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+      ]
+    },
+    {
+      id: 2, label: "Phase 2", weekRange: "Weeks 10–17",
+      days: [
+        {
+          dayNum: 1, name: "Chest & Abs", muscleGroup: "chest",
+          exercises: [
+            { name: "Incline Dumbbell Bench Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Flat Barbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Flat Dumbbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Face Pull", sets: 3, repRange: "8-10" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 2, name: "Back & Calves", muscleGroup: "back",
+          exercises: [
+            { name: "Barbell Deadlift", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "One-Arm Dumbbell Row", sets: 3, repRange: "4-6" },
+            { name: "Front Lat Pulldown", sets: 3, repRange: "4-6" },
+            { name: "Seated Cable Row", sets: 3, repRange: "4-6", optional: true },
+            { name: "Barbell Shrug", sets: 2, repRange: "4-6", optional: true },
+            { name: "Standing Calf Raise", sets: 3, repRange: "4-6" },
+            { name: "Seated Calf Raise", sets: 3, repRange: "4-6" },
+          ]
+        },
+        {
+          dayNum: 3, name: "Shoulders & Abs", muscleGroup: "shoulders",
+          exercises: [
+            { name: "Barbell Military Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Side Lateral Raise", sets: 3, repRange: "4-6" },
+            { name: "Seated Rear Delt Raise", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 4, name: "Legs", muscleGroup: "legs",
+          exercises: [
+            { name: "Barbell Squat", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Barbell Lunge", sets: 3, repRange: "4-6" },
+            { name: "Front Squat", sets: 3, repRange: "4-6" },
+            { name: "Leg Press Calf Raise", sets: 3, repRange: "8-10" },
+            { name: "Donkey Calf Raise", sets: 3, repRange: "8-10" },
+          ]
+        },
+        {
+          dayNum: 5, name: "Upper Body & Abs", muscleGroup: "upper",
+          exercises: [
+            { name: "Incline Dumbbell Bench Press", warmup: true, sets: 3, repRange: "8-10" },
+            { name: "Alternating Dumbbell Curl", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Close-Grip Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Barbell Curl", sets: 3, repRange: "4-6" },
+            { name: "Lying Triceps Press", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+      ]
+    },
+    {
+      id: 3, label: "Phase 3", weekRange: "Weeks 19–26",
+      days: [
+        {
+          dayNum: 1, name: "Chest & Abs", muscleGroup: "chest",
+          exercises: [
+            { name: "Incline Dumbbell Bench Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Incline Barbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Flat Dumbbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Face Pull", sets: 3, repRange: "8-10" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 2, name: "Back & Calves", muscleGroup: "back",
+          exercises: [
+            { name: "Barbell Deadlift", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "T-Bar Row", sets: 3, repRange: "4-6" },
+            { name: "Seated Cable Row", sets: 3, repRange: "4-6" },
+            { name: "Chin-Up", sets: 3, repRange: "4-6", optional: true },
+            { name: "Barbell Shrug", sets: 2, repRange: "4-6", optional: true },
+            { name: "Standing Calf Raise", sets: 3, repRange: "4-6" },
+            { name: "Seated Calf Raise", sets: 3, repRange: "4-6" },
+          ]
+        },
+        {
+          dayNum: 3, name: "Shoulders & Abs", muscleGroup: "shoulders",
+          exercises: [
+            { name: "Barbell Military Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Seated Dumbbell Press", sets: 3, repRange: "4-6" },
+            { name: "Side Lateral Raise", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 4, name: "Legs", muscleGroup: "legs",
+          exercises: [
+            { name: "Barbell Squat", warmup: true, sets: 6, repRange: "4-6" },
+            { name: "Dumbbell Lunge", sets: 3, repRange: "4-6" },
+            { name: "Leg Press Calf Raise", sets: 3, repRange: "8-10" },
+            { name: "Donkey Calf Raise", sets: 3, repRange: "8-10" },
+          ]
+        },
+        {
+          dayNum: 5, name: "Upper Body & Abs", muscleGroup: "upper",
+          exercises: [
+            { name: "Flat Barbell Bench Press", warmup: true, sets: 3, repRange: "8-10" },
+            { name: "Barbell Curl", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Close-Grip Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Hammer Curl", sets: 3, repRange: "4-6" },
+            { name: "Triceps Pushdown", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+      ]
+    },
+    {
+      id: 4, label: "Phase 4", weekRange: "Weeks 28–35",
+      days: [
+        {
+          dayNum: 1, name: "Chest & Abs", muscleGroup: "chest",
+          exercises: [
+            { name: "Flat Barbell Bench Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Flat Dumbbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Incline Dumbbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Incline Barbell Bench Press", sets: 3, repRange: "4-6", optional: true },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 2, name: "Back & Calves", muscleGroup: "back",
+          exercises: [
+            { name: "Barbell Deadlift", warmup: true, sets: 6, repRange: "4-6" },
+            { name: "Barbell Row", sets: 3, repRange: "4-6" },
+            { name: "Wide-Grip Pull-Up / Chin-Up", sets: 3, repRange: "4-6", optional: true },
+            { name: "Barbell Shrug", sets: 2, repRange: "4-6", optional: true },
+            { name: "Standing Calf Raise", sets: 3, repRange: "4-6" },
+            { name: "Seated Calf Raise", sets: 3, repRange: "4-6" },
+          ]
+        },
+        {
+          dayNum: 3, name: "Shoulders & Abs", muscleGroup: "shoulders",
+          exercises: [
+            { name: "Barbell Military Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Side Lateral Raise", sets: 3, repRange: "4-6" },
+            { name: "Face Pull", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 4, name: "Legs", muscleGroup: "legs",
+          exercises: [
+            { name: "Barbell Front Squat", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Barbell Squat", sets: 3, repRange: "4-6" },
+            { name: "Lying Hamstring Curl", sets: 3, repRange: "4-6" },
+            { name: "Leg Press Calf Raise", sets: 3, repRange: "8-10" },
+            { name: "Donkey Calf Raise", sets: 3, repRange: "8-10" },
+          ]
+        },
+        {
+          dayNum: 5, name: "Upper Body & Abs", muscleGroup: "upper",
+          exercises: [
+            { name: "Incline Barbell Bench Press", warmup: true, sets: 3, repRange: "8-10" },
+            { name: "E-Z Bar Curl", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Seated Triceps Press", sets: 3, repRange: "4-6" },
+            { name: "Alternating Dumbbell Curl", sets: 3, repRange: "4-6" },
+            { name: "Dip (Triceps Version)", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+      ]
+    },
+    {
+      id: 5, label: "Phase 5", weekRange: "Weeks 37–44",
+      days: [
+        {
+          dayNum: 1, name: "Chest & Abs", muscleGroup: "chest",
+          exercises: [
+            { name: "Incline Barbell Bench Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Incline Dumbbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Flat Barbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Face Pull", sets: 3, repRange: "8-10" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 2, name: "Back & Calves", muscleGroup: "back",
+          exercises: [
+            { name: "Barbell Deadlift", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "One-Arm Dumbbell Row", sets: 3, repRange: "4-6" },
+            { name: "Seated Cable Row", sets: 3, repRange: "4-6" },
+            { name: "Chin-Up", sets: 3, repRange: "4-6", optional: true },
+            { name: "Barbell Shrug", sets: 2, repRange: "4-6", optional: true },
+            { name: "Standing Calf Raise", sets: 3, repRange: "4-6" },
+            { name: "Seated Calf Raise", sets: 3, repRange: "4-6" },
+          ]
+        },
+        {
+          dayNum: 3, name: "Shoulders & Abs", muscleGroup: "shoulders",
+          exercises: [
+            { name: "Barbell Military Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Side Lateral Raise", sets: 3, repRange: "4-6" },
+            { name: "Barbell Rear Delt Row", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 4, name: "Legs", muscleGroup: "legs",
+          exercises: [
+            { name: "Barbell Squat", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Hack Squat", sets: 3, repRange: "4-6" },
+            { name: "Romanian Deadlift", sets: 3, repRange: "4-6" },
+            { name: "Leg Press Calf Raise", sets: 3, repRange: "8-10" },
+            { name: "Donkey Calf Raise", sets: 3, repRange: "8-10" },
+          ]
+        },
+        {
+          dayNum: 5, name: "Upper Body & Abs", muscleGroup: "upper",
+          exercises: [
+            { name: "Incline Barbell Bench Press", warmup: true, sets: 3, repRange: "8-10" },
+            { name: "Barbell Curl", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Close-Grip Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Chin-Up", sets: 3, repRange: "4-6" },
+            { name: "Seated Triceps Press", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+      ]
+    },
+    {
+      id: 6, label: "Phase 6", weekRange: "Weeks 46–53",
+      days: [
+        {
+          dayNum: 1, name: "Chest & Abs", muscleGroup: "chest",
+          exercises: [
+            { name: "Flat Barbell Bench Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Incline Barbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Flat Dumbbell Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Dip (Chest Version)", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 2, name: "Back & Calves", muscleGroup: "back",
+          exercises: [
+            { name: "Barbell Deadlift", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Wide-Grip Pull-Up", sets: 3, repRange: "4-6" },
+            { name: "Barbell Row", sets: 3, repRange: "4-6" },
+            { name: "Close-Grip Lat Pulldown", sets: 3, repRange: "4-6", optional: true },
+            { name: "Barbell Shrug", sets: 2, repRange: "4-6", optional: true },
+            { name: "Standing Calf Raise", sets: 3, repRange: "4-6" },
+            { name: "Seated Calf Raise", sets: 3, repRange: "4-6" },
+          ]
+        },
+        {
+          dayNum: 3, name: "Shoulders & Abs", muscleGroup: "shoulders",
+          exercises: [
+            { name: "Barbell Military Press", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Side Lateral Raise", sets: 3, repRange: "4-6" },
+            { name: "Face Pull", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+        {
+          dayNum: 4, name: "Legs", muscleGroup: "legs",
+          exercises: [
+            { name: "Barbell Front Squat", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Barbell Squat", sets: 3, repRange: "4-6" },
+            { name: "Barbell Lunge", sets: 3, repRange: "4-6" },
+            { name: "Leg Press Calf Raise", sets: 3, repRange: "8-10" },
+            { name: "Donkey Calf Raise", sets: 3, repRange: "8-10" },
+          ]
+        },
+        {
+          dayNum: 5, name: "Upper Body & Abs", muscleGroup: "upper",
+          exercises: [
+            { name: "Incline Dumbbell Bench Press", warmup: true, sets: 3, repRange: "8-10" },
+            { name: "Alternating Dumbbell Curl", warmup: true, sets: 3, repRange: "4-6" },
+            { name: "Close-Grip Bench Press", sets: 3, repRange: "4-6" },
+            { name: "Hammer Curl", sets: 3, repRange: "4-6" },
+            { name: "Triceps Pushdown", sets: 3, repRange: "4-6" },
+            { name: "Ab Circuit", sets: 3, repRange: "circuit", isAbs: true },
+          ]
+        },
+      ]
+    },
+  ]
+};
+
+// Utility: get warmup sets given working weight
+window.getWarmupSets = function(workingWeight) {
+  const w = parseFloat(workingWeight) || 0;
+  return [
+    { label: "Set 1", pct: 0.50, reps: 12, rest: "1 min" },
+    { label: "Set 2", pct: 0.50, reps: 10, rest: "1 min" },
+    { label: "Set 3", pct: 0.70, reps: 4,  rest: "1 min" },
+    { label: "Set 4", pct: 0.90, reps: 1,  rest: "2–3 min" },
+  ].map(s => ({ ...s, weight: Math.round(w * s.pct / 5) * 5 }));
+};

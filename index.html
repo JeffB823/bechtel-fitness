@@ -237,11 +237,11 @@ window.WORKOUT_DATA = {
         { dayNum:2, name:"Back & Calves", muscleGroup:"back", exercises:[
             {name:"Barbell Deadlift",warmup:true,sets:3,repRange:"4-6"},
             {name:"Barbell Row",sets:3,repRange:"4-6"},
-            {name:"Wide-Grip Pull-Up / Chin-Up",sets:3,repRange:"4-6"},
+            {name:"Wide-Grip Pull-Up / Chin-Up",sets:3,repRange:"4-6",bodyweight:true},
             {name:"Close-Grip Lat Pulldown",sets:3,repRange:"4-6",optional:true},
             {name:"Barbell Shrug",sets:2,repRange:"4-6",optional:true},
             {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
-            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"4-6"}]},
         { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
             {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
             {name:"Side Lateral Raise",sets:3,repRange:"4-6"},
@@ -249,16 +249,16 @@ window.WORKOUT_DATA = {
             {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
         { dayNum:4, name:"Legs", muscleGroup:"legs", exercises:[
             {name:"Barbell Squat",warmup:true,sets:3,repRange:"4-6"},
-            {name:"Leg Press",sets:3,repRange:"4-6"},
+            {name:"Dumbbell Bulgarian Split Squat",sets:3,repRange:"4-6"},
             {name:"Romanian Deadlift",sets:3,repRange:"4-6"},
-            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
-            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+            {name:"Standing Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"8-10"}]},
         { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
             {name:"Incline Barbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
             {name:"Barbell Curl",warmup:true,sets:3,repRange:"4-6"},
             {name:"Close-Grip Bench Press",sets:3,repRange:"4-6"},
             {name:"Alternating Dumbbell Curl",sets:3,repRange:"4-6"},
-            {name:"Seated Triceps Press",sets:3,repRange:"4-6"},
+            {name:"Overhead Dumbbell Triceps Extension",sets:3,repRange:"4-6"},
             {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]}
       ]
     },
@@ -278,7 +278,7 @@ window.WORKOUT_DATA = {
             {name:"Seated Cable Row",sets:3,repRange:"4-6",optional:true},
             {name:"Barbell Shrug",sets:2,repRange:"4-6",optional:true},
             {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
-            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"4-6"}]},
         { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
             {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
             {name:"Side Lateral Raise",sets:3,repRange:"4-6"},
@@ -288,8 +288,8 @@ window.WORKOUT_DATA = {
             {name:"Barbell Squat",warmup:true,sets:3,repRange:"4-6"},
             {name:"Barbell Lunge",sets:3,repRange:"4-6"},
             {name:"Front Squat",sets:3,repRange:"4-6"},
-            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
-            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+            {name:"Standing Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"8-10"}]},
         { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
             {name:"Incline Dumbbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
             {name:"Alternating Dumbbell Curl",warmup:true,sets:3,repRange:"4-6"},
@@ -310,12 +310,12 @@ window.WORKOUT_DATA = {
             {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
         { dayNum:2, name:"Back & Calves", muscleGroup:"back", exercises:[
             {name:"Barbell Deadlift",warmup:true,sets:3,repRange:"4-6"},
-            {name:"T-Bar Row",sets:3,repRange:"4-6"},
+            {name:"Chest-Supported Dumbbell Row",sets:3,repRange:"4-6"},
             {name:"Seated Cable Row",sets:3,repRange:"4-6"},
-            {name:"Chin-Up",sets:3,repRange:"4-6",optional:true},
+            {name:"Chin-Up",sets:3,repRange:"4-6",optional:true,bodyweight:true},
             {name:"Barbell Shrug",sets:2,repRange:"4-6",optional:true},
             {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
-            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"4-6"}]},
         { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
             {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
             {name:"Seated Dumbbell Press",sets:3,repRange:"4-6"},
@@ -324,8 +324,8 @@ window.WORKOUT_DATA = {
         { dayNum:4, name:"Legs", muscleGroup:"legs", exercises:[
             {name:"Barbell Squat",warmup:true,sets:6,repRange:"4-6"},
             {name:"Dumbbell Lunge",sets:3,repRange:"4-6"},
-            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
-            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+            {name:"Standing Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"8-10"}]},
         { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
             {name:"Flat Barbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
             {name:"Barbell Curl",warmup:true,sets:3,repRange:"4-6"},
@@ -347,10 +347,10 @@ window.WORKOUT_DATA = {
         { dayNum:2, name:"Back & Calves", muscleGroup:"back", exercises:[
             {name:"Barbell Deadlift",warmup:true,sets:6,repRange:"4-6"},
             {name:"Barbell Row",sets:3,repRange:"4-6"},
-            {name:"Wide-Grip Pull-Up / Chin-Up",sets:3,repRange:"4-6",optional:true},
+            {name:"Wide-Grip Pull-Up / Chin-Up",sets:3,repRange:"4-6",optional:true,bodyweight:true},
             {name:"Barbell Shrug",sets:2,repRange:"4-6",optional:true},
             {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
-            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"4-6"}]},
         { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
             {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
             {name:"Side Lateral Raise",sets:3,repRange:"4-6"},
@@ -359,15 +359,15 @@ window.WORKOUT_DATA = {
         { dayNum:4, name:"Legs", muscleGroup:"legs", exercises:[
             {name:"Barbell Front Squat",warmup:true,sets:3,repRange:"4-6"},
             {name:"Barbell Squat",sets:3,repRange:"4-6"},
-            {name:"Lying Hamstring Curl",sets:3,repRange:"4-6"},
-            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
-            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+            {name:"Standing Cable Leg Curl",sets:3,repRange:"4-6"},
+            {name:"Standing Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"8-10"}]},
         { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
             {name:"Incline Barbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
-            {name:"E-Z Bar Curl",warmup:true,sets:3,repRange:"4-6"},
-            {name:"Seated Triceps Press",sets:3,repRange:"4-6"},
+            {name:"Barbell Curl",warmup:true,sets:3,repRange:"4-6"},
+            {name:"Overhead Dumbbell Triceps Extension",sets:3,repRange:"4-6"},
             {name:"Alternating Dumbbell Curl",sets:3,repRange:"4-6"},
-            {name:"Dip (Triceps Version)",sets:3,repRange:"4-6"},
+            {name:"Overhead Cable Triceps Extension",sets:3,repRange:"4-6"},
             {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]}
       ]
     },
@@ -384,9 +384,9 @@ window.WORKOUT_DATA = {
             {name:"Barbell Deadlift",warmup:true,sets:3,repRange:"4-6"},
             {name:"One-Arm Dumbbell Row",sets:3,repRange:"4-6"},
             {name:"Seated Cable Row",sets:3,repRange:"4-6"},
-            {name:"Chin-Up",sets:3,repRange:"4-6",optional:true},
+            {name:"Chin-Up",sets:3,repRange:"4-6",optional:true,bodyweight:true},
             {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
-            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"4-6"}]},
         { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
             {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
             {name:"Side Lateral Raise",sets:3,repRange:"4-6"},
@@ -394,16 +394,16 @@ window.WORKOUT_DATA = {
             {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
         { dayNum:4, name:"Legs", muscleGroup:"legs", exercises:[
             {name:"Barbell Squat",warmup:true,sets:3,repRange:"4-6"},
-            {name:"Hack Squat",sets:3,repRange:"4-6"},
+            {name:"Dumbbell Bulgarian Split Squat",sets:3,repRange:"4-6"},
             {name:"Romanian Deadlift",sets:3,repRange:"4-6"},
-            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
-            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+            {name:"Standing Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"8-10"}]},
         { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
             {name:"Incline Barbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
             {name:"Barbell Curl",warmup:true,sets:3,repRange:"4-6"},
             {name:"Close-Grip Bench Press",sets:3,repRange:"4-6"},
-            {name:"Chin-Up",sets:3,repRange:"4-6"},
-            {name:"Seated Triceps Press",sets:3,repRange:"4-6"},
+            {name:"Chin-Up",sets:3,repRange:"4-6",bodyweight:true},
+            {name:"Overhead Dumbbell Triceps Extension",sets:3,repRange:"4-6"},
             {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]}
       ]
     },
@@ -414,15 +414,15 @@ window.WORKOUT_DATA = {
             {name:"Flat Barbell Bench Press",warmup:true,sets:3,repRange:"4-6"},
             {name:"Incline Barbell Bench Press",sets:3,repRange:"4-6"},
             {name:"Flat Dumbbell Bench Press",sets:3,repRange:"4-6"},
-            {name:"Dip (Chest Version)",sets:3,repRange:"4-6"},
+            {name:"Standing Cable Chest Press",sets:3,repRange:"4-6"},
             {name:"Ab Circuit",sets:3,repRange:"circuit",isAbs:true}]},
         { dayNum:2, name:"Back & Calves", muscleGroup:"back", exercises:[
             {name:"Barbell Deadlift",warmup:true,sets:3,repRange:"4-6"},
-            {name:"Wide-Grip Pull-Up",sets:3,repRange:"4-6"},
+            {name:"Wide-Grip Pull-Up",sets:3,repRange:"4-6",bodyweight:true},
             {name:"Barbell Row",sets:3,repRange:"4-6"},
             {name:"Close-Grip Lat Pulldown",sets:3,repRange:"4-6",optional:true},
             {name:"Standing Calf Raise",sets:3,repRange:"4-6"},
-            {name:"Seated Calf Raise",sets:3,repRange:"4-6"}]},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"4-6"}]},
         { dayNum:3, name:"Shoulders & Abs", muscleGroup:"shoulders", exercises:[
             {name:"Barbell Military Press",warmup:true,sets:3,repRange:"4-6"},
             {name:"Side Lateral Raise",sets:3,repRange:"4-6"},
@@ -432,8 +432,8 @@ window.WORKOUT_DATA = {
             {name:"Barbell Front Squat",warmup:true,sets:3,repRange:"4-6"},
             {name:"Barbell Squat",sets:3,repRange:"4-6"},
             {name:"Barbell Lunge",sets:3,repRange:"4-6"},
-            {name:"Leg Press Calf Raise",sets:3,repRange:"8-10"},
-            {name:"Donkey Calf Raise",sets:3,repRange:"8-10"}]},
+            {name:"Standing Calf Raise",sets:3,repRange:"8-10"},
+            {name:"Seated Dumbbell Calf Raise",sets:3,repRange:"8-10"}]},
         { dayNum:5, name:"Upper Body & Abs", muscleGroup:"upper", exercises:[
             {name:"Incline Dumbbell Bench Press",warmup:true,sets:3,repRange:"8-10"},
             {name:"Alternating Dumbbell Curl",warmup:true,sets:3,repRange:"4-6"},
@@ -467,7 +467,69 @@ const S = {
   get:(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch{return d;}},
   set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
 };
-const todayStr=()=>new Date().toISOString().slice(0,10);
+const pad2=n=>String(n).padStart(2,'0');
+const dateKey=d=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+const todayStr=()=>dateKey(new Date());
+const parseDateInput=s=>{
+  if(!s)return new Date();
+  const [y,m,d]=String(s).split('-').map(Number);
+  return y&&m&&d?new Date(y,m-1,d):new Date(s);
+};
+const asDayLogs=day=>Array.isArray(day)?day:day?[day]:[];
+const normalizeLogs=raw=>{
+  if(!raw||typeof raw!=='object')return{};
+  return Object.entries(raw).reduce((acc,[date,val])=>{
+    acc[date]=asDayLogs(val).filter(Boolean).map((entry,idx)=>({
+      ...entry,
+      completedAt:entry.completedAt||`${date}T00:00:00`,
+      sessionId:entry.sessionId||`${date}-${idx+1}`
+    }));
+    return acc;
+  },{});
+};
+const flattenLogs=logs=>Object.entries(logs).flatMap(([date,val])=>
+  asDayLogs(val).map((entry,idx)=>({
+    ...entry,
+    date,
+    sessionIndex:idx,
+    completedAt:entry.completedAt||`${date}T00:00:00`
+  }))
+);
+const sortSessionsDesc=(a,b)=>{
+  const cmp=(b.completedAt||b.date).localeCompare(a.completedAt||a.date);
+  if(cmp!==0)return cmp;
+  return (b.sessionIndex||0)-(a.sessionIndex||0);
+};
+const estimate1RM=(weight,reps)=>{
+  const w=parseFloat(weight)||0;
+  const r=parseInt(reps,10)||0;
+  return w>0&&r>0?Math.round(w*(1+r/30)):0;
+};
+const getSetVolume=s=>((parseFloat(s.weight)||0)*(parseInt(s.reps,10)||0));
+const getBestSet=sets=>(sets||[]).reduce((best,s)=>{
+  const weight=parseFloat(s.weight)||0;
+  const reps=parseInt(s.reps,10)||0;
+  const volume=weight*reps;
+  const e1rm=estimate1RM(weight,reps);
+  if(!reps&&!weight)return best;
+  const next={weight,reps,volume,e1rm};
+  if(!best)return next;
+  if(next.e1rm!==best.e1rm)return next.e1rm>best.e1rm?next:best;
+  if(next.weight!==best.weight)return next.weight>best.weight?next:best;
+  if(next.reps!==best.reps)return next.reps>best.reps?next:best;
+  return next.volume>best.volume?next:best;
+},null);
+const formatBestSet=set=>{
+  if(!set)return'—';
+  if(set.weight>0)return`${set.weight}x${set.reps}`;
+  return`${set.reps} reps`;
+};
+const getMetricMeta=set=>{
+  if(!set)return{metricValue:null,metricLabel:'Metric'};
+  if(set.e1rm>0)return{metricValue:set.e1rm,metricLabel:'EST 1RM'};
+  if(set.weight>0)return{metricValue:set.weight,metricLabel:'TOP LOAD'};
+  return{metricValue:set.reps||null,metricLabel:'TOP REPS'};
+};
 const vibrate=(p=30)=>{try{navigator.vibrate&&navigator.vibrate(p);}catch{}};
 
 function playBeep(type) {
@@ -500,44 +562,87 @@ function getGreeting(){
 
 function useStore(){
   const [settings,_ss]=useState(()=>S.get('bf5_s',{startDate:todayStr(),currentPhase:1,currentDayIndex:0}));
-  const [logs,_sl]=useState(()=>S.get('bf5_l',{}));
+  const [logs,_sl]=useState(()=>normalizeLogs(S.get('bf5_l',{})));
   const setSettings=u=>{const n=typeof u==='function'?u(settings):{...settings,...u};_ss(n);S.set('bf5_s',n);};
-  const setLogs=u=>{const n=typeof u==='function'?u(logs):u;_sl(n);S.set('bf5_l',n);};
+  const setLogs=u=>{
+    const raw=typeof u==='function'?u(logs):u;
+    const n=normalizeLogs(raw);
+    _sl(n);
+    S.set('bf5_l',n);
+  };
+  const sessions=useMemo(()=>flattenLogs(logs).sort(sortSessionsDesc),[logs]);
 
   const getLastSession=useCallback(name=>{
-    const e=Object.entries(logs).sort((a,b)=>b[0].localeCompare(a[0]));
-    for(const[,l]of e){const ex=l.exercises?.find(e=>e.name===name);if(ex?.sets?.length)return ex.sets;}
+    for(const l of sessions){
+      const ex=l.exercises?.find(e=>e.name===name);
+      if(ex?.sets?.length)return ex.sets;
+    }
     return null;
-  },[logs]);
+  },[sessions]);
 
   const getLastWeight=useCallback(name=>{
     return getLastSession(name)?.find(s=>s.weight>0)?.weight||null;
   },[getLastSession]);
 
-  const getPR=useCallback(name=>{
-    let max=0;
-    for(const l of Object.values(logs)){
+  const getExerciseStats=useCallback(name=>{
+    let bestWeight=0,bestE1RM=0,bestVolume=0,sessionCount=0,bestSet=null;
+    sessions.forEach(l=>{
       const ex=l.exercises?.find(e=>e.name===name);
-      if(ex?.sets)ex.sets.forEach(s=>{if(s.weight>max)max=s.weight;});
-    }
-    return max||null;
-  },[logs]);
+      if(!ex?.sets?.length)return;
+      sessionCount++;
+      const sessionBest=getBestSet(ex.sets);
+      if(sessionBest){
+        if(!bestSet
+          || sessionBest.e1rm>bestSet.e1rm
+          || (sessionBest.e1rm===bestSet.e1rm&&sessionBest.weight>bestSet.weight)
+          || (sessionBest.e1rm===bestSet.e1rm&&sessionBest.weight===bestSet.weight&&sessionBest.reps>bestSet.reps)
+        )bestSet=sessionBest;
+        bestWeight=Math.max(bestWeight,...ex.sets.map(s=>parseFloat(s.weight)||0));
+        bestE1RM=Math.max(bestE1RM,...ex.sets.map(s=>estimate1RM(s.weight,s.reps)));
+        bestVolume=Math.max(bestVolume,...ex.sets.map(getSetVolume));
+      }
+    });
+    if(!sessionCount)return null;
+    return{
+      bestWeight:bestWeight||null,
+      bestE1RM:bestE1RM||null,
+      bestVolume:bestVolume||null,
+      bestSet,
+      ...getMetricMeta(bestSet),
+      bestSetLabel:formatBestSet(bestSet),
+      sessionCount
+    };
+  },[sessions]);
+
+  const getPR=useCallback(name=>{
+    return getExerciseStats(name)?.bestWeight||null;
+  },[getExerciseStats]);
 
   const getHistory=useCallback(name=>{
-    return Object.entries(logs)
-      .filter(([,l])=>l.exercises?.some(e=>e.name===name))
-      .map(([date,l])=>{
-        const ex=l.exercises.find(e=>e.name===name);
-        const w=ex?.sets?Math.max(0,...ex.sets.map(s=>s.weight||0)):0;
-        return {date,weight:w};
-      }).sort((a,b)=>a.date.localeCompare(b.date));
-  },[logs]);
+    const filtered=[...sessions].reverse().filter(l=>l.exercises?.some(e=>e.name===name));
+    const perDate=filtered.reduce((acc,l)=>({...acc,[l.date]:(acc[l.date]||0)+1}),{});
+    const seen={};
+    return filtered.map(l=>{
+      const ex=l.exercises.find(e=>e.name===name);
+      const best=getBestSet(ex?.sets||[]);
+      seen[l.date]=(seen[l.date]||0)+1;
+      return{
+        date:l.date,
+        label:perDate[l.date]>1?`${l.date.slice(5)} #${seen[l.date]}`:l.date.slice(5),
+        weight:best?.weight||0,
+        reps:best?.reps||0,
+        e1rm:best?.e1rm||0,
+        metric:best?.e1rm||best?.weight||best?.reps||0,
+        volume:best?.volume||0
+      };
+    });
+  },[sessions]);
 
   const getStreak=useCallback(()=>{
     let streak=0,d=new Date();d.setHours(0,0,0,0);
     for(let i=0;i<60;i++){
-      const k=d.toISOString().slice(0,10);
-      if(logs[k]){streak++;}else if(i>0)break;
+      const k=dateKey(d);
+      if(asDayLogs(logs[k]).length){streak++;}else if(i>0)break;
       d.setDate(d.getDate()-1);
     }
     return streak;
@@ -549,8 +654,8 @@ function useStore(){
     const dow=today.getDay();
     return Array(7).fill(null).map((_,i)=>{
       const d=new Date(today);d.setDate(today.getDate()-dow+i);
-      const k=d.toISOString().slice(0,10);
-      return {label:lbl[d.getDay()],key:k,logged:!!logs[k],isToday:k===todayStr()};
+      const k=dateKey(d);
+      return {label:lbl[d.getDay()],key:k,logged:asDayLogs(logs[k]).length>0,isToday:k===todayStr()};
     });
   },[logs]);
 
@@ -559,28 +664,38 @@ function useStore(){
     const dow=today.getDay();
     return Array(7).fill(null).map((_,i)=>{
       const d=new Date(today);d.setDate(today.getDate()-dow+i);
-      const k=d.toISOString().slice(0,10);
-      const log=logs[k];
-      if(!log)return 0;
-      return log.exercises?.reduce((a,ex)=>a+(ex.sets?.reduce((b,s)=>b+(s.weight||0)*(s.reps||0),0)||0),0)||0;
+      const k=dateKey(d);
+      const dayLogs=asDayLogs(logs[k]);
+      if(!dayLogs.length)return 0;
+      return dayLogs.reduce((sum,log)=>
+        sum+(log.exercises?.reduce((a,ex)=>a+(ex.sets?.reduce((b,s)=>b+getSetVolume(s),0)||0),0)||0)
+      ,0);
     });
   },[logs]);
 
   const getAllPRs=useCallback(()=>{
     const prs={};
-    for(const l of Object.values(logs)){
+    for(const l of sessions){
       l.exercises?.forEach(ex=>{
-        if(!prs[ex.name])prs[ex.name]=0;
-        ex.sets?.forEach(s=>{if(s.weight>prs[ex.name])prs[ex.name]=s.weight;});
+        const best=getBestSet(ex.sets||[]);
+        if(!best)return;
+        if(!prs[ex.name]
+          || best.e1rm>prs[ex.name].e1rm
+          || (best.e1rm===prs[ex.name].e1rm&&best.weight>prs[ex.name].weight)
+          || (best.e1rm===prs[ex.name].e1rm&&best.weight===prs[ex.name].weight&&best.reps>prs[ex.name].reps)
+        )prs[ex.name]=best;
       });
     }
-    return Object.entries(prs).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
-  },[logs]);
+    return Object.entries(prs)
+      .map(([name,best])=>({name,...best,bestSetLabel:formatBestSet(best),...getMetricMeta(best)}))
+      .filter(pr=>pr.weight>0||pr.reps>0)
+      .sort((a,b)=>b.e1rm-a.e1rm||b.weight-a.weight);
+  },[sessions]);
 
-  return{settings,setSettings,logs,setLogs,getLastSession,getLastWeight,getPR,getHistory,getStreak,getWeekDays,getWeeklyVolume,getAllPRs};
+  return{settings,setSettings,logs,setLogs,sessions,getLastSession,getLastWeight,getExerciseStats,getPR,getHistory,getStreak,getWeekDays,getWeeklyVolume,getAllPRs};
 }
 
-Object.assign(window,{useStore,playBeep,vibrate,S,todayStr,getGreeting});
+Object.assign(window,{useStore,playBeep,vibrate,S,todayStr,getGreeting,estimate1RM,getBestSet,formatBestSet});
 </script>
 
 <!-- ─── Logo + Nav ─── -->
@@ -750,7 +865,7 @@ Object.assign(window,{TimerOverlay,MiniTimer,WarmupSheet});
 <!-- ─── Home Screen ─── -->
 <script type="text/babel">
 function HomeScreen({store,setScreen}){
-  const {settings,setSettings,logs,getStreak,getWeekDays,getWeeklyVolume,getAllPRs}=store;
+  const {settings,setSettings,sessions,getStreak,getWeekDays,getWeeklyVolume,getAllPRs}=store;
   const phase=WORKOUT_DATA.phases.find(p=>p.id===settings.currentPhase)||WORKOUT_DATA.phases[0];
   const dayData=phase.days[settings.currentDayIndex];
   const [showCfg,setShowCfg]=useState(false);
@@ -759,8 +874,8 @@ function HomeScreen({store,setScreen}){
   const weekVol=getWeeklyVolume();
   const totalVol=weekVol.reduce((a,v)=>a+v,0);
   const prs=getAllPRs().slice(0,5);
-  const totalWorkouts=Object.keys(logs).length;
-  const startDate=new Date(settings.startDate);
+  const totalWorkouts=sessions.length;
+  const startDate=parseDateInput(settings.startDate);
   const weekNum=Math.max(1,Math.floor((Date.now()-startDate.getTime())/604800000)+1);
   const phaseWeek=Math.max(1,weekNum-(settings.currentPhase-1)*9);
   const phasePct=Math.min(100,Math.round((Math.min(phaseWeek,8)/8)*100));
@@ -872,11 +987,16 @@ function HomeScreen({store,setScreen}){
         {prs.length>0&&(
           <div className="card" style={{padding:'14px 16px',marginBottom:12}}>
             <div className="sec">Personal Records</div>
-            {prs.map(([name,weight],i)=>(
+            {prs.map((pr,i)=>(
               <div key={i} className="pr-row">
-                <div style={{flex:1,fontSize:13,color:'var(--t1)',fontWeight:500}}>{name}</div>
-                <div style={{fontSize:20,fontWeight:800,color:'var(--acc)',fontVariantNumeric:'tabular-nums'}}>{weight}</div>
-                <div style={{fontSize:11,color:'var(--t3)',marginLeft:4,marginTop:3}}>lbs</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:13,color:'var(--t1)',fontWeight:500}}>{pr.name}</div>
+                  <div style={{fontSize:11,color:'var(--t3)',marginTop:2}}>Best set {pr.bestSetLabel}</div>
+                </div>
+                <div style={{textAlign:'right'}}>
+                  <div style={{fontSize:20,fontWeight:800,color:'var(--acc)',fontVariantNumeric:'tabular-nums'}}>{pr.metricValue||'—'}</div>
+                  <div style={{fontSize:11,color:'var(--t3)',marginTop:3}}>{pr.metricLabel}</div>
+                </div>
               </div>
             ))}
           </div>
@@ -951,28 +1071,31 @@ Object.assign(window,{HomeScreen});
 
 <!-- ─── Workout Screen ─── -->
 <script type="text/babel">
-function SetRow({setNum,prev,data,onUpdate,onComplete,isNext}){
+function SetRow({setNum,prev,data,onUpdate,onComplete,isNext,canComplete,bodyweight}){
   const done=data.done;
+  const prevWeight=prev
+    ?((parseFloat(prev.weight)||0)>0?prev.weight:bodyweight?'BW':'—')
+    :'—';
   return(
     <div className={'srow'+(done?' done':isNext?' active-row':'')}>
       <div className="snum">{setNum}</div>
       <div className="sprev">
         {prev
-          ?<><div className="sprev-w">{prev.weight}</div><div className="sprev-r">x{prev.reps}</div></>
+          ?<><div className="sprev-w">{prevWeight}</div><div className="sprev-r">x{prev.reps}</div></>
           :<div className="sprev-w" style={{fontSize:11}}>—</div>}
       </div>
       <input className={'sinput'+(isNext?' ai':'')} type="number" inputMode="decimal"
         value={data.weight} disabled={done}
-        onChange={e=>onUpdate('weight',e.target.value)} placeholder="—"/>
+        onChange={e=>onUpdate('weight',e.target.value)} placeholder={bodyweight?'BW+':'—'}/>
       <input className={'sinput'+(isNext?' ai':'')} type="number" inputMode="numeric"
         value={data.reps} disabled={done}
         onChange={e=>onUpdate('reps',e.target.value)} placeholder="—"/>
       <button className={'ck'+(done?' done':isNext?' ready':'')}
-        disabled={!isNext&&!done}
-        onClick={()=>{if(isNext&&!done){vibrate(35);onComplete();}}}>
+        disabled={done?false:!isNext||!canComplete}
+        onClick={()=>{if(isNext&&!done&&canComplete){vibrate(35);onComplete();}}}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
           stroke={done?'white':'currentColor'} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
-          style={{opacity:done?1:isNext?.55:.1,color:'var(--t2)'}}>
+          style={{opacity:done?1:(isNext ? .55 : .1),color:'var(--t2)'}}>
           <polyline points="20 6 9 17 4 12"/>
         </svg>
       </button>
@@ -980,7 +1103,7 @@ function SetRow({setNum,prev,data,onUpdate,onComplete,isNext}){
   );
 }
 
-function ExCard({exercise,exSets,onUpdateSet,onCompleteSet,lastSession,pr,workoutStarted,expanded,onToggle}){
+function ExCard({exercise,exSets,onUpdateSet,onCompleteSet,lastSession,stats,workoutStarted,expanded,onToggle}){
   const [showWU,setShowWU]=useState(false);
   const doneCount=exSets.filter(s=>s.done).length;
   const allDone=doneCount===exSets.length&&exSets.length>0;
@@ -1027,13 +1150,17 @@ function ExCard({exercise,exSets,onUpdateSet,onCompleteSet,lastSession,pr,workou
   return(
     <div className={'excard'+(allDone?' ex-done':expanded&&workoutStarted?' ex-on':'')} style={{marginBottom:10}}>
       <div className="exhdr" onClick={onToggle}>
-        <div style={{flex:1,minWidth:0}}>
-          <div style={{display:'flex',alignItems:'center',gap:7}}>
-            <div className="exname">{exercise.name}</div>
-            {exercise.optional&&<span style={{fontSize:9,fontWeight:700,color:'var(--t3)',letterSpacing:'.05em'}}>OPT</span>}
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{display:'flex',alignItems:'center',gap:7}}>
+              <div className="exname">{exercise.name}</div>
+              {exercise.optional&&<span style={{fontSize:9,fontWeight:700,color:'var(--t3)',letterSpacing:'.05em'}}>OPT</span>}
+            </div>
+            <div className="exmeta">
+              {exercise.sets}x{exercise.repRange}
+              {stats?.bestSetLabel&&stats.bestSetLabel!=='—'&&` · Best ${stats.bestSetLabel}`}
+              {stats?.bestE1RM&&` · e1RM ${stats.bestE1RM}`}
+            </div>
           </div>
-          <div className="exmeta">{exercise.sets}x{exercise.repRange}{pr?' · PR '+pr+' lbs':''}</div>
-        </div>
         <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
           {allDone?(
             <div style={{width:22,height:22,borderRadius:'50%',background:'var(--grn)',display:'flex',alignItems:'center',justifyContent:'center'}}>
@@ -1067,7 +1194,9 @@ function ExCard({exercise,exSets,onUpdateSet,onCompleteSet,lastSession,pr,workou
                 data={s}
                 onUpdate={(f,v)=>onUpdateSet(i,f,v)}
                 onComplete={()=>onCompleteSet(i)}
-                isNext={workoutStarted&&!s.done&&i===nextIdx}/>
+                isNext={workoutStarted&&!s.done&&i===nextIdx}
+                canComplete={window.canLogSet(exercise,s)}
+                bodyweight={!!exercise.bodyweight}/>
             ))}
           </div>
           {workoutStarted&&!allDone&&(
@@ -1098,8 +1227,33 @@ function useElapsed(running){
   return t;
 }
 
+const PRIMARY_REST_EXERCISES=new Set([
+  'Barbell Deadlift',
+  'Barbell Squat',
+  'Barbell Front Squat',
+  'Romanian Deadlift',
+  'Flat Barbell Bench Press',
+  'Incline Barbell Bench Press',
+  'Barbell Military Press',
+  'Close-Grip Bench Press'
+]);
+window.canLogSet=function(exercise,set){
+  if(exercise.isAbs)return true;
+  const reps=parseInt(set.reps,10)||0;
+  const weight=parseFloat(set.weight)||0;
+  if(reps<=0)return false;
+  return exercise.bodyweight?true:weight>0;
+};
+window.getRestSeconds=function(exercise){
+  if(exercise.isAbs)return 60;
+  if(PRIMARY_REST_EXERCISES.has(exercise.name))return 210;
+  if(exercise.repRange==='8-10')return 90;
+  if(exercise.optional||exercise.bodyweight)return 105;
+  return 120;
+};
+
 function WorkoutScreen({store}){
-  const {settings,setSettings,setLogs,getLastSession,getLastWeight,getPR}=store;
+  const {settings,setSettings,setLogs,getLastSession,getLastWeight,getExerciseStats}=store;
   const phase=WORKOUT_DATA.phases.find(p=>p.id===settings.currentPhase)||WORKOUT_DATA.phases[0];
   const dayData=phase.days[settings.currentDayIndex];
   const [started,setStarted]=useState(false);
@@ -1107,6 +1261,7 @@ function WorkoutScreen({store}){
   const [sets,setSets]=useState({});
   const [timer,setTimer]=useState(null);
   const [expanded,setExpanded]=useState({});
+  const [sessionNote,setSessionNote]=useState('');
   const timerRef=useRef();
   const elapsed=useElapsed(started&&!done);
   const em=Math.floor(elapsed/60),es=elapsed%60;
@@ -1118,7 +1273,7 @@ function WorkoutScreen({store}){
       else{const lw=getLastWeight(ex.name)||'';init[ex.name]=Array(ex.sets).fill(null).map(()=>({weight:lw,reps:'',done:false}));}
       exp[i]=i===0;
     });
-    setSets(init);setExpanded(exp);setStarted(false);setDone(false);setTimer(null);
+    setSets(init);setExpanded(exp);setStarted(false);setDone(false);setTimer(null);setSessionNote('');
   },[settings.currentDayIndex,settings.currentPhase]);
 
   useEffect(()=>{
@@ -1152,7 +1307,7 @@ function WorkoutScreen({store}){
       return n;
     });
     const ex=dayData.exercises.find(e=>e.name===exName);
-    const dur=ex?.repRange==='8-10'?90:180;
+    const dur=window.getRestSeconds(ex||{});
     clearInterval(timerRef.current);
     setTimer({dur,rem:dur,full:false,label:exName});
     // Auto-collapse done exercise, expand next
@@ -1172,31 +1327,47 @@ function WorkoutScreen({store}){
     const totalVol=Object.values(sets).reduce((a,ss)=>
       a+ss.filter(s=>s.done).reduce((b,s)=>b+(parseFloat(s.weight)||0)*(parseInt(s.reps)||0),0),0);
     const prHit=dayData.exercises.filter(ex=>{
-      const pr=getPR(ex.name);
-      return pr&&(sets[ex.name]||[]).some(s=>s.done&&parseFloat(s.weight)>pr);
+      const prev=getExerciseStats(ex.name);
+      const currentBest=getBestSet((sets[ex.name]||[]).filter(s=>s.done));
+      if(!currentBest)return false;
+      return currentBest.e1rm>(prev?.bestE1RM||0)
+        || currentBest.weight>(prev?.bestWeight||0)
+        || currentBest.volume>(prev?.bestVolume||0);
     }).map(e=>e.name);
+    const completedAt=new Date().toISOString();
+    const nextDayIndex=(settings.currentDayIndex+1)%phase.days.length;
     const entry={
+      completedAt,
+      sessionId:`${todayStr()}-${Date.now()}`,
       phase:settings.currentPhase,dayNum:dayData.dayNum,dayName:dayData.name,
       duration:elapsed,volume:totalVol,prsHit:prHit,
+      notes:sessionNote.trim(),
       exercises:dayData.exercises.map(ex=>({
         name:ex.name,
+        bodyweight:!!ex.bodyweight,
         sets:(sets[ex.name]||[]).filter(s=>s.done).map(s=>({weight:parseFloat(s.weight)||0,reps:parseInt(s.reps)||0}))
       }))
     };
-    setLogs(p=>({...p,[todayStr()]:entry}));
-    setSettings({currentDayIndex:(settings.currentDayIndex+1)%5});
-    setDone({elapsed,totalVol,prHit});
+    setLogs(p=>{
+      const key=todayStr();
+      const dayLogs=asDayLogs(p[key]);
+      return {...p,[key]:[...dayLogs,entry]};
+    });
+    setSettings({currentDayIndex:nextDayIndex});
+    setDone({elapsed,totalVol,prHit,nextDayName:phase.days[nextDayIndex].name,nextDayNum:phase.days[nextDayIndex].dayNum,notes:entry.notes});
   };
 
-  const startDate=new Date(settings.startDate);
+  const startDate=parseDateInput(settings.startDate);
   const weekNum=Math.floor((Date.now()-startDate.getTime())/604800000)+1;
   const phaseWeek=weekNum-(settings.currentPhase-1)*9;
   const isDeload=phaseWeek===9;
   const isStrength=phaseWeek%4===0&&phaseWeek<9;
-  const totalSets=dayData.exercises.reduce((a,ex)=>a+(ex.isAbs?1:ex.sets),0);
-  const doneSets=Object.values(sets).reduce((a,ss)=>a+ss.filter(s=>s.done).length,0);
+  const requiredExercises=dayData.exercises.filter(ex=>!ex.optional);
+  const optionalCount=dayData.exercises.length-requiredExercises.length;
+  const totalSets=requiredExercises.reduce((a,ex)=>a+(ex.isAbs?1:ex.sets),0);
+  const doneSets=requiredExercises.reduce((a,ex)=>a+((sets[ex.name]||[]).filter(s=>s.done).length),0);
   const pct=totalSets>0?Math.round((doneSets/totalSets)*100):0;
-  const allComplete=dayData.exercises.every(ex=>(sets[ex.name]||[]).every(s=>s.done));
+  const allComplete=requiredExercises.every(ex=>(sets[ex.name]||[]).every(s=>s.done));
 
   if(done){
     const d=done;
@@ -1221,8 +1392,14 @@ function WorkoutScreen({store}){
         )}
         <div style={{background:'var(--s2)',border:'1px solid var(--bdr2)',borderRadius:12,padding:'14px 20px',textAlign:'center',width:'100%'}}>
           <div style={{fontSize:11,color:'var(--t2)',textTransform:'uppercase',letterSpacing:'.07em',marginBottom:4}}>Up Next</div>
-          <div style={{fontSize:15,fontWeight:700}}>Day {phase.days[settings.currentDayIndex].dayNum} · {phase.days[settings.currentDayIndex].name}</div>
+          <div style={{fontSize:15,fontWeight:700}}>Day {d.nextDayNum} · {d.nextDayName}</div>
         </div>
+        {d.notes&&(
+          <div style={{background:'var(--s2)',border:'1px solid var(--bdr2)',borderRadius:12,padding:'14px 16px',width:'100%'}}>
+            <div style={{fontSize:11,color:'var(--t2)',textTransform:'uppercase',letterSpacing:'.07em',marginBottom:6}}>Session Notes</div>
+            <div style={{fontSize:13,color:'var(--t1)',lineHeight:1.6}}>{d.notes}</div>
+          </div>
+        )}
         <button className="btn grn" onClick={()=>setDone(false)}>Continue →</button>
       </div>
     );
@@ -1241,6 +1418,7 @@ function WorkoutScreen({store}){
         <div style={{fontSize:22,fontWeight:800,letterSpacing:'-.5px',lineHeight:1.1}}>{dayData.name}</div>
         <div style={{fontSize:12,color:'var(--t2)',marginTop:3}}>
           {dayData.exercises.filter(e=>!e.isAbs).length} exercises · {dayData.exercises.filter(e=>!e.isAbs).reduce((a,e)=>a+e.sets,0)} sets
+          {optionalCount>0&&` · ${optionalCount} optional`}
         </div>
       </div>
 
@@ -1261,7 +1439,7 @@ function WorkoutScreen({store}){
               background:i===settings.currentDayIndex?'var(--acc-s)':'var(--s3)',
               color:i===settings.currentDayIndex?'var(--acc)':'var(--t3)',
               border:'1.5px solid '+(i===settings.currentDayIndex?'var(--acc-b)':'transparent'),
-              opacity:started&&i!==settings.currentDayIndex?.4:1,
+              opacity:started&&i!==settings.currentDayIndex ? .4 : 1,
               whiteSpace:'nowrap',fontFamily:'inherit',cursor:started?'default':'pointer'}}
             disabled={started}
             onClick={()=>!started&&setSettings({currentDayIndex:i})}>
@@ -1286,12 +1464,26 @@ function WorkoutScreen({store}){
                 onUpdateSet={(si,f,v)=>updateSet(ex.name,si,f,v)}
                 onCompleteSet={si=>completeSet(ex.name,si)}
                 lastSession={getLastSession(ex.name)}
-                pr={getPR(ex.name)}
+                stats={getExerciseStats(ex.name)}
                 workoutStarted={started}
                 expanded={!!expanded[i]}
                 onToggle={()=>setExpanded(p=>({...p,[i]:!p[i]}))}/>
             ))}
+            {started&&(
+              <div className="card2" style={{padding:'14px 14px 12px',marginBottom:12}}>
+                <div className="sec" style={{marginBottom:8}}>Session Notes</div>
+                <textarea
+                  value={sessionNote}
+                  onChange={e=>setSessionNote(e.target.value)}
+                  placeholder="How did this session feel? Note substitutions, pain points, cues, or wins."
+                  style={{width:'100%',minHeight:94,resize:'vertical',background:'var(--s3)',border:'1px solid var(--bdr2)',borderRadius:12,color:'var(--t1)',padding:'12px 13px',fontSize:13,lineHeight:1.5,fontFamily:'inherit',outline:'none'}}
+                />
+              </div>
+            )}
             <div style={{height:8}}/>
+            {started&&optionalCount>0&&(
+              <div style={{fontSize:12,color:'var(--t3)',paddingBottom:10}}>Optional exercises can be skipped and finished later.</div>
+            )}
             {!started?(
               <button className="btn" onClick={()=>setStarted(true)}>Start Workout</button>
             ):(
@@ -1330,12 +1522,13 @@ function LineChart({data}){
   );
   const W=340,H=140,pl=40,pb=28,pt=12,pr=12;
   const iW=W-pl-pr,iH=H-pt-pb;
-  const ws=data.map(d=>d.weight);
+  const ws=data.map(d=>d.metric||d.e1rm||d.weight);
   const mn=Math.min(...ws),mx=Math.max(...ws),range=mx-mn||1;
   const pts=data.map((d,i)=>({
     x:pl+(i/(data.length-1))*iW,
-    y:pt+iH-((d.weight-mn)/range)*iH,
-    date:d.date,weight:d.weight
+    y:pt+iH-(((d.metric||d.e1rm||d.weight)-mn)/range)*iH,
+    label:d.label||d.date.slice(5),
+    value:d.metric||d.e1rm||d.weight
   }));
   const pathD=pts.map((p,i)=>(i===0?'M':'L')+p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ');
   const areaD=pathD+' L'+pts[pts.length-1].x+','+(pt+iH)+' L'+pts[0].x+','+(pt+iH)+' Z';
@@ -1360,7 +1553,7 @@ function LineChart({data}){
       <path d={pathD} fill="none" stroke="var(--acc)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
       {pts.map((p,i)=><circle key={i} cx={p.x} cy={p.y} r="4.5" fill="var(--bg)" stroke="var(--acc)" strokeWidth="2.5"/>)}
       {pts.filter((_,i)=>i===0||i===pts.length-1||(pts.length>3&&i===Math.floor(pts.length/2))).map((p,i)=>(
-        <text key={i} x={Math.max(24,Math.min(316,p.x))} y={H-5} fill="var(--t3)" fontSize="9" textAnchor="middle">{p.date.slice(5)}</text>
+        <text key={i} x={Math.max(24,Math.min(316,p.x))} y={H-5} fill="var(--t3)" fontSize="9" textAnchor="middle">{p.label}</text>
       ))}
     </svg>
   );
@@ -1388,24 +1581,24 @@ function VolumeChart({data}){
 }
 
 function HistoryScreen({store}){
-  const {logs,getHistory,getPR,getWeeklyVolume}=store;
+  const {sessions,getHistory,getExerciseStats,getWeeklyVolume}=store;
   const [sel,setSel]=useState('');
   const allEx=useMemo(()=>{
     const s=new Set();
-    Object.values(logs).forEach(l=>l.exercises?.forEach(e=>{if(e.sets?.length)s.add(e.name);}));
+    sessions.forEach(l=>l.exercises?.forEach(e=>{if(e.sets?.length)s.add(e.name);}));
     return[...s].sort();
-  },[logs]);
+  },[sessions]);
   const hist=sel?getHistory(sel):[];
-  const pr=sel?getPR(sel):null;
+  const stats=sel?getExerciseStats(sel):null;
   const weekVol=getWeeklyVolume();
   const totalVol=weekVol.reduce((a,v)=>a+v,0);
-  const logDays=Object.entries(logs).sort((a,b)=>b[0].localeCompare(a[0]));
+  const logDays=sessions;
 
   return(
     <div className="screen">
       <div style={{padding:'16px 16px 10px',flexShrink:0}}>
         <div style={{fontSize:24,fontWeight:800,letterSpacing:'-.5px'}}>Progress</div>
-        <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>Track your strength over time</div>
+        <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>Track best sets, estimated 1RM, and session history</div>
       </div>
       <div className="scroller" style={{padding:'0 16px 20px'}}>
         <div className="card" style={{padding:16,marginBottom:12}}>
@@ -1435,12 +1628,17 @@ function HistoryScreen({store}){
                 <div style={{fontSize:14,fontWeight:700,flex:1,marginRight:8}}>{sel}</div>
                 <div style={{display:'flex',gap:16}}>
                   <div style={{textAlign:'center'}}>
-                    <div style={{fontSize:22,fontWeight:800,color:'var(--acc)',fontVariantNumeric:'tabular-nums'}}>{pr||'—'}</div>
-                    <div style={{fontSize:9,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>PR LBS</div>
+                    <div style={{fontSize:20,fontWeight:800,color:'var(--acc)',fontVariantNumeric:'tabular-nums'}}>{stats?.bestSetLabel||'—'}</div>
+                    <div style={{fontSize:9,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>BEST SET</div>
                   </div>
                   <div style={{width:1,background:'var(--bdr)'}}/>
                   <div style={{textAlign:'center'}}>
-                    <div style={{fontSize:22,fontWeight:800,fontVariantNumeric:'tabular-nums'}}>{hist.length}</div>
+                    <div style={{fontSize:22,fontWeight:800,fontVariantNumeric:'tabular-nums'}}>{stats?.metricValue||'—'}</div>
+                    <div style={{fontSize:9,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>{stats?.metricLabel||'Metric'}</div>
+                  </div>
+                  <div style={{width:1,background:'var(--bdr)'}}/>
+                  <div style={{textAlign:'center'}}>
+                    <div style={{fontSize:22,fontWeight:800,fontVariantNumeric:'tabular-nums'}}>{stats?.sessionCount||hist.length}</div>
                     <div style={{fontSize:9,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>SESSIONS</div>
                   </div>
                 </div>
@@ -1453,24 +1651,27 @@ function HistoryScreen({store}){
         <div className="sec">Recent Sessions</div>
         {logDays.length===0?(
           <div className="card" style={{padding:20,textAlign:'center',color:'var(--t2)',fontSize:13}}>No sessions logged yet — Start Workout!</div>
-        ):logDays.slice(0,10).map(([date,log])=>{
+        ):logDays.slice(0,10).map(log=>{
           const vol=log.volume||log.exercises?.reduce((a,ex)=>a+(ex.sets?.reduce((b,s)=>b+(s.weight||0)*(s.reps||0),0)||0),0)||0;
           const dm=log.duration?Math.floor(log.duration/60):null;
           const ds2=log.duration?log.duration%60:null;
           return(
-            <div key={date} className="card" style={{padding:14,marginBottom:8}}>
+            <div key={log.sessionId||`${log.date}-${log.sessionIndex||0}`} className="card" style={{padding:14,marginBottom:8}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:5}}>
                 <div style={{fontWeight:700,fontSize:14}}>{log.dayName||'Workout'}</div>
                 <div style={{display:'flex',gap:8,alignItems:'center'}}>
                   {dm!==null&&<div style={{fontSize:11,color:'var(--t2)'}}>{dm}:{ds2.toString().padStart(2,'0')}</div>}
-                  <div style={{fontSize:11,color:'var(--t3)'}}>{date}</div>
+                  <div style={{fontSize:11,color:'var(--t3)'}}>{log.date}</div>
                 </div>
               </div>
               {vol>0&&<div style={{fontSize:11,color:'var(--acc)',fontWeight:700,marginBottom:5}}>{vol>=1000?Math.round(vol/1000)+'k':vol} lbs volume</div>}
               <div style={{fontSize:11,color:'var(--t2)',lineHeight:1.7}}>
-                {log.exercises?.filter(e=>e.sets?.length>0).slice(0,3).map(e=>e.name+' ('+e.sets.map(s=>s.weight+'x'+s.reps).join(', ')+')').join(' · ')}
+                {log.exercises?.filter(e=>e.sets?.length>0).slice(0,3).map(e=>
+                  e.name+' ('+e.sets.map(s=>(e.bodyweight&&!(parseFloat(s.weight)||0)?'BW':s.weight)+'x'+s.reps).join(', ')+')'
+                ).join(' · ')}
                 {(log.exercises?.filter(e=>e.sets?.length>0).length||0)>3&&' …'}
               </div>
+              {log.notes&&<div style={{marginTop:6,fontSize:11,color:'var(--t2)',lineHeight:1.6}}>{log.notes}</div>}
               {log.prsHit?.length>0&&<div style={{marginTop:6,fontSize:11,color:'var(--acc)',fontWeight:700}}>🏆 PR: {log.prsHit.join(', ')}</div>}
             </div>
           );
@@ -1507,7 +1708,7 @@ function ProgramScreen({store}){
         <div className="card2" style={{padding:'12px 16px',marginBottom:14,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
           <div>
             <div style={{fontWeight:700,fontSize:15,letterSpacing:'-.2px'}}>{dp.label} · {dp.weekRange}</div>
-            <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>8 weeks training + 1 deload week</div>
+            <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>8 weeks training + 1 deload week · home gym optimized</div>
           </div>
           {selPhase===settings.currentPhase&&<span className="pill p-acc">Current</span>}
         </div>
@@ -1536,8 +1737,9 @@ function ProgramScreen({store}){
         <div className="card" style={{overflow:'hidden',marginBottom:20}}>
           {[
             ['Rep Ranges','Heavy: 4–6 reps at ~85% 1RM · Accessory: 8–10 reps'],
-            ['Rest (heavy)','3–4 minutes between sets'],
-            ['Rest (light)','1–2 minutes between sets'],
+            ['Equipment','Rack, bench, barbell, pull-up bar, adjustable dumbbells, and cable station'],
+            ['Rest (primary)','3–4 minutes between heavy barbell sets'],
+            ['Rest (accessory)','90–120 sec on dumbbells, cables, and assistance work'],
             ['Progression','Add 10 lbs when you hit top of rep range'],
             ['Tempo','2 sec down · 1 sec pause · 1–2 sec up'],
             ['Strength Wk','Every 4th week — same weights, fewer sets'],
