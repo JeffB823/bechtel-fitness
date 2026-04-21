@@ -6,23 +6,23 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Bechtel Fit">
-<meta name="theme-color" content="#0a0a0d">
+<meta name="theme-color" content="#07111f">
 <link id="apple-touch-icon" rel="apple-touch-icon">
 <title>Bechtel Fitness</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0a0d;--s1:#131318;--s2:#1a1a21;--s3:#22222b;--s4:#2a2a35;
-  --acc:#e8562a;--acc-s:rgba(232,86,42,.12);--acc-b:rgba(232,86,42,.28);
-  --grn:#2dbe6c;--grn-s:rgba(45,190,108,.12);--grn-b:rgba(45,190,108,.3);
-  --t1:#f0f0f5;--t2:#7a7a8e;--t3:#3e3e52;--t4:#20202e;
-  --bdr:#1e1e28;--bdr2:#28283a;
+  --bg:#07111f;--s1:#0d1a2b;--s2:#11233a;--s3:#18314d;--s4:#234364;
+  --acc:#5aa8ff;--acc-rgb:90,168,255;--acc-s:rgba(var(--acc-rgb),.14);--acc-b:rgba(var(--acc-rgb),.34);
+  --grn:#f0c75e;--grn-rgb:240,199,94;--grn-s:rgba(var(--grn-rgb),.16);--grn-b:rgba(var(--grn-rgb),.34);
+  --t1:#eef5ff;--t2:#9aafc9;--t3:#5d7493;--t4:#22354e;
+  --bdr:#1a2f49;--bdr2:#274360;
   --nav:64px;--safe:env(safe-area-inset-bottom,0px);--top:env(safe-area-inset-top,0px);
   --r:16px;--ri:10px;--rp:100px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
-#root{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;overflow:hidden}
+html,body{height:100%;overflow:hidden;background:radial-gradient(circle at top, rgba(var(--acc-rgb),.18), transparent 34%),linear-gradient(180deg,#0a1730 0%,var(--bg) 58%,#06101c 100%);color:var(--t1);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+#root{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;overflow:hidden;background:linear-gradient(180deg, rgba(255,255,255,.025) 0%, rgba(255,255,255,0) 24%),var(--bg)}
 input[type=number]{-moz-appearance:textfield}
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none}
 button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
@@ -45,7 +45,7 @@ select{-webkit-appearance:none}
 .p-acc{background:var(--acc-s);color:var(--acc);border:1px solid var(--acc-b)}
 .p-dim{background:var(--s3);color:var(--t2);border:1px solid var(--bdr2)}
 .p-grn{background:var(--grn-s);color:var(--grn);border:1px solid var(--grn-b)}
-.p-warn{background:rgba(255,195,0,.1);color:#ffc300;border:1px solid rgba(255,195,0,.2)}
+.p-warn{background:rgba(var(--grn-rgb),.12);color:var(--grn);border:1px solid rgba(var(--grn-rgb),.22)}
 
 /* Primary button */
 .btn{background:var(--acc);color:#fff;border-radius:14px;font-size:15px;font-weight:700;padding:16px;width:100%;transition:opacity .15s,transform .1s;font-family:inherit;letter-spacing:.01em}
@@ -64,21 +64,21 @@ select{-webkit-appearance:none}
 .srow{display:grid;grid-template-columns:28px 54px 1fr 76px 52px;align-items:center;gap:6px;padding:6px 14px;min-height:62px;border-bottom:1px solid var(--bdr);transition:opacity .3s,background .2s}
 .srow:last-child{border-bottom:none}
 .srow.done{opacity:.35}
-.srow.active-row{background:rgba(232,86,42,.04)}
+.srow.active-row{background:rgba(var(--acc-rgb),.07)}
 .snum{font-size:12px;font-weight:800;color:var(--t3);text-align:center}
 .sprev{text-align:center}
 .sprev-w{font-size:14px;font-weight:700;color:var(--t3);line-height:1.2;font-variant-numeric:tabular-nums}
 .sprev-r{font-size:10px;color:var(--t3)}
 .sinput{background:var(--s3);border:1.5px solid var(--bdr2);border-radius:var(--ri);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:22px;font-weight:800;text-align:center;height:52px;width:100%;outline:none;font-variant-numeric:tabular-nums;transition:border-color .15s,background .15s;caret-color:var(--acc)}
 .sinput:focus{border-color:var(--acc);background:var(--s2)}
-.sinput.ai{border-color:rgba(232,86,42,.45)}
+.sinput.ai{border-color:rgba(var(--acc-rgb),.45)}
 .sinput:disabled{background:transparent;border-color:transparent;font-size:17px;color:var(--t2)}
 /* Check button */
 .ck{width:52px;height:52px;border-radius:50%;border:2.5px solid var(--t4);background:var(--s3);display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;font-family:inherit}
 .ck:active{transform:scale(.9)}
 .ck:disabled{opacity:.2}
 .ck.ready{border-color:var(--acc);background:var(--acc-s)}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(232,86,42,.55)}70%{box-shadow:0 0 0 10px rgba(232,86,42,0)}100%{box-shadow:0 0 0 0 rgba(232,86,42,0)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(var(--acc-rgb),.55)}70%{box-shadow:0 0 0 10px rgba(var(--acc-rgb),0)}100%{box-shadow:0 0 0 0 rgba(var(--acc-rgb),0)}}
 .ck.ready{animation:pulse 2.2s infinite}
 .ck.done{border-color:var(--grn);background:var(--grn);animation:none}
 @keyframes ckpop{0%{transform:scale(.6)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
@@ -86,8 +86,8 @@ select{-webkit-appearance:none}
 
 /* Exercise card */
 .excard{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);margin-bottom:10px;overflow:hidden;transition:border-color .25s,box-shadow .25s}
-.excard.ex-on{border-color:rgba(232,86,42,.38);box-shadow:0 2px 24px rgba(232,86,42,.07)}
-.excard.ex-done{border-color:rgba(45,190,108,.28)}
+.excard.ex-on{border-color:rgba(var(--acc-rgb),.38);box-shadow:0 8px 28px rgba(var(--acc-rgb),.09)}
+.excard.ex-done{border-color:rgba(var(--grn-rgb),.3)}
 .exhdr{display:flex;align-items:center;padding:13px 14px;gap:10px;cursor:pointer;user-select:none;min-height:58px}
 .exname{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px}
 .exmeta{font-size:11px;color:var(--t2);margin-top:2px}
@@ -112,7 +112,7 @@ select{-webkit-appearance:none}
 .mtimer-skip{font-size:13px;font-weight:700;color:var(--t2);padding:8px 14px;background:var(--s3);border-radius:8px;border:1px solid var(--bdr2);position:relative;font-family:inherit}
 
 /* Full timer */
-.tover{position:absolute;inset:0;background:rgba(10,10,13,.97);backdrop-filter:blur(20px);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.tover{position:absolute;inset:0;background:rgba(7,17,31,.97);backdrop-filter:blur(20px);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
 .tring{position:relative;width:220px;height:220px}
 .tcenter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
 .ttime{font-size:64px;font-weight:800;letter-spacing:-4px;font-variant-numeric:tabular-nums;transition:color .3s}
@@ -184,23 +184,23 @@ function genIcon(size) {
   x.lineTo(s,s-r); x.arcTo(s,s,s-r,s,r);
   x.lineTo(r,s); x.arcTo(0,s,0,s-r,r);
   x.lineTo(0,r); x.arcTo(0,0,r,0,r); x.closePath();
-  x.fillStyle='#131318'; x.fill();
-  x.strokeStyle='#e8562a'; x.lineWidth=s*.02; x.globalAlpha=.5; x.stroke(); x.globalAlpha=1;
+  x.fillStyle='#0d1a2b'; x.fill();
+  x.strokeStyle='#5aa8ff'; x.lineWidth=s*.02; x.globalAlpha=.5; x.stroke(); x.globalAlpha=1;
   x.fillStyle='rgba(255,255,255,0.07)';
   x.beginPath(); x.roundRect(s*.1,s*.45,s*.8,s*.08,s*.04); x.fill();
-  x.fillStyle='#e8562a';
+  x.fillStyle='#5aa8ff';
   x.beginPath(); x.roundRect(s*.09,s*.355,s*.085,s*.275,s*.02); x.fill();
-  x.fillStyle='#b8431f';
+  x.fillStyle='#2d74bf';
   x.beginPath(); x.roundRect(s*.035,s*.39,s*.058,s*.205,s*.015); x.fill();
-  x.fillStyle='#e8562a';
+  x.fillStyle='#5aa8ff';
   x.beginPath(); x.roundRect(s*.825,s*.355,s*.085,s*.275,s*.02); x.fill();
-  x.fillStyle='#b8431f';
+  x.fillStyle='#2d74bf';
   x.beginPath(); x.roundRect(s*.907,s*.39,s*.058,s*.205,s*.015); x.fill();
-  x.fillStyle='#f0f0f5';
+  x.fillStyle='#eef5ff';
   x.font='900 '+(s*.52)+'px "Arial Black",Arial,sans-serif';
   x.textAlign='center'; x.textBaseline='alphabetic';
   x.fillText('B',s*.505,s*.618);
-  x.fillStyle='#e8562a';
+  x.fillStyle='#f0c75e';
   x.font='700 '+(s*.086)+'px Arial,sans-serif';
   x.textBaseline='middle';
   x.fillText('FITNESS',s*.5,s*.853);
@@ -211,7 +211,7 @@ window.addEventListener('DOMContentLoaded', function() {
     var icon = genIcon(512);
     var url = icon.toDataURL('image/png');
     document.getElementById('apple-touch-icon').href = url;
-    var mf = {name:'Bechtel Fitness',short_name:'BFit',display:'standalone',background_color:'#0a0a0d',theme_color:'#0a0a0d',start_url:window.location.href,orientation:'portrait-primary',icons:[{src:url,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
+    var mf = {name:'Bechtel Fitness',short_name:'BFit',display:'standalone',background_color:'#07111f',theme_color:'#07111f',start_url:window.location.href,orientation:'portrait-primary',icons:[{src:url,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
     var mb = new Blob([JSON.stringify(mf)],{type:'application/manifest+json'});
     var ml = document.createElement('link'); ml.rel='manifest'; ml.href=URL.createObjectURL(mb);
     document.head.appendChild(ml);
@@ -588,15 +588,15 @@ Object.assign(window,{useStore,playBeep,vibrate,S,todayStr,getGreeting});
 function LogoMark({size=44}){
   return(
     <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <rect width="100" height="100" rx="20" fill="#131318"/>
-      <rect width="100" height="100" rx="20" fill="none" stroke="#e8562a" strokeWidth="2.2" opacity=".5"/>
+      <rect width="100" height="100" rx="20" fill="#0d1a2b"/>
+      <rect width="100" height="100" rx="20" fill="none" stroke="#5aa8ff" strokeWidth="2.2" opacity=".5"/>
       <rect x="10" y="44" width="80" height="9" rx="4.5" fill="white" opacity=".07"/>
-      <rect x="9" y="35" width="9" height="28" rx="2.5" fill="#e8562a"/>
-      <rect x="2.5" y="39" width="7.5" height="20" rx="2" fill="#b8431f"/>
-      <rect x="82" y="35" width="9" height="28" rx="2.5" fill="#e8562a"/>
-      <rect x="90" y="39" width="7.5" height="20" rx="2" fill="#b8431f"/>
-      <text x="51" y="65" textAnchor="middle" fontSize="52" fontWeight="900" fill="#f0f0f5" fontFamily="Arial Black,Arial,sans-serif">B</text>
-      <text x="50" y="88" textAnchor="middle" fontSize="10" fontWeight="700" fill="#e8562a" fontFamily="Arial,sans-serif" letterSpacing="2.5">FITNESS</text>
+      <rect x="9" y="35" width="9" height="28" rx="2.5" fill="#5aa8ff"/>
+      <rect x="2.5" y="39" width="7.5" height="20" rx="2" fill="#2d74bf"/>
+      <rect x="82" y="35" width="9" height="28" rx="2.5" fill="#5aa8ff"/>
+      <rect x="90" y="39" width="7.5" height="20" rx="2" fill="#2d74bf"/>
+      <text x="51" y="65" textAnchor="middle" fontSize="52" fontWeight="900" fill="#eef5ff" fontFamily="Arial Black,Arial,sans-serif">B</text>
+      <text x="50" y="88" textAnchor="middle" fontSize="10" fontWeight="700" fill="#f0c75e" fontFamily="Arial,sans-serif" letterSpacing="2.5">FITNESS</text>
     </svg>
   );
 }
@@ -1343,8 +1343,8 @@ function LineChart({data}){
     <svg viewBox={'0 0 '+W+' '+H} className="chart-svg">
       <defs>
         <linearGradient id="cg1" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#e8562a" stopOpacity=".25"/>
-          <stop offset="100%" stopColor="#e8562a" stopOpacity="0"/>
+          <stop offset="0%" stopColor="#5aa8ff" stopOpacity=".24"/>
+          <stop offset="100%" stopColor="#5aa8ff" stopOpacity="0"/>
         </linearGradient>
       </defs>
       {[0,.5,1].map((t,i)=>{
@@ -1489,7 +1489,7 @@ function ProgramScreen({store}){
   const {settings}=store;
   const [selPhase,setSelPhase]=useState(settings.currentPhase);
   const dp=WORKOUT_DATA.phases.find(p=>p.id===selPhase)||WORKOUT_DATA.phases[0];
-  const dotColors=['var(--acc)','oklch(65% .18 240)','oklch(65% .18 290)','var(--grn)','oklch(65% .18 55)'];
+  const dotColors=['var(--acc)','#82beff','#a9d4ff','var(--grn)','#f5db92'];
 
   return(
     <div className="screen">
