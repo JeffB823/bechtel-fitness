@@ -721,6 +721,7 @@ function BottomNav({screen,setScreen}){
     {id:'home',label:'Home',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21V12h6v9"/></svg>},
     {id:'today',label:'Workout',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M6.5 6.5h11M6.5 17.5h11M4 12h16M8 3v3M16 3v3M8 18v3M16 18v3"/></svg>},
     {id:'history',label:'Progress',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>},
+    {id:'crossfit',label:'WOD',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8h16"/><path d="M6 8v8"/><path d="M18 8v8"/><path d="M9 16h6"/><path d="M3 12h18"/></svg>},
     {id:'plan',label:'Program',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>},
   ];
   return(
@@ -1758,6 +1759,54 @@ function ProgramScreen({store}){
 Object.assign(window,{ProgramScreen});
 </script>
 
+<!-- ─── CrossFit Screen ─── -->
+<script type="text/babel">
+function CrossfitScreen(){
+  const memberUrl='https://www.crossfitclintonville.com/member-site';
+  const [frameKey,setFrameKey]=useState(0);
+
+  return(
+    <div className="screen">
+      <div style={{padding:'16px 16px 10px',flexShrink:0}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+          <div>
+            <div style={{fontSize:24,fontWeight:800,letterSpacing:'-.5px'}}>CrossFit WOD</div>
+            <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>Track workouts from the CrossFit Clintonville member site</div>
+          </div>
+          <span className="pill p-acc">Member</span>
+        </div>
+      </div>
+
+      <div style={{padding:'0 16px 12px',display:'flex',gap:8,flexShrink:0}}>
+        <button className="btn-ghost" style={{flex:1}} onClick={()=>setFrameKey(k=>k+1)}>Refresh</button>
+        <button className="btn" style={{flex:1,padding:'12px 14px'}} onClick={()=>window.open(memberUrl,'_blank','noopener,noreferrer')}>Open Site</button>
+      </div>
+
+      <div style={{padding:'0 16px 12px',flexShrink:0}}>
+        <div className="card2" style={{padding:'12px 14px'}}>
+          <div style={{fontSize:12,color:'var(--t2)',lineHeight:1.6}}>
+            Sign in on the member site if needed. If the page does not load inside the app, use <span style={{color:'var(--acc)',fontWeight:700}}>Open Site</span> to view it directly.
+          </div>
+        </div>
+      </div>
+
+      <div style={{flex:1,padding:'0 16px 16px',minHeight:0}}>
+        <div className="card" style={{height:'100%',overflow:'hidden'}}>
+          <iframe
+            key={frameKey}
+            title="CrossFit Clintonville Member Site"
+            src={memberUrl}
+            style={{width:'100%',height:'100%',border:'none',background:'#fff'}}
+            referrerPolicy="strict-origin-when-cross-origin"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+Object.assign(window,{CrossfitScreen});
+</script>
+
 <!-- ─── App Root ─── -->
 <script type="text/babel">
 function App(){
@@ -1769,6 +1818,7 @@ function App(){
       {screen==='home'    &&<HomeScreen store={store} setScreen={setScreen}/>}
       {screen==='today'   &&<WorkoutScreen store={store}/>}
       {screen==='history' &&<HistoryScreen store={store}/>}
+      {screen==='crossfit'&&<CrossfitScreen/>}
       {screen==='plan'    &&<ProgramScreen store={store}/>}
       <BottomNav screen={screen} setScreen={setScreen}/>
     </>
