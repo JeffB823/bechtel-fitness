@@ -67,8 +67,8 @@ select{-webkit-appearance:none}
 .srow.active-row{background:rgba(var(--acc-rgb),.07)}
 .snum{font-size:12px;font-weight:800;color:var(--t3);text-align:center}
 .sprev{text-align:center}
-.sprev-w{font-size:14px;font-weight:700;color:var(--t3);line-height:1.2;font-variant-numeric:tabular-nums}
-.sprev-r{font-size:10px;color:var(--t3)}
+.sprev-w{font-size:15px;font-weight:700;color:var(--t2);line-height:1.15;font-variant-numeric:tabular-nums}
+.sprev-r{font-size:10px;color:var(--t3);margin-top:1px}
 .sinput{background:var(--s3);border:1.5px solid var(--bdr2);border-radius:var(--ri);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:22px;font-weight:800;text-align:center;height:52px;width:100%;outline:none;font-variant-numeric:tabular-nums;transition:border-color .15s,background .15s;caret-color:var(--acc)}
 .sinput:focus{border-color:var(--acc);background:var(--s2)}
 .sinput.ai{border-color:rgba(var(--acc-rgb),.45)}
@@ -1087,12 +1087,15 @@ function SetRow({setNum,prev,data,onUpdate,onComplete,isNext,canComplete,bodywei
       </div>
       <input className={'sinput'+(isNext?' ai':'')} type="number" inputMode="decimal"
         value={data.weight} disabled={done}
-        onChange={e=>onUpdate('weight',e.target.value)} placeholder={bodyweight?'BW+':'—'}/>
+        aria-label={`Set ${setNum} weight in pounds`}
+        onChange={e=>onUpdate('weight',e.target.value)} placeholder={bodyweight?'BW+':'lbs'}/>
       <input className={'sinput'+(isNext?' ai':'')} type="number" inputMode="numeric"
         value={data.reps} disabled={done}
-        onChange={e=>onUpdate('reps',e.target.value)} placeholder="—"/>
+        aria-label={`Set ${setNum} reps`}
+        onChange={e=>onUpdate('reps',e.target.value)} placeholder="reps"/>
       <button className={'ck'+(done?' done':isNext?' ready':'')}
         disabled={done?false:!isNext||!canComplete}
+        aria-label={done?`Set ${setNum} logged`:`Mark set ${setNum} complete`}
         onClick={()=>{if(isNext&&!done&&canComplete){vibrate(35);onComplete();}}}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
           stroke={done?'white':'currentColor'} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
@@ -1175,7 +1178,7 @@ function ExCard({exercise,exSets,onUpdateSet,onCompleteSet,lastSession,stats,wor
             </div>
           )}
           {exercise.warmup&&!allDone&&(
-            <button style={{padding:'4px 9px',borderRadius:7,background:'var(--s3)',border:'1px solid var(--bdr2)',fontSize:10,fontWeight:700,color:'var(--t2)',letterSpacing:'.04em',fontFamily:'inherit'}}
+            <button style={{padding:'7px 11px',minHeight:32,borderRadius:8,background:'var(--s3)',border:'1px solid var(--bdr2)',fontSize:11,fontWeight:700,color:'var(--t2)',letterSpacing:'.06em',fontFamily:'inherit'}}
               onClick={e=>{e.stopPropagation();setShowWU(true);}}>WU</button>
           )}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" strokeWidth="2"
@@ -1271,7 +1274,18 @@ function WorkoutScreen({store}){
     const init={},exp={};
     dayData.exercises.forEach((ex,i)=>{
       if(ex.isAbs){init[ex.name]=[{weight:0,reps:0,done:false}];}
-      else{const lw=getLastWeight(ex.name)||'';init[ex.name]=Array(ex.sets).fill(null).map(()=>({weight:lw,reps:'',done:false}));}
+      else{
+        const lw=getLastWeight(ex.name)||'';
+        // Pre-fill reps with top of target range (e.g., "4-6" → 6) to match
+        // the "Add 10 lbs when you hit top of rep range" progression rule.
+        // User taps down only when they fall short.
+        const rangeTop=(()=>{
+          const m=String(ex.repRange||'').match(/(\d+)\s*(?:[–-]\s*(\d+))?/);
+          if(!m)return '';
+          return m[2]||m[1]||'';
+        })();
+        init[ex.name]=Array(ex.sets).fill(null).map(()=>({weight:lw,reps:rangeTop,done:false}));
+      }
       exp[i]=i===0;
     });
     setSets(init);setExpanded(exp);setStarted(false);setDone(false);setTimer(null);setSessionNote('');
@@ -1414,7 +1428,12 @@ function WorkoutScreen({store}){
           <span className="pill p-dim">Wk {Math.max(1,phaseWeek)}/8</span>
           {isDeload&&<span className="pill p-warn">Deload</span>}
           {isStrength&&<span className="pill p-dim">Strength Wk</span>}
-          {started&&<span style={{marginLeft:'auto',fontSize:21,fontWeight:800,color:'var(--acc)',fontVariantNumeric:'tabular-nums',letterSpacing:'-1px'}}>{em}:{es.toString().padStart(2,'0')}</span>}
+          {started&&(
+            <div style={{marginLeft:'auto',display:'flex',flexDirection:'column',alignItems:'flex-end',lineHeight:1}}>
+              <span style={{fontSize:9,fontWeight:700,color:'var(--t3)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Elapsed</span>
+              <span style={{fontSize:21,fontWeight:800,color:'var(--acc)',fontVariantNumeric:'tabular-nums',letterSpacing:'-1px'}}>{em}:{es.toString().padStart(2,'0')}</span>
+            </div>
+          )}
         </div>
         <div style={{fontSize:22,fontWeight:800,letterSpacing:'-.5px',lineHeight:1.1}}>{dayData.name}</div>
         <div style={{fontSize:12,color:'var(--t2)',marginTop:3}}>
@@ -1433,15 +1452,16 @@ function WorkoutScreen({store}){
         </div>
       )}
 
-      <div style={{display:'flex',gap:5,padding:'0 16px 10px',overflowX:'auto',flexShrink:0}}>
+      <div style={{display:'flex',gap:6,padding:'0 16px 10px',overflowX:'auto',flexShrink:0}}>
         {phase.days.map((d,i)=>(
           <button key={i}
-            style={{flexShrink:0,padding:'7px 12px',borderRadius:9,fontSize:12,fontWeight:700,
+            style={{flexShrink:0,padding:'11px 14px',minHeight:42,borderRadius:10,fontSize:12.5,fontWeight:700,
               background:i===settings.currentDayIndex?'var(--acc-s)':'var(--s3)',
-              color:i===settings.currentDayIndex?'var(--acc)':'var(--t3)',
+              color:i===settings.currentDayIndex?'var(--acc)':'var(--t2)',
               border:'1.5px solid '+(i===settings.currentDayIndex?'var(--acc-b)':'transparent'),
               opacity:started&&i!==settings.currentDayIndex ? .4 : 1,
-              whiteSpace:'nowrap',fontFamily:'inherit',cursor:started?'default':'pointer'}}
+              whiteSpace:'nowrap',fontFamily:'inherit',cursor:started?'default':'pointer',
+              display:'inline-flex',alignItems:'center'}}
             disabled={started}
             onClick={()=>!started&&setSettings({currentDayIndex:i})}>
             {d.dayNum} · {d.name.split(' ')[0]}
