@@ -1422,7 +1422,7 @@ function WorkoutScreen({store}){
 
   return(
     <div className="screen">
-      <div style={{padding:'14px 16px 8px',flexShrink:0}}>
+      <div style={{padding:'calc(var(--top) + 14px) 16px 8px',flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:9}}>
           <span className="pill p-acc">{phase.label}</span>
           <span className="pill p-dim">Wk {Math.max(1,phaseWeek)}/8</span>
@@ -1617,7 +1617,7 @@ function HistoryScreen({store}){
 
   return(
     <div className="screen">
-      <div style={{padding:'16px 16px 10px',flexShrink:0}}>
+      <div style={{padding:'calc(var(--top) + 16px) 16px 10px',flexShrink:0}}>
         <div style={{fontSize:24,fontWeight:800,letterSpacing:'-.5px'}}>Progress</div>
         <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>Track best sets, estimated 1RM, and session history</div>
       </div>
@@ -1715,7 +1715,7 @@ function ProgramScreen({store}){
 
   return(
     <div className="screen">
-      <div style={{padding:'16px 16px 10px',flexShrink:0}}>
+      <div style={{padding:'calc(var(--top) + 16px) 16px 10px',flexShrink:0}}>
         <div style={{fontSize:24,fontWeight:800,letterSpacing:'-.5px'}}>Program</div>
         <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>BLS Year One · 5-Day · 6 Phases</div>
       </div>
@@ -1913,7 +1913,7 @@ function CrossfitScreen(){
 
   return(
     <div className="screen">
-      <div style={{padding:'16px 16px 10px',flexShrink:0}}>
+      <div style={{padding:'calc(var(--top) + 16px) 16px 10px',flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
           <div>
             <div style={{fontSize:24,fontWeight:800,letterSpacing:'-.5px'}}>CrossFit WOD</div>
