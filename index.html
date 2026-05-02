@@ -110,6 +110,9 @@ select{-webkit-appearance:none}
 .mtimer-time{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-1.5px;color:var(--t1);position:relative;flex:1}
 .mtimer-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);position:relative}
 .mtimer-skip{font-size:13px;font-weight:700;color:var(--t2);padding:8px 14px;background:var(--s3);border-radius:8px;border:1px solid var(--bdr2);position:relative;font-family:inherit}
+.mtimer-copy{position:relative;flex:1;min-width:0}
+.mtimer-copy .mtimer-time{display:block;line-height:1}
+.mtimer-next{display:block;font-size:10px;color:var(--t3);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
 
 /* Full timer */
 .tover{position:absolute;inset:0;background:rgba(7,17,31,.97);backdrop-filter:blur(20px);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
@@ -124,6 +127,53 @@ select{-webkit-appearance:none}
 .tpre.sel{background:var(--acc);color:#fff;border-color:transparent}
 .tskip{background:var(--s2);color:var(--t2);border-radius:12px;font-size:15px;font-weight:700;padding:14px 40px;border:1px solid var(--bdr2);font-family:inherit}
 .tskip:active{opacity:.8}
+.tcontext{font-size:13px;color:var(--t2);line-height:1.55;text-align:center;max-width:280px;margin-top:-12px}
+.tcontext b{color:var(--t1)}
+.tctrls{display:flex;gap:10px;align-items:center}
+
+/* Guided live workout */
+.live-shell{display:flex;flex-direction:column;gap:14px;padding:0 16px 18px}
+.mode-toggle{padding:8px 11px;border-radius:999px;background:var(--s3);border:1px solid var(--bdr2);font-size:11px;font-weight:800;color:var(--t2);letter-spacing:.04em;text-transform:uppercase}
+.live-card{background:linear-gradient(160deg,rgba(var(--acc-rgb),.11),rgba(255,255,255,.025) 38%,rgba(var(--grn-rgb),.08));border:1px solid rgba(var(--acc-rgb),.28);border-radius:24px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.24)}
+.live-card.resting{border-color:rgba(var(--grn-rgb),.34);background:linear-gradient(160deg,rgba(var(--grn-rgb),.13),rgba(255,255,255,.025) 40%,rgba(var(--acc-rgb),.08))}
+.live-kicker{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.live-title{font-size:27px;font-weight:800;letter-spacing:-.9px;line-height:1.02}
+.live-sub{font-size:13px;color:var(--t2);font-weight:700;margin-top:7px;line-height:1.35}
+.live-target{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.live-field{background:rgba(7,17,31,.55);border:1px solid var(--bdr2);border-radius:18px;padding:12px}
+.live-field-label{font-size:10px;color:var(--t3);font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.live-input-row{display:flex;align-items:center;gap:8px}
+.live-stepper{width:42px;height:46px;border-radius:14px;background:var(--s3);border:1px solid var(--bdr2);font-size:24px;font-weight:800;color:var(--t2);display:flex;align-items:center;justify-content:center}
+.live-input{min-width:0;width:100%;height:52px;background:var(--s2);border:1.5px solid rgba(var(--acc-rgb),.38);border-radius:15px;color:var(--t1);font-size:27px;font-weight:800;text-align:center;font-family:inherit;outline:none;font-variant-numeric:tabular-nums}
+.live-readout{height:52px;display:flex;align-items:center;justify-content:center;background:var(--s2);border:1.5px solid var(--bdr2);border-radius:15px;font-size:27px;font-weight:800;font-variant-numeric:tabular-nums}
+.live-hint{margin-top:14px;padding:11px 12px;border-radius:14px;background:rgba(7,17,31,.45);border:1px solid rgba(255,255,255,.05);font-size:12px;color:var(--t2);line-height:1.45}
+.live-rest-panel{margin-top:16px;padding:14px;border-radius:18px;background:rgba(7,17,31,.58);border:1px solid rgba(var(--grn-rgb),.25)}
+.live-rest-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.live-rest-time{font-size:42px;font-weight:800;letter-spacing:-2px;font-variant-numeric:tabular-nums;color:var(--grn)}
+.live-rest-copy{font-size:12px;color:var(--t2);line-height:1.45}
+.live-rest-copy b{color:var(--t1)}
+.live-rest-actions{display:flex;gap:8px;margin-top:12px}
+.live-rest-actions button{flex:1;min-height:44px;border-radius:13px;background:var(--s3);border:1px solid var(--bdr2);color:var(--t1);font-size:13px;font-weight:800;font-family:inherit}
+.live-upcoming{background:var(--s1);border:1px solid var(--bdr);border-radius:20px;overflow:hidden}
+.live-upcoming-head{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-bottom:1px solid var(--bdr)}
+.live-step-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--bdr);min-height:58px}
+.live-step-row:last-child{border-bottom:none}
+.live-step-row.active{background:rgba(var(--acc-rgb),.08)}
+.live-step-row.resting{background:rgba(var(--grn-rgb),.07)}
+.live-step-row.done{opacity:.54}
+.live-step-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--s3);border:1px solid var(--bdr2);color:var(--t3);font-size:12px;font-weight:800;flex-shrink:0}
+.live-step-row.active .live-step-dot{background:var(--acc-s);border-color:var(--acc-b);color:var(--acc)}
+.live-step-row.done .live-step-dot{background:var(--grn);border-color:var(--grn);color:#07111f}
+.live-step-main{flex:1;min-width:0}
+.live-step-name{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.live-step-meta{font-size:11px;color:var(--t3);font-weight:700;margin-top:2px}
+.live-sticky{position:sticky;bottom:0;margin:8px -16px -18px;padding:12px 16px calc(12px + var(--safe));background:linear-gradient(180deg,rgba(7,17,31,0),var(--bg) 18%,var(--bg));z-index:20}
+.live-secondary-row{display:flex;gap:10px;margin-top:10px}
+.live-secondary-row .btn-ghost{flex:1;min-height:44px}
+@media (max-width:380px){
+  .live-target{grid-template-columns:1fr}
+  .live-title{font-size:24px}
+}
 
 /* Sheets */
 .sheet{position:absolute;inset:0;z-index:250;display:flex;flex-direction:column;justify-content:flex-end}
@@ -739,7 +789,7 @@ Object.assign(window,{LogoMark,BottomNav});
 
 <!-- ─── Shared Components ─── -->
 <script type="text/babel">
-function TimerOverlay({duration:initDur, onDismiss, label}){
+function TimerOverlay({duration:initDur, onDismiss, onAddTime, label, nextLabel, fromLabel}){
   const [dur,setDur]=useState(initDur);
   const [rem,setRem]=useState(initDur);
   const ref=useRef();
@@ -770,6 +820,10 @@ function TimerOverlay({duration:initDur, onDismiss, label}){
           <div className="tsub">{rem===0?'Go!':label||'Rest'}</div>
         </div>
       </div>
+      <div className="tcontext">
+        {fromLabel&&<div>Resting from <b>{fromLabel}</b></div>}
+        {nextLabel&&<div>Next: <b>{nextLabel}</b></div>}
+      </div>
       <div className="tpresets">
         {[60,90,120,180].map(sec=>(
           <button key={sec} className={'tpre'+(dur===sec?' sel':'')}
@@ -778,12 +832,15 @@ function TimerOverlay({duration:initDur, onDismiss, label}){
           </button>
         ))}
       </div>
-      <button className="tskip" onClick={onDismiss}>{rem===0?'Start Next Set →':'Skip Rest'}</button>
+      <div className="tctrls">
+        <button className="tpre" onClick={()=>{setRem(r=>r+30);onAddTime&&onAddTime(30);}}>+30s</button>
+        <button className="tskip" onClick={onDismiss}>{rem===0?'Start Next Set →':'Skip Rest'}</button>
+      </div>
     </div>
   );
 }
 
-function MiniTimer({duration,remaining,onExpand,onDismiss}){
+function MiniTimer({duration,remaining,onExpand,onDismiss,onAddTime,nextLabel}){
   const m=Math.floor(remaining/60),s=remaining%60;
   const pct=(remaining/duration)*100;
   return(
@@ -798,7 +855,11 @@ function MiniTimer({duration,remaining,onExpand,onDismiss}){
           style={{transition:'stroke-dashoffset 1s linear'}}/>
       </svg>
       <span className="mtimer-lbl">Rest</span>
-      <span className="mtimer-time">{m}:{s.toString().padStart(2,'0')}</span>
+      <span className="mtimer-copy">
+        <span className="mtimer-time">{m}:{s.toString().padStart(2,'0')}</span>
+        {nextLabel&&<span className="mtimer-next">Next: {nextLabel}</span>}
+      </span>
+      <button className="mtimer-skip" onClick={e=>{e.stopPropagation();onAddTime&&onAddTime(30);}}>+30</button>
       <button className="mtimer-skip" onClick={e=>{e.stopPropagation();onDismiss();}}>Skip</button>
     </div>
   );
@@ -1255,6 +1316,52 @@ window.getRestSeconds=function(exercise){
   if(exercise.optional||exercise.bodyweight)return 105;
   return 120;
 };
+window.formatRestTime=function(seconds){
+  const m=Math.floor((seconds||0)/60),s=(seconds||0)%60;
+  return `${m}:${String(s).padStart(2,'0')}`;
+};
+window.getWarmupRestSeconds=function(warmupSet){
+  const rest=String(warmupSet?.rest||'');
+  if(rest.includes('2'))return 150;
+  return 60;
+};
+window.stepKey=function(step){
+  return `${step.type}:${step.exerciseName}:${step.setIndex}`;
+};
+window.stepLabel=function(step){
+  if(!step)return '';
+  if(step.type==='warmup')return `${step.exerciseName} · Warmup ${step.setIndex+1}`;
+  if(step.type==='abs')return `Ab Circuit · Round ${step.setIndex+1}`;
+  return `${step.exerciseName} · Set ${step.setIndex+1}`;
+};
+window.buildWorkoutSteps=function(dayData,sets,warmupLogs){
+  const steps=[];
+  (dayData.exercises||[]).forEach((ex,exIndex)=>{
+    const exSets=sets[ex.name]||[];
+    if(ex.isAbs){
+      steps.push({type:'abs',exercise:ex,exerciseName:ex.name,exerciseIndex:exIndex,setIndex:0,totalSets:1,targetReps:'Circuit',targetWeight:'',done:!!exSets[0]?.done});
+      return;
+    }
+    if(ex.warmup){
+      const warmups=window.getWarmupSets(exSets[0]?.weight||0);
+      warmups.forEach((wu,i)=>{
+        const log=(warmupLogs[ex.name]||[])[i]||{};
+        steps.push({
+          type:'warmup',exercise:ex,exerciseName:ex.name,exerciseIndex:exIndex,setIndex:i,totalSets:warmups.length,
+          targetReps:wu.reps,targetWeight:wu.weight,restLabel:wu.rest,restSeconds:window.getWarmupRestSeconds(wu),
+          done:!!log.done
+        });
+      });
+    }
+    exSets.forEach((s,i)=>{
+      steps.push({
+        type:'work',exercise:ex,exerciseName:ex.name,exerciseIndex:exIndex,setIndex:i,totalSets:ex.sets,
+        targetReps:s.reps,targetWeight:s.weight,done:!!s.done
+      });
+    });
+  });
+  return steps;
+};
 
 function WorkoutScreen({store}){
   const {settings,setSettings,setLogs,getLastSession,getLastWeight,getExerciseStats}=store;
@@ -1263,9 +1370,11 @@ function WorkoutScreen({store}){
   const [started,setStarted]=useState(false);
   const [done,setDone]=useState(false);
   const [sets,setSets]=useState({});
+  const [warmupLogs,setWarmupLogs]=useState({});
   const [timer,setTimer]=useState(null);
   const [expanded,setExpanded]=useState({});
   const [sessionNote,setSessionNote]=useState('');
+  const [guidedMode,setGuidedMode]=useState(()=>S.get('bf_guided_workout',true)!==false);
   const timerRef=useRef();
   const elapsed=useElapsed(started&&!done);
   const em=Math.floor(elapsed/60),es=elapsed%60;
@@ -1288,7 +1397,7 @@ function WorkoutScreen({store}){
       }
       exp[i]=i===0;
     });
-    setSets(init);setExpanded(exp);setStarted(false);setDone(false);setTimer(null);setSessionNote('');
+    setSets(init);setWarmupLogs({});setExpanded(exp);setStarted(false);setDone(false);setTimer(null);setSessionNote('');
   },[settings.currentDayIndex,settings.currentPhase]);
 
   useEffect(()=>{
@@ -1302,7 +1411,9 @@ function WorkoutScreen({store}){
       },1000);
       return()=>clearInterval(timerRef.current);
     }
-  },[timer&&timer.dur]);
+  },[timer?.id,timer?.full]);
+
+  useEffect(()=>{S.set('bf_guided_workout',guidedMode);},[guidedMode]);
 
   const updateSet=(exName,i,f,v)=>{
     setSets(prev=>{
@@ -1313,7 +1424,31 @@ function WorkoutScreen({store}){
     });
   };
 
-  const completeSet=(exName,i)=>{
+  const addTimerSeconds=seconds=>{
+    setTimer(t=>t?{...t,dur:t.dur+seconds,rem:t.rem+seconds}:t);
+  };
+
+  const stopTimer=()=>{
+    clearInterval(timerRef.current);
+    setTimer(null);
+  };
+
+  const startRestTimer=(exercise,fromLabel,nextStep,overrideSeconds,startWithoutNext=false)=>{
+    if(!nextStep&&!startWithoutNext){stopTimer();return;}
+    const dur=overrideSeconds||window.getRestSeconds(exercise||{});
+    clearInterval(timerRef.current);
+    setTimer({
+      id:Date.now(),
+      dur,
+      rem:dur,
+      full:false,
+      label:'Rest',
+      fromLabel,
+      nextLabel:nextStep?window.stepLabel(nextStep):''
+    });
+  };
+
+  const completeSet=(exName,i,context={})=>{
     let allExDone=false;
     setSets(prev=>{
       const n={...prev,[exName]:[...prev[exName]]};
@@ -1322,9 +1457,10 @@ function WorkoutScreen({store}){
       return n;
     });
     const ex=dayData.exercises.find(e=>e.name===exName);
-    const dur=window.getRestSeconds(ex||{});
-    clearInterval(timerRef.current);
-    setTimer({dur,rem:dur,full:false,label:exName});
+    if(context.startRest!==false){
+      const hasExplicitNext=Object.prototype.hasOwnProperty.call(context,'nextStep');
+      startRestTimer(ex,context.fromLabel||`${exName} · Set ${i+1}`,context.nextStep,undefined,!hasExplicitNext);
+    }
     // Auto-collapse done exercise, expand next
     setTimeout(()=>{
       const exIdx=dayData.exercises.findIndex(e=>e.name===exName);
@@ -1336,6 +1472,21 @@ function WorkoutScreen({store}){
         return cur;
       });
     },350);
+  };
+
+  const completeWarmup=(step,nextStep)=>{
+    setWarmupLogs(prev=>{
+      const current=prev[step.exerciseName]||[];
+      const next=[...current];
+      next[step.setIndex]={
+        weight:parseFloat(step.targetWeight)||0,
+        reps:parseInt(step.targetReps,10)||0,
+        done:true
+      };
+      return {...prev,[step.exerciseName]:next};
+    });
+    vibrate(35);
+    startRestTimer(step.exercise,window.stepLabel(step),nextStep,step.restSeconds);
   };
 
   const finishWorkout=()=>{
@@ -1383,6 +1534,38 @@ function WorkoutScreen({store}){
   const doneSets=requiredExercises.reduce((a,ex)=>a+((sets[ex.name]||[]).filter(s=>s.done).length),0);
   const pct=totalSets>0?Math.round((doneSets/totalSets)*100):0;
   const allComplete=requiredExercises.every(ex=>(sets[ex.name]||[]).every(s=>s.done));
+  const workoutSteps=useMemo(()=>window.buildWorkoutSteps(dayData,sets,warmupLogs),[dayData,sets,warmupLogs]);
+  const activeStepIndex=workoutSteps.findIndex(step=>!step.done);
+  const activeStep=activeStepIndex>-1?workoutSteps[activeStepIndex]:null;
+  const nextStep=activeStepIndex>-1?workoutSteps[activeStepIndex+1]||null:null;
+  const loggedStepCount=workoutSteps.filter(step=>step.done).length;
+  const flowPct=workoutSteps.length>0?Math.round((loggedStepCount/workoutSteps.length)*100):0;
+
+  const logGuidedStep=()=>{
+    if(!activeStep)return;
+    if(activeStep.type==='warmup'){
+      completeWarmup(activeStep,nextStep);
+      return;
+    }
+    completeSet(activeStep.exerciseName,activeStep.setIndex,{
+      fromLabel:window.stepLabel(activeStep),
+      nextStep
+    });
+    vibrate(35);
+  };
+
+  const skipGuidedStep=()=>{
+    if(!activeStep)return;
+    if(activeStep.type==='warmup'){
+      setWarmupLogs(prev=>{
+        const current=prev[activeStep.exerciseName]||[];
+        const next=[...current];
+        next[activeStep.setIndex]={weight:parseFloat(activeStep.targetWeight)||0,reps:parseInt(activeStep.targetReps,10)||0,done:true,skipped:true};
+        return {...prev,[activeStep.exerciseName]:next};
+      });
+      stopTimer();
+    }
+  };
 
   if(done){
     const d=done;
@@ -1428,6 +1611,9 @@ function WorkoutScreen({store}){
           <span className="pill p-dim">Wk {Math.max(1,phaseWeek)}/8</span>
           {isDeload&&<span className="pill p-warn">Deload</span>}
           {isStrength&&<span className="pill p-dim">Strength Wk</span>}
+          <button className="mode-toggle" style={{marginLeft:started?'8px':'auto'}} onClick={()=>setGuidedMode(v=>!v)}>
+            {guidedMode?'Classic view':'Guided view'}
+          </button>
           {started&&(
             <div style={{marginLeft:'auto',display:'flex',flexDirection:'column',alignItems:'flex-end',lineHeight:1}}>
               <span style={{fontSize:9,fontWeight:700,color:'var(--t3)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Elapsed</span>
@@ -1445,10 +1631,12 @@ function WorkoutScreen({store}){
       {started&&(
         <div style={{padding:'6px 16px 10px',flexShrink:0}}>
           <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
-            <div style={{fontSize:10,fontWeight:700,color:'var(--t3)',textTransform:'uppercase',letterSpacing:'.07em'}}>{doneSets}/{totalSets} sets</div>
-            <div style={{fontSize:10,fontWeight:700,color:pct===100?'var(--grn)':'var(--acc)'}}>{pct}%</div>
+            <div style={{fontSize:10,fontWeight:700,color:'var(--t3)',textTransform:'uppercase',letterSpacing:'.07em'}}>
+              {guidedMode?`${loggedStepCount}/${workoutSteps.length} steps`:`${doneSets}/${totalSets} sets`}
+            </div>
+            <div style={{fontSize:10,fontWeight:700,color:(guidedMode?flowPct:pct)===100?'var(--grn)':'var(--acc)'}}>{guidedMode?flowPct:pct}%</div>
           </div>
-          <div className="pbar"><div className="pbar-f" style={{width:pct+'%',background:pct===100?'var(--grn)':'var(--acc)'}}/></div>
+          <div className="pbar"><div className="pbar-f" style={{width:(guidedMode?flowPct:pct)+'%',background:(guidedMode?flowPct:pct)===100?'var(--grn)':'var(--acc)'}}/></div>
         </div>
       )}
 
@@ -1477,6 +1665,167 @@ function WorkoutScreen({store}){
             <div style={{fontSize:13,color:'var(--t2)',lineHeight:1.75}}>No resistance training. Light cardio is fine.<br/>Recovery is where growth happens.</div>
           </div>
         ):(
+          guidedMode&&started?(
+            <div className="live-shell">
+              {activeStep?(
+                <>
+                  <div className={'live-card'+(timer&&timer.rem>0?' resting':'')}>
+                    <div className="live-kicker">
+                      <span className={'pill '+(activeStep.type==='warmup'?'p-warn':activeStep.type==='work'?'p-acc':'p-dim')}>
+                        {activeStep.type==='warmup'?'Warmup':activeStep.type==='abs'?'Circuit':'Working Set'}
+                      </span>
+                      <span style={{fontSize:11,color:'var(--t3)',fontWeight:800,textTransform:'uppercase',letterSpacing:'.08em'}}>
+                        Step {activeStepIndex+1} of {workoutSteps.length}
+                      </span>
+                    </div>
+                    <div className="live-title">{activeStep.exerciseName}</div>
+                    <div className="live-sub">
+                      {activeStep.type==='warmup'
+                        ?`Warmup ${activeStep.setIndex+1} of ${activeStep.totalSets} · ${activeStep.restLabel||'Rest after'}`
+                        :activeStep.type==='abs'
+                          ?'Ab circuit · complete the full round'
+                          :`Set ${activeStep.setIndex+1} of ${activeStep.totalSets} · Target ${activeStep.exercise.repRange}`}
+                    </div>
+
+                    {activeStep.type==='warmup'?(
+                      <div className="live-target">
+                        <div className="live-field">
+                          <div className="live-field-label">Working Weight</div>
+                          <div className="live-input-row">
+                            <button className="live-stepper" onClick={()=>updateSet(activeStep.exerciseName,0,'weight',Math.max(0,(parseFloat((sets[activeStep.exerciseName]||[])[0]?.weight)||0)-5))}>−</button>
+                            <input className="live-input" type="number" inputMode="decimal"
+                              value={(sets[activeStep.exerciseName]||[])[0]?.weight||''}
+                              onChange={e=>updateSet(activeStep.exerciseName,0,'weight',e.target.value)}
+                              placeholder="lbs"/>
+                            <button className="live-stepper" onClick={()=>updateSet(activeStep.exerciseName,0,'weight',(parseFloat((sets[activeStep.exerciseName]||[])[0]?.weight)||0)+5)}>+</button>
+                          </div>
+                        </div>
+                        <div className="live-field">
+                          <div className="live-field-label">This Warmup</div>
+                          <div className="live-readout">{activeStep.targetWeight>0?activeStep.targetWeight:'—'} <span style={{fontSize:13,color:'var(--t3)',margin:'0 4px'}}>lb x</span> {activeStep.targetReps}</div>
+                        </div>
+                      </div>
+                    ):activeStep.type==='abs'?(
+                      <div className="live-hint" style={{marginTop:18}}>
+                        <b style={{color:'var(--t1)'}}>Round:</b> Weighted 10-12 reps, unweighted to failure, unweighted to failure. Rest 2-3 minutes between rounds.
+                      </div>
+                    ):(
+                      <div className="live-target">
+                        <div className="live-field">
+                          <div className="live-field-label">Weight</div>
+                          <div className="live-input-row">
+                            <button className="live-stepper" onClick={()=>updateSet(activeStep.exerciseName,activeStep.setIndex,'weight',Math.max(0,(parseFloat((sets[activeStep.exerciseName]||[])[activeStep.setIndex]?.weight)||0)-5))}>−</button>
+                            <input className="live-input" type="number" inputMode="decimal"
+                              value={(sets[activeStep.exerciseName]||[])[activeStep.setIndex]?.weight||''}
+                              onChange={e=>updateSet(activeStep.exerciseName,activeStep.setIndex,'weight',e.target.value)}
+                              placeholder={activeStep.exercise.bodyweight?'BW+':'lbs'}/>
+                            <button className="live-stepper" onClick={()=>updateSet(activeStep.exerciseName,activeStep.setIndex,'weight',(parseFloat((sets[activeStep.exerciseName]||[])[activeStep.setIndex]?.weight)||0)+5)}>+</button>
+                          </div>
+                        </div>
+                        <div className="live-field">
+                          <div className="live-field-label">Reps</div>
+                          <div className="live-input-row">
+                            <button className="live-stepper" onClick={()=>updateSet(activeStep.exerciseName,activeStep.setIndex,'reps',Math.max(0,(parseInt((sets[activeStep.exerciseName]||[])[activeStep.setIndex]?.reps,10)||0)-1))}>−</button>
+                            <input className="live-input" type="number" inputMode="numeric"
+                              value={(sets[activeStep.exerciseName]||[])[activeStep.setIndex]?.reps||''}
+                              onChange={e=>updateSet(activeStep.exerciseName,activeStep.setIndex,'reps',e.target.value)}
+                              placeholder="reps"/>
+                            <button className="live-stepper" onClick={()=>updateSet(activeStep.exerciseName,activeStep.setIndex,'reps',(parseInt((sets[activeStep.exerciseName]||[])[activeStep.setIndex]?.reps,10)||0)+1)}>+</button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeStep.type==='warmup'&&(
+                      <div className="live-hint">Warmups are tracked for workout flow only. They will not inflate your working-set volume or PR history.</div>
+                    )}
+
+                    {timer&&timer.rem>0&&(
+                      <div className="live-rest-panel">
+                        <div className="live-rest-top">
+                          <div>
+                            <div style={{fontSize:10,color:'var(--grn)',fontWeight:800,textTransform:'uppercase',letterSpacing:'.09em',marginBottom:4}}>Resting Now</div>
+                            <div className="live-rest-copy">
+                              {timer.fromLabel&&<>From <b>{timer.fromLabel}</b><br/></>}
+                              {timer.nextLabel&&<>Next <b>{timer.nextLabel}</b></>}
+                            </div>
+                          </div>
+                          <div className="live-rest-time">{window.formatRestTime(timer.rem)}</div>
+                        </div>
+                        <div className="live-rest-actions">
+                          <button onClick={()=>addTimerSeconds(30)}>+30 sec</button>
+                          <button onClick={stopTimer}>{timer.rem===0?'Continue':'Skip rest'}</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="live-upcoming">
+                    <div className="live-upcoming-head">
+                      <div style={{fontSize:13,fontWeight:800}}>Workout Flow</div>
+                      <div style={{fontSize:11,color:'var(--t3)',fontWeight:800}}>{doneSets}/{totalSets} working sets</div>
+                    </div>
+                    {workoutSteps.slice(Math.max(0,activeStepIndex-2),activeStepIndex+6).map((step,i)=>{
+                      const realIndex=Math.max(0,activeStepIndex-2)+i;
+                      const rowState=step.done?' done':realIndex===activeStepIndex?' active':timer?.nextLabel===window.stepLabel(step)?' resting':'';
+                      return(
+                        <div key={window.stepKey(step)} className={'live-step-row'+rowState}>
+                          <div className="live-step-dot">{step.done?'✓':realIndex+1}</div>
+                          <div className="live-step-main">
+                            <div className="live-step-name">{step.exerciseName}</div>
+                            <div className="live-step-meta">
+                              {step.type==='warmup'
+                                ?`Warmup ${step.setIndex+1} · ${step.targetWeight || '—'} lb x ${step.targetReps}`
+                                :step.type==='abs'
+                                  ?'Ab circuit'
+                                  :`Set ${step.setIndex+1} · ${(sets[step.exerciseName]||[])[step.setIndex]?.weight || '—'} lb x ${(sets[step.exerciseName]||[])[step.setIndex]?.reps || '—'}`}
+                            </div>
+                          </div>
+                          <span className={'pill '+(step.type==='warmup'?'p-warn':step.type==='work'?'p-acc':'p-dim')}>{step.type==='warmup'?'WU':step.type==='abs'?'ABS':'SET'}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="card2" style={{padding:'14px 14px 12px'}}>
+                    <div className="sec" style={{marginBottom:8}}>Session Notes</div>
+                    <textarea
+                      value={sessionNote}
+                      onChange={e=>setSessionNote(e.target.value)}
+                      placeholder="How did this session feel? Note substitutions, pain points, cues, or wins."
+                      style={{width:'100%',minHeight:86,resize:'vertical',background:'var(--s3)',border:'1px solid var(--bdr2)',borderRadius:12,color:'var(--t1)',padding:'12px 13px',fontSize:13,lineHeight:1.5,fontFamily:'inherit',outline:'none'}}
+                    />
+                  </div>
+
+                  <div className="live-sticky">
+                    <button className={'btn'+(activeStep.type==='warmup'?' grn':'')}
+                      disabled={!(timer&&timer.rem>0)&&activeStep.type==='work'&&!window.canLogSet(activeStep.exercise,(sets[activeStep.exerciseName]||[])[activeStep.setIndex]||{})}
+                      onClick={timer&&timer.rem>0?stopTimer:logGuidedStep}>
+                      {timer&&timer.rem>0?'Skip Rest & Start Next':activeStep.type==='warmup'?'Log Warmup ✓':activeStep.type==='abs'?'Complete Circuit ✓':'Log Set ✓'}
+                    </button>
+                    {!(timer&&timer.rem>0)&&activeStep.type==='warmup'&&(
+                      <div className="live-secondary-row">
+                        <button className="btn-ghost" onClick={skipGuidedStep}>
+                          Skip Warmup
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
+              ):(
+                <div className="live-shell" style={{paddingLeft:0,paddingRight:0}}>
+                  <div className="live-card">
+                    <span className="pill p-grn">All Sets Complete</span>
+                    <div className="live-title" style={{marginTop:14}}>Ready to finish</div>
+                    <div className="live-sub">Your working sets are logged. Finish the session to save volume, PRs, notes, and advance the program.</div>
+                  </div>
+                  <div className="live-sticky">
+                    <button className="btn grn" onClick={finishWorkout}>Finish Session ✓</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ):(
           <>
             {dayData.exercises.map((ex,i)=>(
               <ExCard key={ex.name+i}
@@ -1514,17 +1863,23 @@ function WorkoutScreen({store}){
             )}
             <div style={{height:24}}/>
           </>
+          )
         )}
       </div>
 
       {timer&&!timer.full&&timer.rem>0&&(
         <MiniTimer duration={timer.dur} remaining={timer.rem}
           onExpand={()=>setTimer(t=>t?{...t,full:true}:null)}
-          onDismiss={()=>{clearInterval(timerRef.current);setTimer(null);}}/>
+          onDismiss={stopTimer}
+          onAddTime={addTimerSeconds}
+          nextLabel={timer.nextLabel}/>
       )}
       {timer?.full&&(
         <TimerOverlay duration={timer.dur} label={timer.label}
-          onDismiss={()=>{clearInterval(timerRef.current);setTimer(null);}}/>
+          fromLabel={timer.fromLabel}
+          nextLabel={timer.nextLabel}
+          onAddTime={addTimerSeconds}
+          onDismiss={stopTimer}/>
       )}
     </div>
   );
