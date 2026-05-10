@@ -293,7 +293,14 @@ struct WorkoutWebView: View {
             if let snapshot = browser.snapshot {
                 NativeProgramView(
                     snapshot: snapshot,
-                    onOpenWorkout: { select(.today) },
+                    onOpenWorkout: { openLiveWorkout() },
+                    onOpenProgramWorkout: { phaseID, phaseWeek in
+                        browser.updateProgramProgress(phaseID: phaseID, phaseWeek: phaseWeek)
+                        openLiveWorkout()
+                    },
+                    onUpdateProgramProgress: { phaseID, phaseWeek in
+                        browser.updateProgramProgress(phaseID: phaseID, phaseWeek: phaseWeek)
+                    },
                     onResetCrossfitWeek: { browser.resetCrossfitWeek() },
                     onOpenCrossfitSource: { browser.openCrossfitSource() },
                     onToggleCrossfitDone: { day, isDone in browser.setCrossfitDone(day: day, isDone: isDone) },
@@ -437,6 +444,7 @@ final class WorkoutBrowserModel: ObservableObject {
 
     weak var webView: WKWebView?
     private var pendingScreen: WorkoutSection?
+    private var pendingProgramProgress: (phaseID: Int, phaseWeek: Int)?
     private var nativeLiveModeEnabled = false
 
     init(fileManager: FileManager = .default) {
@@ -529,6 +537,14 @@ final class WorkoutBrowserModel: ObservableObject {
         webView?.evaluateJavaScript("window.__bfNativeSetLiveMode && window.__bfNativeSetLiveMode(\(flag));")
     }
 
+    func updateProgramProgress(phaseID: Int, phaseWeek: Int) {
+        let boundedWeek = min(max(phaseWeek, 1), 9)
+        let resolvedPhaseID = snapshot?.phases.first(where: { $0.id == phaseID })?.id ?? snapshot?.phases.first?.id ?? phaseID
+        pendingProgramProgress = (resolvedPhaseID, boundedWeek)
+        applyOptimisticProgramProgress(phaseID: resolvedPhaseID, phaseWeek: boundedWeek)
+        applyPendingProgramProgressUpdate()
+    }
+
     func updateCrossfitLog(day: String, patch: [String: Any]) {
         guard let dayLiteral = jsonLiteral(day), let patchLiteral = jsonLiteral(patch) else { return }
         let script = "window.__bfNativeUpdateCrossfitLog && window.__bfNativeUpdateCrossfitLog(\(dayLiteral), \(patchLiteral));"
@@ -552,6 +568,45 @@ final class WorkoutBrowserModel: ObservableObject {
     private func evaluateNavigation(on webView: WKWebView, to screen: WorkoutSection) {
         let script = "window.__bfNativeNavigate && window.__bfNativeNavigate('\(screen.rawValue)');"
         webView.evaluateJavaScript(script)
+    }
+
+    func applyPendingProgramProgressUpdate() {
+        guard let pendingProgramProgress, let webView else { return }
+        let script = """
+        (window.__bfNativeUpdateProgramProgress ? window.__bfNativeUpdateProgramProgress(\(pendingProgramProgress.phaseID), \(pendingProgramProgress.phaseWeek)) : false);
+        """
+        webView.evaluateJavaScript(script) { result, _ in
+            guard (result as? Bool) == true else { return }
+            DispatchQueue.main.async {
+                if self.pendingProgramProgress?.phaseID == pendingProgramProgress.phaseID,
+                   self.pendingProgramProgress?.phaseWeek == pendingProgramProgress.phaseWeek {
+                    self.pendingProgramProgress = nil
+                    webView.reload()
+                }
+            }
+        }
+    }
+
+    private func applyOptimisticProgramProgress(phaseID: Int, phaseWeek: Int) {
+        guard var snapshot else { return }
+        guard let phase = snapshot.phases.first(where: { $0.id == phaseID }) ?? snapshot.phases.first else { return }
+
+        let absoluteWeek = ((phase.id - 1) * 9) + phaseWeek
+        let startOfToday = Calendar.current.startOfDay(for: Date())
+        let startDate = Calendar.current.date(byAdding: .day, value: -((absoluteWeek - 1) * 7), to: startOfToday) ?? startOfToday
+        let previousPhaseID = snapshot.settings.currentPhase
+        let previousDayIndex = snapshot.settings.currentDayIndex
+
+        snapshot.settings.startDate = storageDateKey(for: startDate)
+        snapshot.settings.currentPhase = phase.id
+        snapshot.settings.currentDayIndex = previousPhaseID == phase.id && phase.days.indices.contains(previousDayIndex) ? previousDayIndex : 0
+
+        if let data = try? JSONEncoder().encode(snapshot.settings),
+           let encoded = String(data: data, encoding: .utf8) {
+            WorkoutNativeStorage.save(key: "bf5_s", value: encoded)
+        }
+
+        self.snapshot = snapshot
     }
 
     private func persistSnapshot(_ snapshot: WorkoutEngineSnapshot?) {
@@ -585,12 +640,16 @@ final class WorkoutBrowserModel: ObservableObject {
     }
 
     private func todayStorageDateKey() -> String {
+        storageDateKey(for: Date())
+    }
+
+    private func storageDateKey(for date: Date) -> String {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = .current
         formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: Date())
+        return formatter.string(from: date)
     }
 }
 
@@ -723,6 +782,7 @@ struct WorkoutBrowser: UIViewRepresentable {
             model.updateNavigationState(from: webView)
             model.applyPendingNavigationIfNeeded()
             model.applyNativePresentationMode()
+            model.applyPendingProgramProgressUpdate()
             webView.evaluateJavaScript("window.__bfReportScreen && window.__bfReportScreen();")
             model.requestSnapshot()
         }
@@ -927,6 +987,10 @@ private let nativeSnapshotBridgeScript = """
     return now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate());
   }
 
+  function storageDateKey(date) {
+    return date.getFullYear() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate());
+  }
+
   function readStorage(key, fallback) {
     try {
       var value = localStorage.getItem(key);
@@ -989,6 +1053,37 @@ private let nativeSnapshotBridgeScript = """
       var logs = readStorage('bf5_cf_logs', {});
       logs[day] = Object.assign({}, logs[day] || {}, patch || {});
       localStorage.setItem('bf5_cf_logs', JSON.stringify(logs));
+      window.__bfSendSnapshot();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  window.__bfNativeUpdateProgramProgress = function(phaseID, phaseWeek) {
+    try {
+      var phases = (window.WORKOUT_DATA && window.WORKOUT_DATA.phases) || [];
+      var targetPhaseID = parseInt(phaseID, 10);
+      var targetWeek = Math.max(1, Math.min(9, parseInt(phaseWeek, 10) || 1));
+      var phase = phases.find(function(item) { return item.id === targetPhaseID; }) || phases[0];
+      if (!phase) return false;
+
+      var current = readStorage('bf5_s', { startDate: todayString(), currentPhase: 1, currentDayIndex: 0 });
+      var absoluteWeek = ((phase.id - 1) * 9) + targetWeek;
+      var startDate = new Date();
+      startDate.setHours(0, 0, 0, 0);
+      startDate.setDate(startDate.getDate() - ((absoluteWeek - 1) * 7));
+
+      var dayIndex = current.currentPhase === phase.id ? (parseInt(current.currentDayIndex, 10) || 0) : 0;
+      if (!phase.days || !phase.days[dayIndex]) {
+        dayIndex = 0;
+      }
+
+      localStorage.setItem('bf5_s', JSON.stringify(Object.assign({}, current, {
+        startDate: storageDateKey(startDate),
+        currentPhase: phase.id,
+        currentDayIndex: dayIndex
+      })));
       window.__bfSendSnapshot();
       return true;
     } catch (error) {

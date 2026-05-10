@@ -956,6 +956,8 @@ struct NativeProgramView: View {
 
     let snapshot: WorkoutEngineSnapshot
     let onOpenWorkout: () -> Void
+    let onOpenProgramWorkout: (_ phaseID: Int, _ phaseWeek: Int) -> Void
+    let onUpdateProgramProgress: (_ phaseID: Int, _ phaseWeek: Int) -> Void
     let onResetCrossfitWeek: () -> Void
     let onOpenCrossfitSource: () -> Void
     let onToggleCrossfitDone: (_ day: String, _ isDone: Bool) -> Void
@@ -968,6 +970,8 @@ struct NativeProgramView: View {
     init(
         snapshot: WorkoutEngineSnapshot,
         onOpenWorkout: @escaping () -> Void,
+        onOpenProgramWorkout: @escaping (_ phaseID: Int, _ phaseWeek: Int) -> Void,
+        onUpdateProgramProgress: @escaping (_ phaseID: Int, _ phaseWeek: Int) -> Void,
         onResetCrossfitWeek: @escaping () -> Void,
         onOpenCrossfitSource: @escaping () -> Void,
         onToggleCrossfitDone: @escaping (_ day: String, _ isDone: Bool) -> Void,
@@ -976,6 +980,8 @@ struct NativeProgramView: View {
     ) {
         self.snapshot = snapshot
         self.onOpenWorkout = onOpenWorkout
+        self.onOpenProgramWorkout = onOpenProgramWorkout
+        self.onUpdateProgramProgress = onUpdateProgramProgress
         self.onResetCrossfitWeek = onResetCrossfitWeek
         self.onOpenCrossfitSource = onOpenCrossfitSource
         self.onToggleCrossfitDone = onToggleCrossfitDone
@@ -986,6 +992,21 @@ struct NativeProgramView: View {
 
     private var selectedPhase: WorkoutPhase? {
         snapshot.phases.first(where: { $0.id == selectedPhaseID }) ?? snapshot.currentPhase
+    }
+
+    private var currentPhaseWeek: Int {
+        min(max(snapshot.weekContext().phaseWeek, 1), 9)
+    }
+
+    private var currentWeekLabel: String {
+        currentPhaseWeek == 9 ? "Week 9 · Deload" : "Week \(currentPhaseWeek)"
+    }
+
+    private var phaseWeekBinding: Binding<Int> {
+        Binding(
+            get: { currentPhaseWeek },
+            set: { onUpdateProgramProgress(snapshot.settings.currentPhase, $0) }
+        )
     }
 
     var body: some View {
@@ -1000,6 +1021,7 @@ struct NativeProgramView: View {
                 .accessibilityLabel("Program section")
 
                 if selectedSubtab == .program {
+                    currentProgrammingCard
                     phaseSelector
 
                     if let phase = selectedPhase {
@@ -1028,6 +1050,66 @@ struct NativeProgramView: View {
             .padding(AppTheme.Spacing.l)
         }
         .background(AppTheme.dashboardGradient)
+        .onChange(of: snapshot.settings.currentPhase) { _, phaseID in
+            selectedPhaseID = phaseID
+        }
+    }
+
+    private var currentProgrammingCard: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(alignment: .top, spacing: 12) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Current programming")
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+
+                    Text("\(snapshot.currentPhase?.label ?? "Program") · \(currentWeekLabel)")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                workoutChip(snapshot.weekContext().isDeload ? "Deload" : "Active", style: snapshot.weekContext().isDeload ? .gold : .accent)
+            }
+
+            HStack(spacing: 12) {
+                Menu {
+                    ForEach(snapshot.phases) { phase in
+                        Button {
+                            selectedPhaseID = phase.id
+                            onUpdateProgramProgress(phase.id, currentPhaseWeek)
+                        } label: {
+                            Text("\(phase.label) · \(phase.weekRange)")
+                        }
+                    }
+                } label: {
+                    Label(snapshot.currentPhase?.label ?? "Phase", systemImage: "square.stack.3d.up.fill")
+                        .font(.subheadline.weight(.semibold))
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                }
+                .buttonStyle(.bordered)
+                .tint(AppTheme.blue)
+
+                Stepper(value: phaseWeekBinding, in: 1...9) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(currentWeekLabel)
+                            .font(.subheadline.weight(.semibold))
+                        Text("Phase week")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(maxWidth: .infinity)
+            }
+        }
+        .padding(18)
+        .background(AppTheme.card, in: RoundedRectangle(cornerRadius: 22))
+        .overlay {
+            RoundedRectangle(cornerRadius: 22)
+                .stroke(AppTheme.border, lineWidth: 1)
+        }
     }
 
     private var phaseSelector: some View {
@@ -1077,14 +1159,27 @@ struct NativeProgramView: View {
                 .font(.body)
                 .foregroundStyle(.white.opacity(0.8))
 
-            Button(action: onOpenWorkout) {
-                Label("Open current workout", systemImage: "figure.strengthtraining.traditional")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, minHeight: 50)
+            if phase.id != snapshot.settings.currentPhase {
+                Button {
+                    onOpenProgramWorkout(phase.id, currentPhaseWeek)
+                } label: {
+                    Label("Start this phase", systemImage: "play.fill")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.white)
+                .foregroundStyle(AppTheme.navy)
+            } else {
+                Button(action: onOpenWorkout) {
+                    Label("Start live workout", systemImage: "figure.strengthtraining.traditional")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(AppTheme.gold)
+                .foregroundStyle(AppTheme.navy)
             }
-            .buttonStyle(.borderedProminent)
-            .tint(AppTheme.gold)
-            .foregroundStyle(AppTheme.navy)
         }
         .padding(22)
         .background(
