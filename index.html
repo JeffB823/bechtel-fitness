@@ -15,7 +15,7 @@
   --bg:#07111f;--s1:#0d1a2b;--s2:#11233a;--s3:#18314d;--s4:#234364;
   --acc:#5aa8ff;--acc-rgb:90,168,255;--acc-s:rgba(var(--acc-rgb),.14);--acc-b:rgba(var(--acc-rgb),.34);
   --grn:#f0c75e;--grn-rgb:240,199,94;--grn-s:rgba(var(--grn-rgb),.16);--grn-b:rgba(var(--grn-rgb),.34);
-  --t1:#eef5ff;--t2:#9aafc9;--t3:#5d7493;--t4:#22354e;
+  --t1:#eef5ff;--t2:#9aafc9;--t3:#8a9fb8;--t4:#22354e;
   --bdr:#1a2f49;--bdr2:#274360;
   --nav:64px;--safe:env(safe-area-inset-bottom,0px);--top:env(safe-area-inset-top,0px);
   --r:16px;--ri:10px;--rp:100px;
@@ -35,7 +35,7 @@ select{-webkit-appearance:none}
 
 /* Nav */
 .nav{position:absolute;bottom:0;left:0;right:0;height:calc(var(--nav) + var(--safe));background:var(--s1);border-top:1px solid var(--bdr);display:flex;align-items:flex-start;padding-top:8px;z-index:200}
-.ntab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--t3);font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;transition:color .2s;padding-top:4px}
+.ntab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--t3);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;transition:color .2s;padding-top:4px}
 .ntab svg{width:22px;height:22px;stroke-width:1.9;transition:transform .2s}
 .ntab.on{color:var(--acc)}
 .ntab.on svg{transform:scale(1.1)}
@@ -54,7 +54,7 @@ select{-webkit-appearance:none}
 .btn.grn{background:var(--grn)}
 .btn-ghost{background:var(--s3);color:var(--t1);border-radius:var(--ri);font-size:13px;font-weight:600;padding:9px 16px;border:1px solid var(--bdr2);font-family:inherit}
 .btn-ghost:active{opacity:.7}
-.btn-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--s3);border:1px solid var(--bdr2)}
+.btn-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--s3);border:1px solid var(--bdr2)}
 
 /* Cards */
 .card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r)}
@@ -68,7 +68,7 @@ select{-webkit-appearance:none}
 .snum{font-size:12px;font-weight:800;color:var(--t3);text-align:center}
 .sprev{text-align:center}
 .sprev-w{font-size:15px;font-weight:700;color:var(--t2);line-height:1.15;font-variant-numeric:tabular-nums}
-.sprev-r{font-size:10px;color:var(--t3);margin-top:1px}
+.sprev-r{font-size:11px;color:var(--t3);margin-top:1px}
 .sinput{background:var(--s3);border:1.5px solid var(--bdr2);border-radius:var(--ri);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:22px;font-weight:800;text-align:center;height:52px;width:100%;outline:none;font-variant-numeric:tabular-nums;transition:border-color .15s,background .15s;caret-color:var(--acc)}
 .sinput:focus{border-color:var(--acc);background:var(--s2)}
 .sinput.ai{border-color:rgba(var(--acc-rgb),.45)}
@@ -94,10 +94,10 @@ select{-webkit-appearance:none}
 .exdot{width:8px;height:8px;border-radius:50%;background:var(--s4);transition:background .2s,transform .15s}
 .exdot.d{background:var(--grn);transform:scale(1.1)}
 .exdot.cur{background:var(--acc);transform:scale(1.2)}
-.sethdr{display:grid;grid-template-columns:28px 54px 1fr 76px 52px;gap:6px;padding:2px 14px 6px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3)}
+.sethdr{display:grid;grid-template-columns:28px 54px 1fr 76px 52px;gap:6px;padding:2px 14px 6px;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3)}
 .qa{display:flex;gap:5px;flex-wrap:wrap;padding:10px 14px 13px;align-items:center}
-.qa-lbl{font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.07em;width:100%}
-.qa-btn{padding:7px 11px;background:var(--s3);border-radius:8px;font-size:12px;font-weight:700;color:var(--t2);border:1px solid var(--bdr2);transition:all .12s;font-family:inherit}
+.qa-lbl{font-size:11px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.07em;width:100%}
+.qa-btn{min-width:44px;min-height:44px;padding:8px 11px;background:var(--s3);border-radius:8px;font-size:12px;font-weight:700;color:var(--t2);border:1px solid var(--bdr2);transition:all .12s;font-family:inherit}
 .qa-btn:active{background:var(--s2);color:var(--t1);transform:scale(.95)}
 
 /* Progress bar */
@@ -108,11 +108,11 @@ select{-webkit-appearance:none}
 .mtimer{position:relative;height:52px;background:var(--s1);border-top:1px solid var(--bdr);display:flex;align-items:center;padding:0 14px;gap:12px;flex-shrink:0;cursor:pointer;overflow:hidden}
 .mtimer-bg{position:absolute;left:0;top:0;bottom:0;background:var(--acc-s);pointer-events:none;transition:width 1s linear}
 .mtimer-time{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-1.5px;color:var(--t1);position:relative;flex:1}
-.mtimer-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);position:relative}
+.mtimer-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);position:relative}
 .mtimer-skip{font-size:13px;font-weight:700;color:var(--t2);padding:8px 14px;background:var(--s3);border-radius:8px;border:1px solid var(--bdr2);position:relative;font-family:inherit}
 .mtimer-copy{position:relative;flex:1;min-width:0}
 .mtimer-copy .mtimer-time{display:block;line-height:1}
-.mtimer-next{display:block;font-size:10px;color:var(--t3);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.mtimer-next{display:block;font-size:11px;color:var(--t3);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
 
 /* Full timer */
 .tover{position:absolute;inset:0;background:rgba(7,17,31,.97);backdrop-filter:blur(20px);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
@@ -141,7 +141,7 @@ select{-webkit-appearance:none}
 .live-sub{font-size:13px;color:var(--t2);font-weight:700;margin-top:7px;line-height:1.35}
 .live-target{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
 .live-field{background:rgba(7,17,31,.55);border:1px solid var(--bdr2);border-radius:18px;padding:12px}
-.live-field-label{font-size:10px;color:var(--t3);font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.live-field-label{font-size:11px;color:var(--t3);font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
 .live-input-row{display:flex;align-items:center;gap:8px}
 .live-stepper{width:42px;height:46px;border-radius:14px;background:var(--s3);border:1px solid var(--bdr2);font-size:24px;font-weight:800;color:var(--t2);display:flex;align-items:center;justify-content:center}
 .live-input{min-width:0;width:100%;height:52px;background:var(--s2);border:1.5px solid rgba(var(--acc-rgb),.38);border-radius:15px;color:var(--t1);font-size:27px;font-weight:800;text-align:center;font-family:inherit;outline:none;font-variant-numeric:tabular-nums}
@@ -186,14 +186,14 @@ select{-webkit-appearance:none}
 /* Home */
 .home-hdr{padding:calc(var(--top) + 20px) 16px 16px;background:var(--s1);border-bottom:1px solid var(--bdr);flex-shrink:0}
 .greeting{font-size:22px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin-bottom:14px}
-.wdot{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+.wdot{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
 .wdot.logged{background:var(--grn-s);color:var(--grn);border:1px solid var(--grn-b)}
 .wdot.today{background:var(--acc-s);color:var(--acc);border:1px solid var(--acc-b)}
 .wdot.empty{background:var(--s3);color:var(--t3);border:1px solid var(--bdr2)}
 .stat-cell{flex:1;padding:13px 0;text-align:center;border-right:1px solid var(--bdr)}
 .stat-cell:last-child{border-right:none}
 .stat-val{font-size:22px;font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
-.stat-key{font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+.stat-key{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
 .pr-row{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--bdr)}
 .pr-row:last-child{border-bottom:none}
 
@@ -209,10 +209,10 @@ select{-webkit-appearance:none}
 /* Workout complete */
 .wc-stat{background:var(--s2);border:1px solid var(--bdr2);border-radius:12px;padding:14px;text-align:center;flex:1}
 .wc-val{font-size:26px;font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
-.wc-key{font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
+.wc-key{font-size:11px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
 
 /* Sec label */
-.sec{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px}
+.sec{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px}
 
 /* Anims */
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
@@ -520,6 +520,13 @@ const S = {
 const pad2=n=>String(n).padStart(2,'0');
 const dateKey=d=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
 const todayStr=()=>dateKey(new Date());
+const programStartDate=(phaseID,phaseWeek)=>{
+  const absoluteWeek=((phaseID-1)*9)+Math.max(1,Math.min(9,parseInt(phaseWeek,10)||1));
+  const d=new Date();
+  d.setHours(0,0,0,0);
+  d.setDate(d.getDate()-((absoluteWeek-1)*7));
+  return dateKey(d);
+};
 const parseDateInput=s=>{
   if(!s)return new Date();
   const [y,m,d]=String(s).split('-').map(Number);
@@ -556,6 +563,7 @@ const estimate1RM=(weight,reps)=>{
   return w>0&&r>0?Math.round(w*(1+r/30)):0;
 };
 const getSetVolume=s=>((parseFloat(s.weight)||0)*(parseInt(s.reps,10)||0));
+const countableSets=sets=>(sets||[]).filter(s=>!s.skipped);
 const getBestSet=sets=>(sets||[]).reduce((best,s)=>{
   const weight=parseFloat(s.weight)||0;
   const reps=parseInt(s.reps,10)||0;
@@ -625,31 +633,33 @@ function useStore(){
   const getLastSession=useCallback(name=>{
     for(const l of sessions){
       const ex=l.exercises?.find(e=>e.name===name);
-      if(ex?.sets?.length)return ex.sets;
+      const validSets=countableSets(ex?.sets);
+      if(validSets.length)return validSets;
     }
     return null;
   },[sessions]);
 
   const getLastWeight=useCallback(name=>{
-    return getLastSession(name)?.find(s=>s.weight>0)?.weight||null;
+    return countableSets(getLastSession(name)).find(s=>s.weight>0)?.weight||null;
   },[getLastSession]);
 
   const getExerciseStats=useCallback(name=>{
     let bestWeight=0,bestE1RM=0,bestVolume=0,sessionCount=0,bestSet=null;
     sessions.forEach(l=>{
       const ex=l.exercises?.find(e=>e.name===name);
-      if(!ex?.sets?.length)return;
+      const validSets=countableSets(ex?.sets);
+      if(!validSets.length)return;
       sessionCount++;
-      const sessionBest=getBestSet(ex.sets);
+      const sessionBest=getBestSet(validSets);
       if(sessionBest){
         if(!bestSet
           || sessionBest.e1rm>bestSet.e1rm
           || (sessionBest.e1rm===bestSet.e1rm&&sessionBest.weight>bestSet.weight)
           || (sessionBest.e1rm===bestSet.e1rm&&sessionBest.weight===bestSet.weight&&sessionBest.reps>bestSet.reps)
         )bestSet=sessionBest;
-        bestWeight=Math.max(bestWeight,...ex.sets.map(s=>parseFloat(s.weight)||0));
-        bestE1RM=Math.max(bestE1RM,...ex.sets.map(s=>estimate1RM(s.weight,s.reps)));
-        bestVolume=Math.max(bestVolume,...ex.sets.map(getSetVolume));
+        bestWeight=Math.max(bestWeight,...validSets.map(s=>parseFloat(s.weight)||0));
+        bestE1RM=Math.max(bestE1RM,...validSets.map(s=>estimate1RM(s.weight,s.reps)));
+        bestVolume=Math.max(bestVolume,...validSets.map(getSetVolume));
       }
     });
     if(!sessionCount)return null;
@@ -669,12 +679,12 @@ function useStore(){
   },[getExerciseStats]);
 
   const getHistory=useCallback(name=>{
-    const filtered=[...sessions].reverse().filter(l=>l.exercises?.some(e=>e.name===name));
+    const filtered=[...sessions].reverse().filter(l=>l.exercises?.some(e=>e.name===name&&countableSets(e.sets).length));
     const perDate=filtered.reduce((acc,l)=>({...acc,[l.date]:(acc[l.date]||0)+1}),{});
     const seen={};
     return filtered.map(l=>{
       const ex=l.exercises.find(e=>e.name===name);
-      const best=getBestSet(ex?.sets||[]);
+      const best=getBestSet(countableSets(ex?.sets));
       seen[l.date]=(seen[l.date]||0)+1;
       return{
         date:l.date,
@@ -718,7 +728,7 @@ function useStore(){
       const dayLogs=asDayLogs(logs[k]);
       if(!dayLogs.length)return 0;
       return dayLogs.reduce((sum,log)=>
-        sum+(log.exercises?.reduce((a,ex)=>a+(ex.sets?.reduce((b,s)=>b+getSetVolume(s),0)||0),0)||0)
+        sum+(log.exercises?.reduce((a,ex)=>a+(countableSets(ex.sets).reduce((b,s)=>b+getSetVolume(s),0)||0),0)||0)
       ,0);
     });
   },[logs]);
@@ -727,7 +737,7 @@ function useStore(){
     const prs={};
     for(const l of sessions){
       l.exercises?.forEach(ex=>{
-        const best=getBestSet(ex.sets||[]);
+        const best=getBestSet(countableSets(ex.sets));
         if(!best)return;
         if(!prs[ex.name]
           || best.e1rm>prs[ex.name].e1rm
@@ -745,7 +755,7 @@ function useStore(){
   return{settings,setSettings,logs,setLogs,sessions,getLastSession,getLastWeight,getExerciseStats,getPR,getHistory,getStreak,getWeekDays,getWeeklyVolume,getAllPRs};
 }
 
-Object.assign(window,{useStore,playBeep,vibrate,S,todayStr,getGreeting,estimate1RM,getBestSet,formatBestSet});
+Object.assign(window,{useStore,playBeep,vibrate,S,todayStr,getGreeting,estimate1RM,getBestSet,formatBestSet,countableSets});
 </script>
 
 <!-- ─── Logo + Nav ─── -->
@@ -761,7 +771,7 @@ function LogoMark({size=44}){
       <rect x="82" y="35" width="9" height="28" rx="2.5" fill="#5aa8ff"/>
       <rect x="90" y="39" width="7.5" height="20" rx="2" fill="#2d74bf"/>
       <text x="51" y="65" textAnchor="middle" fontSize="52" fontWeight="900" fill="#eef5ff" fontFamily="Arial Black,Arial,sans-serif">B</text>
-      <text x="50" y="88" textAnchor="middle" fontSize="10" fontWeight="700" fill="#f0c75e" fontFamily="Arial,sans-serif" letterSpacing="2.5">FITNESS</text>
+      <text x="50" y="88" textAnchor="middle" fontSize="11" fontWeight="700" fill="#f0c75e" fontFamily="Arial,sans-serif" letterSpacing="2.5">FITNESS</text>
     </svg>
   );
 }
@@ -770,9 +780,8 @@ function BottomNav({screen,setScreen}){
   const tabs=[
     {id:'home',label:'Home',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21V12h6v9"/></svg>},
     {id:'today',label:'Workout',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M6.5 6.5h11M6.5 17.5h11M4 12h16M8 3v3M16 3v3M8 18v3M16 18v3"/></svg>},
-    {id:'history',label:'Progress',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>},
     {id:'crossfit',label:'WOD',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8h16"/><path d="M6 8v8"/><path d="M18 8v8"/><path d="M9 16h6"/><path d="M3 12h18"/></svg>},
-    {id:'plan',label:'Program',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>},
+    {id:'history',label:'Progress',icon:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>},
   ];
   return(
     <nav className="nav">
@@ -894,12 +903,12 @@ function WarmupSheet({exerciseName,workingWeight,onClose}){
         <div style={{display:'flex',alignItems:'center',gap:10,background:'var(--s2)',borderRadius:12,padding:'12px 14px',marginBottom:4}}>
           <span style={{fontSize:13,color:'var(--t2)',flex:1}}>Working weight (lbs)</span>
           <button onClick={()=>setWt(v=>Math.max(0,(parseFloat(v)||0)-5))}
-            style={{width:36,height:36,borderRadius:8,background:'var(--s3)',border:'1px solid var(--bdr2)',color:'var(--t1)',fontSize:20,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'inherit'}}>−</button>
+            style={{width:44,height:44,borderRadius:8,background:'var(--s3)',border:'1px solid var(--bdr2)',color:'var(--t1)',fontSize:20,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'inherit'}}>−</button>
           <input type="number" inputMode="decimal" value={wt} onChange={e=>setWt(e.target.value)}
             style={{background:'var(--s3)',border:'1.5px solid var(--bdr2)',borderRadius:10,color:'var(--t1)',fontFamily:'inherit',fontSize:20,fontWeight:800,textAlign:'center',width:88,height:44,outline:'none'}}
             placeholder="lbs"/>
           <button onClick={()=>setWt(v=>(parseFloat(v)||0)+5)}
-            style={{width:36,height:36,borderRadius:8,background:'var(--s3)',border:'1px solid var(--bdr2)',color:'var(--t1)',fontSize:20,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'inherit'}}>+</button>
+            style={{width:44,height:44,borderRadius:8,background:'var(--s3)',border:'1px solid var(--bdr2)',color:'var(--t1)',fontSize:20,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'inherit'}}>+</button>
         </div>
         {plateInfo&&plateInfo.perSide>0&&(
           <div style={{fontSize:11,color:'var(--t2)',textAlign:'right',padding:'4px 2px 12px'}}>
@@ -926,7 +935,7 @@ Object.assign(window,{TimerOverlay,MiniTimer,WarmupSheet});
 
 <!-- ─── Home Screen ─── -->
 <script type="text/babel">
-function HomeScreen({store,setScreen}){
+function HomeScreen({store,setScreen,onStartWorkout}){
   const {settings,setSettings,sessions,getStreak,getWeekDays,getWeeklyVolume,getAllPRs}=store;
   const phase=WORKOUT_DATA.phases.find(p=>p.id===settings.currentPhase)||WORKOUT_DATA.phases[0];
   const dayData=phase.days[settings.currentDayIndex];
@@ -942,6 +951,37 @@ function HomeScreen({store,setScreen}){
   const phaseWeek=Math.max(1,weekNum-(settings.currentPhase-1)*9);
   const phasePct=Math.min(100,Math.round((Math.min(phaseWeek,8)/8)*100));
   const isDeload=phaseWeek===9;
+  const cfWeek=S.get('bf5_cf_week',window.DEFAULT_CROSSFIT_WEEK||{days:[]});
+  const cfLogs=S.get('bf5_cf_logs',{});
+  const todayWeekday=new Date().toLocaleDateString('en-US',{weekday:'long'});
+  const todayCfDay=(cfWeek.days||[]).find(d=>d.day===todayWeekday);
+  const showCfDay=!!todayCfDay&&!cfLogs[todayCfDay.day]?.done;
+  const strengthExercises=dayData.exercises.filter(e=>!e.isAbs);
+  const statsStrip=(
+    <div className="card" style={{display:'flex',overflow:'hidden',marginBottom:12}}>
+      {[
+        {val:phase.label.replace('Phase ','P'),key:'Phase',color:'var(--acc)'},
+        {val:phaseWeek+'/8',key:'Week'},
+        {val:totalWorkouts,key:'Sessions'},
+        {val:totalVol>0?(totalVol>=1000?Math.round(totalVol/1000)+'k':totalVol):'—',key:'Wk Vol'},
+      ].map(({val,key,color})=>(
+        <div key={key} className="stat-cell">
+          <div className="stat-val" style={{color:color||'var(--t1)'}}>{val}</div>
+          <div className="stat-key">{key}</div>
+        </div>
+      ))}
+    </div>
+  );
+  const setProgramProgress=(phaseID,week=phaseWeek)=>{
+    const targetPhase=WORKOUT_DATA.phases.find(p=>p.id===parseInt(phaseID,10))||WORKOUT_DATA.phases[0];
+    const targetWeek=Math.max(1,Math.min(9,parseInt(week,10)||1));
+    setSettings(s=>({
+      ...s,
+      startDate:programStartDate(targetPhase.id,targetWeek),
+      currentPhase:targetPhase.id,
+      currentDayIndex:s.currentPhase===targetPhase.id?s.currentDayIndex:0
+    }));
+  };
 
   return(
     <div className="screen fade-up" style={{overflowY:'auto'}}>
@@ -955,7 +995,7 @@ function HomeScreen({store,setScreen}){
               <div style={{fontSize:11,fontWeight:700,color:'var(--acc)',letterSpacing:'.22em',marginTop:1}}>FITNESS</div>
             </div>
           </div>
-          <button className="btn-icon" onClick={()=>setShowCfg(true)}>
+          <button className="btn-icon" aria-label="Open settings" onClick={()=>setShowCfg(true)}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="3"/>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -975,37 +1015,21 @@ function HomeScreen({store,setScreen}){
         </div>
       </div>
 
-      {/* Stats strip */}
-      <div style={{display:'flex',background:'var(--bg)',borderBottom:'1px solid var(--bdr)',flexShrink:0}}>
-        {[
-          {val:phase.label.replace('Phase ','P'),key:'Phase',color:'var(--acc)'},
-          {val:phaseWeek+'/8',key:'Week'},
-          {val:totalWorkouts,key:'Sessions'},
-          {val:totalVol>0?(totalVol>=1000?Math.round(totalVol/1000)+'k':totalVol):'—',key:'Wk Vol'},
-        ].map(({val,key,color})=>(
-          <div key={key} className="stat-cell">
-            <div className="stat-val" style={{color:color||'var(--t1)'}}>{val}</div>
-            <div className="stat-key">{key}</div>
-          </div>
-        ))}
-      </div>
-
       {/* Body */}
       <div style={{padding:'0 16px 100px'}}>
-        {/* Today card */}
-        <div className="card" style={{marginTop:16,marginBottom:12,overflow:'hidden'}}>
+        <div className="sec" style={{marginTop:16}}>Today</div>
+        <div className="card" style={{marginBottom:12,overflow:'hidden'}}>
           <div style={{padding:'11px 14px',borderBottom:'1px solid var(--bdr)',display:'flex',alignItems:'center',gap:7}}>
-            <span className="pill p-acc">{phase.label}</span>
+            <span className="pill p-acc">Strength</span>
             <span className="pill p-dim">Wk {phaseWeek}/8</span>
             {isDeload&&<span className="pill p-warn">Deload Week</span>}
           </div>
           <div style={{padding:'14px 14px 0'}}>
             <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:8,marginBottom:12}}>
               <div>
-                <div style={{fontSize:11,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.07em',marginBottom:5}}>Today's Workout</div>
                 <div style={{fontSize:22,fontWeight:800,letterSpacing:'-.4px',lineHeight:1.15}}>{dayData.name}</div>
                 <div style={{fontSize:12,color:'var(--t2)',marginTop:4}}>
-                  Day {dayData.dayNum} · {dayData.exercises.filter(e=>!e.isAbs).length} exercises · {dayData.exercises.filter(e=>!e.isAbs).reduce((a,e)=>a+e.sets,0)} sets
+                  Day {dayData.dayNum} · {strengthExercises.length} exercises · {strengthExercises.reduce((a,e)=>a+e.sets,0)} sets
                 </div>
               </div>
               <div style={{width:42,height:42,borderRadius:12,background:'var(--acc-s)',border:'1px solid var(--acc-b)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
@@ -1014,36 +1038,51 @@ function HomeScreen({store,setScreen}){
                 </svg>
               </div>
             </div>
-            {dayData.exercises.filter(e=>!e.isAbs).slice(0,3).map((ex,i)=>(
+            {strengthExercises.slice(0,3).map((ex,i)=>(
               <div key={i} style={{display:'flex',alignItems:'center',gap:8,fontSize:13,color:'var(--t2)',paddingBottom:6}}>
                 <div style={{width:5,height:5,borderRadius:'50%',background:'var(--acc)',opacity:.65,flexShrink:0}}/>
                 <span style={{flex:1}}>{ex.name}</span>
                 <span style={{fontSize:11,color:'var(--t3)',fontWeight:600}}>{ex.sets}×{ex.repRange}</span>
               </div>
             ))}
-            {dayData.exercises.filter(e=>!e.isAbs).length>3&&(
-              <div style={{fontSize:12,color:'var(--t3)',paddingLeft:13,paddingBottom:6}}>+{dayData.exercises.filter(e=>!e.isAbs).length-3} more</div>
+            {strengthExercises.length>3&&(
+              <div style={{fontSize:12,color:'var(--t3)',paddingLeft:13,paddingBottom:6}}>+{strengthExercises.length-3} more</div>
             )}
           </div>
           <div style={{padding:'12px 14px 14px'}}>
-            <button className="btn" onClick={()=>setScreen('today')}>{isDeload?'View Deload Week':'Start Workout →'}</button>
+            <button className="btn" onClick={()=>isDeload?setScreen('today'):onStartWorkout()}>{isDeload?'View Deload Week':'Start Workout →'}</button>
           </div>
-          {/* Phase progress */}
           <div style={{padding:'12px 14px',borderTop:'1px solid var(--bdr)'}}>
-            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
-              <div style={{fontSize:11,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.07em'}}>{phase.label} · {phase.weekRange}</div>
-              <div style={{fontSize:12,fontWeight:800,color:'var(--acc)'}}>{phasePct}%</div>
-            </div>
+            <div style={{fontSize:11,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.07em',marginBottom:8}}>{phase.label} · {phase.weekRange}</div>
             <div className="pbar"><div className="pbar-f" style={{width:phasePct+'%',background:'var(--acc)'}}/></div>
-            <div style={{display:'flex',justifyContent:'space-between',marginTop:9}}>
-              {Array(8).fill(null).map((_,i)=>(
-                <div key={i} style={{width:9,height:9,borderRadius:'50%',
-                  background:i<phaseWeek-1?'var(--grn)':i===phaseWeek-1?'var(--acc)':'var(--s4)',
-                  outline:i===phaseWeek-1?'2px solid var(--acc)':'none',outlineOffset:2,transition:'background .3s'}}/>
-              ))}
-            </div>
           </div>
         </div>
+
+        {showCfDay&&(
+          <div className="card" style={{padding:'14px 16px',marginBottom:12}}>
+            <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:12,marginBottom:10}}>
+              <div>
+                <span className="pill p-grn">CrossFit WOD</span>
+                <div style={{fontSize:20,fontWeight:800,letterSpacing:'-.3px',marginTop:10}}>{todayCfDay.day}</div>
+                <div style={{fontSize:12,color:'var(--t2)',marginTop:3}}>{todayCfDay.section}</div>
+              </div>
+              <button className="btn" style={{width:'auto',padding:'11px 16px',borderRadius:10,fontSize:13}} onClick={()=>setScreen('crossfit')}>Start</button>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',gap:6}}>
+              {(todayCfDay.lines||[]).slice(0,4).map((line,i)=>(
+                <div key={i} style={{display:'flex',gap:8,fontSize:13,color:'var(--t2)',lineHeight:1.45}}>
+                  <div style={{width:5,height:5,borderRadius:'50%',background:'var(--grn)',marginTop:8,flexShrink:0,opacity:.75}}/>
+                  <div>{line}</div>
+                </div>
+              ))}
+              {(todayCfDay.lines||[]).length>4&&<div style={{fontSize:12,color:'var(--t3)',paddingLeft:13}}>+{todayCfDay.lines.length-4} more</div>}
+            </div>
+          </div>
+        )}
+
+        <button className="btn-ghost" style={{width:'100%',marginBottom:12,minHeight:44}} onClick={()=>setScreen('plan')}>View full program</button>
+
+        {statsStrip}
 
         {/* PRs */}
         {prs.length>0&&(
@@ -1064,26 +1103,6 @@ function HomeScreen({store,setScreen}){
           </div>
         )}
 
-        {/* Day switcher */}
-        <div className="card" style={{padding:'14px 16px'}}>
-          <div className="sec">Switch Day</div>
-          <div style={{display:'flex',flexDirection:'column',gap:7}}>
-            {phase.days.map((d,i)=>(
-              <button key={i} onClick={()=>setSettings({currentDayIndex:i})}
-                style={{display:'flex',alignItems:'center',padding:'10px 12px',borderRadius:10,
-                  border:'1.5px solid '+(i===settings.currentDayIndex?'var(--acc-b)':'var(--bdr2)'),
-                  background:i===settings.currentDayIndex?'var(--acc-s)':'var(--s2)',
-                  fontFamily:'inherit',textAlign:'left',gap:10,width:'100%',cursor:'pointer'}}>
-                <div style={{width:28,height:28,borderRadius:8,background:'var(--s3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:800,color:i===settings.currentDayIndex?'var(--acc)':'var(--t3)',flexShrink:0}}>{d.dayNum}</div>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:13,fontWeight:700,color:i===settings.currentDayIndex?'var(--t1)':'var(--t2)'}}>{d.name}</div>
-                  <div style={{fontSize:11,color:'var(--t3)',marginTop:1}}>{d.exercises.filter(e=>!e.isAbs).length} exercises</div>
-                </div>
-                {i===settings.currentDayIndex&&<div style={{width:6,height:6,borderRadius:'50%',background:'var(--acc)'}}/>}
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
 
       {/* Settings sheet */}
@@ -1098,10 +1117,18 @@ function HomeScreen({store,setScreen}){
             </div>
             {[
               {label:'Phase',sub:phase.weekRange,ctrl:(
-                <select value={settings.currentPhase} onChange={e=>setSettings({currentPhase:parseInt(e.target.value),currentDayIndex:0})}
+                <select value={settings.currentPhase} onChange={e=>setProgramProgress(e.target.value)}
                   style={{background:'var(--s3)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:9,padding:'8px 12px',fontSize:13,fontFamily:'inherit'}}>
                   {WORKOUT_DATA.phases.map(p=><option key={p.id} value={p.id}>{p.label} — {p.weekRange}</option>)}
                 </select>)},
+              {label:'Current Week',sub:isDeload?'Deload week':'Training week',ctrl:(
+                <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:5,maxWidth:190}}>
+                  <select value={Math.min(phaseWeek,9)} onChange={e=>setProgramProgress(settings.currentPhase,e.target.value)}
+                    style={{background:'var(--s3)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:9,padding:'8px 12px',fontSize:13,fontFamily:'inherit'}}>
+                    {[1,2,3,4,5,6,7,8,9].map(w=><option key={w} value={w}>{w===9?'Week 9 — Deload':'Week '+w}</option>)}
+                  </select>
+                  <div style={{fontSize:12,color:'var(--t2)',lineHeight:1.35,textAlign:'right'}}>Selecting a week sets today as the start of that week.</div>
+                </div>)},
               {label:'Current Day',ctrl:(
                 <select value={settings.currentDayIndex} onChange={e=>setSettings({currentDayIndex:parseInt(e.target.value)})}
                   style={{background:'var(--s3)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:9,padding:'8px 12px',fontSize:13,fontFamily:'inherit'}}>
@@ -1218,7 +1245,7 @@ function ExCard({exercise,exSets,onUpdateSet,onCompleteSet,lastSession,stats,wor
           <div style={{flex:1,minWidth:0}}>
             <div style={{display:'flex',alignItems:'center',gap:7}}>
               <div className="exname">{exercise.name}</div>
-              {exercise.optional&&<span style={{fontSize:9,fontWeight:700,color:'var(--t3)',letterSpacing:'.05em'}}>OPT</span>}
+              {exercise.optional&&<span style={{fontSize:11,fontWeight:700,color:'var(--t3)',letterSpacing:'.05em'}}>OPT</span>}
             </div>
             <div className="exmeta">
               {exercise.sets}x{exercise.repRange}
@@ -1339,7 +1366,7 @@ window.buildWorkoutSteps=function(dayData,sets,warmupLogs){
   (dayData.exercises||[]).forEach((ex,exIndex)=>{
     const exSets=sets[ex.name]||[];
     if(ex.isAbs){
-      steps.push({type:'abs',exercise:ex,exerciseName:ex.name,exerciseIndex:exIndex,setIndex:0,totalSets:1,targetReps:'Circuit',targetWeight:'',done:!!exSets[0]?.done});
+      steps.push({type:'abs',exercise:ex,exerciseName:ex.name,exerciseIndex:exIndex,setIndex:0,totalSets:1,targetReps:'Circuit',targetWeight:'',done:!!exSets[0]?.done||!!exSets[0]?.skipped});
       return;
     }
     if(ex.warmup){
@@ -1356,14 +1383,14 @@ window.buildWorkoutSteps=function(dayData,sets,warmupLogs){
     exSets.forEach((s,i)=>{
       steps.push({
         type:'work',exercise:ex,exerciseName:ex.name,exerciseIndex:exIndex,setIndex:i,totalSets:ex.sets,
-        targetReps:s.reps,targetWeight:s.weight,done:!!s.done
+        targetReps:s.reps,targetWeight:s.weight,done:!!s.done||!!s.skipped
       });
     });
   });
   return steps;
 };
 
-function WorkoutScreen({store}){
+function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
   const {settings,setSettings,setLogs,getLastSession,getLastWeight,getExerciseStats}=store;
   const phase=WORKOUT_DATA.phases.find(p=>p.id===settings.currentPhase)||WORKOUT_DATA.phases[0];
   const dayData=phase.days[settings.currentDayIndex];
@@ -1375,6 +1402,9 @@ function WorkoutScreen({store}){
   const [expanded,setExpanded]=useState({});
   const [sessionNote,setSessionNote]=useState('');
   const [guidedMode,setGuidedMode]=useState(()=>S.get('bf_guided_workout',true)!==false);
+  const [showModeSheet,setShowModeSheet]=useState(false);
+  const [showEndEarly,setShowEndEarly]=useState(false);
+  const [showGuideActions,setShowGuideActions]=useState(false);
   const timerRef=useRef();
   const elapsed=useElapsed(started&&!done);
   const em=Math.floor(elapsed/60),es=elapsed%60;
@@ -1397,8 +1427,14 @@ function WorkoutScreen({store}){
       }
       exp[i]=i===0;
     });
-    setSets(init);setWarmupLogs({});setExpanded(exp);setStarted(false);setDone(false);setTimer(null);setSessionNote('');
+    setSets(init);setWarmupLogs({});setExpanded(exp);setStarted(false);setDone(false);setTimer(null);setSessionNote('');setShowModeSheet(false);setShowEndEarly(false);setShowGuideActions(false);
   },[settings.currentDayIndex,settings.currentPhase]);
+
+  useEffect(()=>{
+    if(!autoStartRequest)return;
+    setStarted(true);
+    onAutoStartConsumed&&onAutoStartConsumed();
+  },[autoStartRequest,onAutoStartConsumed]);
 
   useEffect(()=>{
     if(timer&&!timer.full){
@@ -1491,10 +1527,10 @@ function WorkoutScreen({store}){
 
   const finishWorkout=()=>{
     const totalVol=Object.values(sets).reduce((a,ss)=>
-      a+ss.filter(s=>s.done).reduce((b,s)=>b+(parseFloat(s.weight)||0)*(parseInt(s.reps)||0),0),0);
+      a+ss.filter(s=>s.done&&!s.skipped).reduce((b,s)=>b+(parseFloat(s.weight)||0)*(parseInt(s.reps)||0),0),0);
     const prHit=dayData.exercises.filter(ex=>{
       const prev=getExerciseStats(ex.name);
-      const currentBest=getBestSet((sets[ex.name]||[]).filter(s=>s.done));
+      const currentBest=getBestSet((sets[ex.name]||[]).filter(s=>s.done&&!s.skipped));
       if(!currentBest)return false;
       return currentBest.e1rm>(prev?.bestE1RM||0)
         || currentBest.weight>(prev?.bestWeight||0)
@@ -1511,7 +1547,11 @@ function WorkoutScreen({store}){
       exercises:dayData.exercises.map(ex=>({
         name:ex.name,
         bodyweight:!!ex.bodyweight,
-        sets:(sets[ex.name]||[]).filter(s=>s.done).map(s=>({weight:parseFloat(s.weight)||0,reps:parseInt(s.reps)||0}))
+        sets:(sets[ex.name]||[]).filter(s=>s.done||s.skipped).map(s=>({
+          weight:parseFloat(s.weight)||0,
+          reps:parseInt(s.reps)||0,
+          ...(s.skipped?{skipped:true}:{})
+        }))
       }))
     };
     setLogs(p=>{
@@ -1519,8 +1559,14 @@ function WorkoutScreen({store}){
       const dayLogs=asDayLogs(p[key]);
       return {...p,[key]:[...dayLogs,entry]};
     });
-    setSettings({currentDayIndex:nextDayIndex});
-    setDone({elapsed,totalVol,prHit,nextDayName:phase.days[nextDayIndex].name,nextDayNum:phase.days[nextDayIndex].dayNum,notes:entry.notes});
+    setDone({
+      elapsed,totalVol,prHit,
+      dayName:dayData.name,
+      nextDayIndex,
+      nextDayName:phase.days[nextDayIndex].name,
+      nextDayNum:phase.days[nextDayIndex].dayNum,
+      notes:entry.notes
+    });
   };
 
   const startDate=parseDateInput(settings.startDate);
@@ -1567,6 +1613,66 @@ function WorkoutScreen({store}){
     }
   };
 
+  const setRemainingWarmups=(exerciseName,fromIndex,skipped)=>{
+    const ex=dayData.exercises.find(e=>e.name===exerciseName);
+    if(!ex?.warmup)return;
+    const warmups=window.getWarmupSets((sets[exerciseName]||[])[0]?.weight||0);
+    setWarmupLogs(prev=>{
+      const current=prev[exerciseName]||[];
+      const next=[...current];
+      warmups.forEach((wu,i)=>{
+        if(i>=fromIndex&&!next[i]?.done){
+          next[i]={
+            weight:parseFloat(wu.weight)||0,
+            reps:parseInt(wu.reps,10)||0,
+            done:true,
+            ...(skipped?{skipped:true}:{})
+          };
+        }
+      });
+      return {...prev,[exerciseName]:next};
+    });
+  };
+
+  const skipActiveExercise=()=>{
+    if(!activeStep)return;
+    const ex=dayData.exercises.find(e=>e.name===activeStep.exerciseName);
+    if(!ex)return;
+    if(activeStep.type==='warmup')setRemainingWarmups(activeStep.exerciseName,activeStep.setIndex,true);
+    setSets(prev=>{
+      const current=prev[activeStep.exerciseName]||[];
+      const next=current.map((s,i)=>s.done||s.skipped?s:{...s,done:false,skipped:true});
+      return {...prev,[activeStep.exerciseName]:next};
+    });
+    stopTimer();
+    setShowGuideActions(false);
+    vibrate(35);
+  };
+
+  const completeActiveExercise=()=>{
+    if(!activeStep)return;
+    const ex=dayData.exercises.find(e=>e.name===activeStep.exerciseName);
+    if(!ex)return;
+    if(activeStep.type==='warmup')setRemainingWarmups(activeStep.exerciseName,activeStep.setIndex,false);
+    setSets(prev=>{
+      const current=prev[activeStep.exerciseName]||[];
+      const fallbackWeight=getLastWeight(activeStep.exerciseName)||'';
+      const next=current.map(s=>{
+        if(s.done||s.skipped)return s;
+        return {
+          ...s,
+          weight:s.weight||(ex.bodyweight?0:fallbackWeight),
+          done:true,
+          skipped:false
+        };
+      });
+      return {...prev,[activeStep.exerciseName]:next};
+    });
+    stopTimer();
+    setShowGuideActions(false);
+    vibrate(35);
+  };
+
   if(done){
     const d=done;
     const dm=Math.floor(d.elapsed/60),ds=d.elapsed%60;
@@ -1575,7 +1681,7 @@ function WorkoutScreen({store}){
         <div style={{width:88,height:88,borderRadius:'50%',background:'var(--grn-s)',border:'2px solid var(--grn)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:42}}>💪</div>
         <div style={{textAlign:'center'}}>
           <div style={{fontSize:28,fontWeight:800,letterSpacing:'-.5px'}}>Session Complete</div>
-          <div style={{fontSize:14,color:'var(--t2)',marginTop:6}}>{dayData.name}</div>
+          <div style={{fontSize:14,color:'var(--t2)',marginTop:6}}>{d.dayName}</div>
         </div>
         <div style={{display:'flex',gap:10,width:'100%'}}>
           <div className="wc-stat"><div className="wc-val">{dm}:{ds.toString().padStart(2,'0')}</div><div className="wc-key">Duration</div></div>
@@ -1598,7 +1704,7 @@ function WorkoutScreen({store}){
             <div style={{fontSize:13,color:'var(--t1)',lineHeight:1.6}}>{d.notes}</div>
           </div>
         )}
-        <button className="btn grn" onClick={()=>setDone(false)}>Continue →</button>
+        <button className="btn grn" onClick={()=>{setSettings({currentDayIndex:d.nextDayIndex});setDone(false);}}>Continue →</button>
       </div>
     );
   }
@@ -1611,12 +1717,12 @@ function WorkoutScreen({store}){
           <span className="pill p-dim">Wk {Math.max(1,phaseWeek)}/8</span>
           {isDeload&&<span className="pill p-warn">Deload</span>}
           {isStrength&&<span className="pill p-dim">Strength Wk</span>}
-          <button className="mode-toggle" style={{marginLeft:started?'8px':'auto'}} onClick={()=>setGuidedMode(v=>!v)}>
-            {guidedMode?'Classic view':'Guided view'}
+          <button className="mode-toggle" style={{marginLeft:started?'8px':'auto'}} onClick={()=>setShowModeSheet(true)}>
+            View: {guidedMode?'Guided':'Classic'} ▾
           </button>
           {started&&(
             <div style={{marginLeft:'auto',display:'flex',flexDirection:'column',alignItems:'flex-end',lineHeight:1}}>
-              <span style={{fontSize:9,fontWeight:700,color:'var(--t3)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Elapsed</span>
+              <span style={{fontSize:11,fontWeight:700,color:'var(--t3)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Elapsed</span>
               <span style={{fontSize:21,fontWeight:800,color:'var(--acc)',fontVariantNumeric:'tabular-nums',letterSpacing:'-1px'}}>{em}:{es.toString().padStart(2,'0')}</span>
             </div>
           )}
@@ -1631,10 +1737,10 @@ function WorkoutScreen({store}){
       {started&&(
         <div style={{padding:'6px 16px 10px',flexShrink:0}}>
           <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
-            <div style={{fontSize:10,fontWeight:700,color:'var(--t3)',textTransform:'uppercase',letterSpacing:'.07em'}}>
+            <div style={{fontSize:11,fontWeight:700,color:'var(--t3)',textTransform:'uppercase',letterSpacing:'.07em'}}>
               {guidedMode?`${loggedStepCount}/${workoutSteps.length} steps`:`${doneSets}/${totalSets} sets`}
             </div>
-            <div style={{fontSize:10,fontWeight:700,color:(guidedMode?flowPct:pct)===100?'var(--grn)':'var(--acc)'}}>{guidedMode?flowPct:pct}%</div>
+            <div style={{fontSize:11,fontWeight:700,color:(guidedMode?flowPct:pct)===100?'var(--grn)':'var(--acc)'}}>{guidedMode?flowPct:pct}%</div>
           </div>
           <div className="pbar"><div className="pbar-f" style={{width:(guidedMode?flowPct:pct)+'%',background:(guidedMode?flowPct:pct)===100?'var(--grn)':'var(--acc)'}}/></div>
         </div>
@@ -1643,7 +1749,7 @@ function WorkoutScreen({store}){
       <div style={{display:'flex',gap:6,padding:'0 16px 10px',overflowX:'auto',flexShrink:0}}>
         {phase.days.map((d,i)=>(
           <button key={i}
-            style={{flexShrink:0,padding:'11px 14px',minHeight:42,borderRadius:10,fontSize:12.5,fontWeight:700,
+            style={{flexShrink:0,padding:'9px 12px',minHeight:42,borderRadius:10,fontSize:12.5,fontWeight:700,
               background:i===settings.currentDayIndex?'var(--acc-s)':'var(--s3)',
               color:i===settings.currentDayIndex?'var(--acc)':'var(--t2)',
               border:'1.5px solid '+(i===settings.currentDayIndex?'var(--acc-b)':'transparent'),
@@ -1652,7 +1758,7 @@ function WorkoutScreen({store}){
               display:'inline-flex',alignItems:'center'}}
             disabled={started}
             onClick={()=>!started&&setSettings({currentDayIndex:i})}>
-            {d.dayNum} · {d.name.split(' ')[0]}
+            {d.dayNum} · {d.name}
           </button>
         ))}
       </div>
@@ -1674,9 +1780,16 @@ function WorkoutScreen({store}){
                       <span className={'pill '+(activeStep.type==='warmup'?'p-warn':activeStep.type==='work'?'p-acc':'p-dim')}>
                         {activeStep.type==='warmup'?'Warmup':activeStep.type==='abs'?'Circuit':'Working Set'}
                       </span>
-                      <span style={{fontSize:11,color:'var(--t3)',fontWeight:800,textTransform:'uppercase',letterSpacing:'.08em'}}>
-                        Step {activeStepIndex+1} of {workoutSteps.length}
-                      </span>
+                      <div style={{display:'flex',alignItems:'center',gap:8}}>
+                        <span style={{fontSize:11,color:'var(--t3)',fontWeight:800,textTransform:'uppercase',letterSpacing:'.08em'}}>
+                          Step {activeStepIndex+1} of {workoutSteps.length}
+                        </span>
+                        <button className="btn-icon" style={{borderRadius:9}} aria-label="Exercise actions" onClick={()=>setShowGuideActions(true)}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{color:'var(--t2)'}}>
+                            <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                     <div className="live-title">{activeStep.exerciseName}</div>
                     <div className="live-sub">
@@ -1744,7 +1857,7 @@ function WorkoutScreen({store}){
                       <div className="live-rest-panel">
                         <div className="live-rest-top">
                           <div>
-                            <div style={{fontSize:10,color:'var(--grn)',fontWeight:800,textTransform:'uppercase',letterSpacing:'.09em',marginBottom:4}}>Resting Now</div>
+                            <div style={{fontSize:11,color:'var(--grn)',fontWeight:800,textTransform:'uppercase',letterSpacing:'.09em',marginBottom:4}}>Resting Now</div>
                             <div className="live-rest-copy">
                               {timer.fromLabel&&<>From <b>{timer.fromLabel}</b><br/></>}
                               {timer.nextLabel&&<>Next <b>{timer.nextLabel}</b></>}
@@ -1856,16 +1969,76 @@ function WorkoutScreen({store}){
             )}
             {!started?(
               <button className="btn" onClick={()=>setStarted(true)}>Start Workout</button>
+            ):allComplete?(
+              <button className="btn grn" onClick={finishWorkout}>Finish Session ✓</button>
             ):(
-              <button className={'btn'+(allComplete?' grn':'')} onClick={allComplete?finishWorkout:null} disabled={!allComplete}>
-                {allComplete?'Finish Session ✓':'Complete All Sets to Finish'}
-              </button>
+              <div style={{display:'grid',gap:10}}>
+                <button className="btn" disabled>Complete All Sets to Finish</button>
+                <button className="btn-ghost" style={{minHeight:44}} onClick={()=>setShowEndEarly(true)}>End session early</button>
+              </div>
             )}
             <div style={{height:24}}/>
           </>
           )
         )}
       </div>
+
+      {showModeSheet&&(
+        <div className="sheet">
+          <div className="sheet-bg" onClick={()=>setShowModeSheet(false)}/>
+          <div className="sheet-box slide-up">
+            <div className="sheet-handle"/>
+            <div style={{fontSize:18,fontWeight:800,marginBottom:14}}>Workout View</div>
+            {[
+              {mode:true,title:'Guided',copy:'One step at a time with automatic rest timers.'},
+              {mode:false,title:'Classic',copy:'Full exercise list, log sets in any order.'},
+            ].map(opt=>(
+              <button key={opt.title}
+                onClick={()=>{setGuidedMode(opt.mode);setShowModeSheet(false);}}
+                style={{width:'100%',display:'flex',alignItems:'center',gap:12,padding:'13px 0',borderBottom:'1px solid var(--bdr)',textAlign:'left',fontFamily:'inherit'}}>
+                <div style={{width:24,height:24,borderRadius:'50%',border:'2px solid '+(guidedMode===opt.mode?'var(--acc)':'var(--bdr2)'),background:guidedMode===opt.mode?'var(--acc-s)':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                  {guidedMode===opt.mode&&<div style={{width:10,height:10,borderRadius:'50%',background:'var(--acc)'}}/>}
+                </div>
+                <div>
+                  <div style={{fontSize:15,fontWeight:800}}>{opt.title}</div>
+                  <div style={{fontSize:12,color:'var(--t2)',lineHeight:1.45,marginTop:2}}>{opt.copy}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {showEndEarly&&(
+        <div className="sheet">
+          <div className="sheet-bg" onClick={()=>setShowEndEarly(false)}/>
+          <div className="sheet-box slide-up">
+            <div className="sheet-handle"/>
+            <div style={{fontSize:20,fontWeight:800,marginBottom:6}}>End now?</div>
+            <div style={{fontSize:13,color:'var(--t2)',lineHeight:1.55,marginBottom:18}}>Only logged sets will be saved.</div>
+            <div style={{display:'grid',gap:10}}>
+              <button className="btn grn" onClick={()=>{setShowEndEarly(false);finishWorkout();}}>End session early</button>
+              <button className="btn-ghost" style={{minHeight:44}} onClick={()=>setShowEndEarly(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showGuideActions&&activeStep&&(
+        <div className="sheet">
+          <div className="sheet-bg" onClick={()=>setShowGuideActions(false)}/>
+          <div className="sheet-box slide-up">
+            <div className="sheet-handle"/>
+            <div style={{fontSize:18,fontWeight:800,marginBottom:4}}>{activeStep.exerciseName}</div>
+            <div style={{fontSize:12,color:'var(--t2)',lineHeight:1.45,marginBottom:14}}>Adjust the current exercise without changing the program.</div>
+            <div style={{display:'grid',gap:10}}>
+              <button className="btn-ghost" style={{minHeight:48,textAlign:'left'}} onClick={skipActiveExercise}>Skip this exercise</button>
+              <button className="btn" style={{minHeight:48}} onClick={completeActiveExercise}>Mark exercise complete</button>
+              <button className="btn-ghost" style={{minHeight:44}} onClick={()=>setShowGuideActions(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {timer&&!timer.full&&timer.rem>0&&(
         <MiniTimer duration={timer.dur} remaining={timer.rem}
@@ -1921,7 +2094,7 @@ function LineChart({data}){
         return(
           <g key={i}>
             <line x1={pl} y1={y} x2={pl+iW} y2={y} stroke="var(--bdr2)" strokeWidth="1" strokeDasharray="3,3"/>
-            <text x={pl-6} y={y+4} fill="var(--t3)" fontSize="9" textAnchor="end">{v}</text>
+            <text x={pl-6} y={y+4} fill="var(--t3)" fontSize="11" textAnchor="end">{v}</text>
           </g>
         );
       })}
@@ -1929,7 +2102,7 @@ function LineChart({data}){
       <path d={pathD} fill="none" stroke="var(--acc)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
       {pts.map((p,i)=><circle key={i} cx={p.x} cy={p.y} r="4.5" fill="var(--bg)" stroke="var(--acc)" strokeWidth="2.5"/>)}
       {pts.filter((_,i)=>i===0||i===pts.length-1||(pts.length>3&&i===Math.floor(pts.length/2))).map((p,i)=>(
-        <text key={i} x={Math.max(24,Math.min(316,p.x))} y={H-5} fill="var(--t3)" fontSize="9" textAnchor="middle">{p.label}</text>
+        <text key={i} x={Math.max(24,Math.min(316,p.x))} y={H-5} fill="var(--t3)" fontSize="11" textAnchor="middle">{p.label}</text>
       ))}
     </svg>
   );
@@ -1948,7 +2121,7 @@ function VolumeChart({data}){
           <div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
             <div style={{width:'100%',borderRadius:4,height:h,minHeight:3,transition:'height .5s ease',
               background:isT?(v>0?'var(--acc)':'var(--acc-s)'):v>0?'var(--s4)':'var(--s3)'}}/>
-            <div style={{fontSize:9,fontWeight:700,color:isT?'var(--acc)':'var(--t3)',textTransform:'uppercase',letterSpacing:'.03em'}}>{days[i]}</div>
+            <div style={{fontSize:11,fontWeight:700,color:isT?'var(--acc)':'var(--t3)',textTransform:'uppercase',letterSpacing:'.03em'}}>{days[i]}</div>
           </div>
         );
       })}
@@ -1961,7 +2134,7 @@ function HistoryScreen({store}){
   const [sel,setSel]=useState('');
   const allEx=useMemo(()=>{
     const s=new Set();
-    sessions.forEach(l=>l.exercises?.forEach(e=>{if(e.sets?.length)s.add(e.name);}));
+    sessions.forEach(l=>l.exercises?.forEach(e=>{if(countableSets(e.sets).length)s.add(e.name);}));
     return[...s].sort();
   },[sessions]);
   const hist=sel?getHistory(sel):[];
@@ -2005,17 +2178,17 @@ function HistoryScreen({store}){
                 <div style={{display:'flex',gap:16}}>
                   <div style={{textAlign:'center'}}>
                     <div style={{fontSize:20,fontWeight:800,color:'var(--acc)',fontVariantNumeric:'tabular-nums'}}>{stats?.bestSetLabel||'—'}</div>
-                    <div style={{fontSize:9,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>BEST SET</div>
+                    <div style={{fontSize:11,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>BEST SET</div>
                   </div>
                   <div style={{width:1,background:'var(--bdr)'}}/>
                   <div style={{textAlign:'center'}}>
                     <div style={{fontSize:22,fontWeight:800,fontVariantNumeric:'tabular-nums'}}>{stats?.metricValue||'—'}</div>
-                    <div style={{fontSize:9,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>{stats?.metricLabel||'Metric'}</div>
+                    <div style={{fontSize:11,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>{stats?.metricLabel||'Metric'}</div>
                   </div>
                   <div style={{width:1,background:'var(--bdr)'}}/>
                   <div style={{textAlign:'center'}}>
                     <div style={{fontSize:22,fontWeight:800,fontVariantNumeric:'tabular-nums'}}>{stats?.sessionCount||hist.length}</div>
-                    <div style={{fontSize:9,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>SESSIONS</div>
+                    <div style={{fontSize:11,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em'}}>SESSIONS</div>
                   </div>
                 </div>
               </div>
@@ -2028,7 +2201,7 @@ function HistoryScreen({store}){
         {logDays.length===0?(
           <div className="card" style={{padding:20,textAlign:'center',color:'var(--t2)',fontSize:13}}>No sessions logged yet — Start Workout!</div>
         ):logDays.slice(0,10).map(log=>{
-          const vol=log.volume||log.exercises?.reduce((a,ex)=>a+(ex.sets?.reduce((b,s)=>b+(s.weight||0)*(s.reps||0),0)||0),0)||0;
+          const vol=log.volume||log.exercises?.reduce((a,ex)=>a+(countableSets(ex.sets).reduce((b,s)=>b+(s.weight||0)*(s.reps||0),0)||0),0)||0;
           const dm=log.duration?Math.floor(log.duration/60):null;
           const ds2=log.duration?log.duration%60:null;
           return(
@@ -2043,7 +2216,7 @@ function HistoryScreen({store}){
               {vol>0&&<div style={{fontSize:11,color:'var(--acc)',fontWeight:700,marginBottom:5}}>{vol>=1000?Math.round(vol/1000)+'k':vol} lbs volume</div>}
               <div style={{fontSize:11,color:'var(--t2)',lineHeight:1.7}}>
                 {log.exercises?.filter(e=>e.sets?.length>0).slice(0,3).map(e=>
-                  e.name+' ('+e.sets.map(s=>(e.bodyweight&&!(parseFloat(s.weight)||0)?'BW':s.weight)+'x'+s.reps).join(', ')+')'
+                  e.name+' ('+e.sets.map(s=>s.skipped?'Skipped':(e.bodyweight&&!(parseFloat(s.weight)||0)?'BW':s.weight)+'x'+s.reps).join(', ')+')'
                 ).join(' · ')}
                 {(log.exercises?.filter(e=>e.sets?.length>0).length||0)>3&&' …'}
               </div>
@@ -2062,7 +2235,7 @@ Object.assign(window,{HistoryScreen,LineChart,VolumeChart});
 
 <!-- ─── Program Screen ─── -->
 <script type="text/babel">
-function ProgramScreen({store}){
+function ProgramScreen({store,setScreen}){
   const {settings}=store;
   const [selPhase,setSelPhase]=useState(settings.currentPhase);
   const dp=WORKOUT_DATA.phases.find(p=>p.id===selPhase)||WORKOUT_DATA.phases[0];
@@ -2071,6 +2244,7 @@ function ProgramScreen({store}){
   return(
     <div className="screen">
       <div style={{padding:'calc(var(--top) + 16px) 16px 10px',flexShrink:0}}>
+        <button className="btn-ghost" style={{marginBottom:12,minHeight:44}} onClick={()=>setScreen('home')}>← Home</button>
         <div style={{fontSize:24,fontWeight:800,letterSpacing:'-.5px'}}>Program</div>
         <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>BLS Year One · 5-Day · 6 Phases</div>
       </div>
@@ -2253,6 +2427,7 @@ const DEFAULT_CROSSFIT_WEEK={
     }
   ]
 };
+window.DEFAULT_CROSSFIT_WEEK=DEFAULT_CROSSFIT_WEEK;
 
 function CrossfitScreen(){
   const memberUrl=DEFAULT_CROSSFIT_WEEK.sourceUrl;
@@ -2384,15 +2559,23 @@ Object.assign(window,{CrossfitScreen});
 <script type="text/babel">
 function App(){
   const [screen,setScreen]=useState(()=>S.get('bf5_sc','home'));
+  const [pendingWorkoutStart,setPendingWorkoutStart]=useState(0);
   const store=useStore();
   useEffect(()=>S.set('bf5_sc',screen),[screen]);
+  const startWorkoutFromHome=()=>{
+    setPendingWorkoutStart(v=>v+1);
+    setScreen('today');
+  };
+  const clearPendingWorkoutStart=useCallback(()=>{
+    setPendingWorkoutStart(0);
+  },[]);
   return(
     <>
-      {screen==='home'    &&<HomeScreen store={store} setScreen={setScreen}/>}
-      {screen==='today'   &&<WorkoutScreen store={store}/>}
+      {screen==='home'    &&<HomeScreen store={store} setScreen={setScreen} onStartWorkout={startWorkoutFromHome}/>}
+      {screen==='today'   &&<WorkoutScreen store={store} autoStartRequest={pendingWorkoutStart} onAutoStartConsumed={clearPendingWorkoutStart}/>}
       {screen==='history' &&<HistoryScreen store={store}/>}
       {screen==='crossfit'&&<CrossfitScreen/>}
-      {screen==='plan'    &&<ProgramScreen store={store}/>}
+      {screen==='plan'    &&<ProgramScreen store={store} setScreen={setScreen}/>}
       <BottomNav screen={screen} setScreen={setScreen}/>
     </>
   );
