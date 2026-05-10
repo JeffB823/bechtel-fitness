@@ -588,6 +588,22 @@ const getMetricMeta=set=>{
   if(set.weight>0)return{metricValue:set.weight,metricLabel:'TOP LOAD'};
   return{metricValue:set.reps||null,metricLabel:'TOP REPS'};
 };
+const repRangeTop=repRange=>{
+  const m=String(repRange||'').match(/(\d+)\s*(?:[–-]\s*(\d+))?/);
+  if(!m)return 0;
+  return parseInt(m[2]||m[1],10)||0;
+};
+const formatSetLabel=set=>{
+  if(!set)return'—';
+  const weight=parseFloat(set.weight)||0;
+  const reps=parseInt(set.reps,10)||0;
+  if(weight>0)return`${weight} × ${reps}`;
+  return reps>0?`${reps} reps`:'—';
+};
+const hasLoggedLoad=set=>(parseFloat(set?.weight)||0)>0;
+const ACTIVE_WORKOUT_KEY='bf5_active_workout';
+const getActiveWorkoutDraft=()=>S.get(ACTIVE_WORKOUT_KEY,null);
+const clearActiveWorkoutDraft=()=>{try{localStorage.removeItem(ACTIVE_WORKOUT_KEY);}catch{}};
 const vibrate=(p=30)=>{try{navigator.vibrate&&navigator.vibrate(p);}catch{}};
 
 function playBeep(type) {
@@ -806,7 +822,7 @@ function TimerOverlay({duration:initDur, onDismiss, onAddTime, label, nextLabel,
     ref.current=setInterval(()=>{
       setRem(r=>{
         if(r<=1){clearInterval(ref.current);playBeep('end');vibrate([50,30,50]);return 0;}
-        if(r===11){vibrate(20);}
+        if(r===11||r<=4){vibrate(20);}
         return r-1;
       });
     },1000);
@@ -935,7 +951,7 @@ Object.assign(window,{TimerOverlay,MiniTimer,WarmupSheet});
 
 <!-- ─── Home Screen ─── -->
 <script type="text/babel">
-function HomeScreen({store,setScreen,onStartWorkout}){
+function HomeScreen({store,setScreen,onStartWorkout,onResumeWorkout}){
   const {settings,setSettings,sessions,getStreak,getWeekDays,getWeeklyVolume,getAllPRs}=store;
   const phase=WORKOUT_DATA.phases.find(p=>p.id===settings.currentPhase)||WORKOUT_DATA.phases[0];
   const dayData=phase.days[settings.currentDayIndex];
@@ -957,6 +973,12 @@ function HomeScreen({store,setScreen,onStartWorkout}){
   const todayCfDay=(cfWeek.days||[]).find(d=>d.day===todayWeekday);
   const showCfDay=!!todayCfDay&&!cfLogs[todayCfDay.day]?.done;
   const strengthExercises=dayData.exercises.filter(e=>!e.isAbs);
+  const activeDraft=getActiveWorkoutDraft();
+  const draftPhase=activeDraft?WORKOUT_DATA.phases.find(p=>p.id===activeDraft.phase):null;
+  const draftDay=draftPhase?.days?.[activeDraft.dayIndex];
+  const canResumeDraft=!!activeDraft?.started&&!!draftDay;
+  const draftElapsed=activeDraft?.sessionStartedAt?Math.max(0,Math.floor((Date.now()-activeDraft.sessionStartedAt)/1000)):0;
+  const draftElapsedLabel=`${Math.floor(draftElapsed/60)}:${String(draftElapsed%60).padStart(2,'0')}`;
   const statsStrip=(
     <div className="card" style={{display:'flex',overflow:'hidden',marginBottom:12}}>
       {[
@@ -1017,6 +1039,18 @@ function HomeScreen({store,setScreen,onStartWorkout}){
 
       {/* Body */}
       <div style={{padding:'0 16px 100px'}}>
+        {canResumeDraft&&(
+          <div className="card" style={{marginTop:16,marginBottom:12,padding:'14px 16px',borderColor:'var(--acc-b)',background:'linear-gradient(160deg,rgba(var(--acc-rgb),.12),var(--s1))'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+              <div style={{minWidth:0}}>
+                <div className="sec" style={{marginBottom:6}}>Next best action</div>
+                <div style={{fontSize:20,fontWeight:800,letterSpacing:'-.3px'}}>Resume active workout</div>
+                <div style={{fontSize:12,color:'var(--t2)',marginTop:4}}>{draftPhase.label} · Day {draftDay.dayNum} · {draftDay.name} · {draftElapsedLabel} elapsed</div>
+              </div>
+              <button className="btn" style={{width:'auto',padding:'12px 16px',borderRadius:10,fontSize:13}} onClick={()=>onResumeWorkout(activeDraft)}>Resume</button>
+            </div>
+          </div>
+        )}
         <div className="sec" style={{marginTop:16}}>Today</div>
         <div className="card" style={{marginBottom:12,overflow:'hidden'}}>
           <div style={{padding:'11px 14px',borderBottom:'1px solid var(--bdr)',display:'flex',alignItems:'center',gap:7}}>
@@ -1278,6 +1312,12 @@ function ExCard({exercise,exSets,onUpdateSet,onCompleteSet,lastSession,stats,wor
 
       {expanded&&(
         <>
+          {workoutStarted&&repRangeTop(exercise.repRange)>0&&(
+            <div style={{padding:'0 14px 10px',fontSize:12,color:'var(--t2)',lineHeight:1.5}}>
+              <b style={{color:'var(--t1)'}}>Goal:</b> hit {repRangeTop(exercise.repRange)} reps on all {exercise.sets} sets.{' '}
+              <span style={{color:'var(--t3)'}}>Last time: {lastSession?.length?lastSession.slice(0,exercise.sets).map(formatSetLabel).join(' · '):'no logged sets yet'}.</span>
+            </div>
+          )}
           <div className="sethdr"><div/><div style={{textAlign:'center'}}>PREV</div><div style={{textAlign:'center'}}>WEIGHT</div><div style={{textAlign:'center'}}>REPS</div><div/></div>
           <div style={{borderTop:'1px solid var(--bdr)'}}>
             {exSets.map((s,i)=>(
@@ -1306,16 +1346,17 @@ function ExCard({exercise,exSets,onUpdateSet,onCompleteSet,lastSession,stats,wor
   );
 }
 
-function useElapsed(running){
-  const [t,setT]=useState(0);
+function useElapsed(running,startAt){
+  const [t,setT]=useState(()=>startAt?Math.max(0,Math.floor((Date.now()-startAt)/1000)):0);
   const ref=useRef(null);
   useEffect(()=>{
     if(running){
-      const start=Date.now()-t*1000;
+      const start=startAt||Date.now()-t*1000;
+      setT(Math.max(0,Math.floor((Date.now()-start)/1000)));
       ref.current=setInterval(()=>setT(Math.floor((Date.now()-start)/1000)),1000);
       return()=>clearInterval(ref.current);
     }
-  },[running]);
+  },[running,startAt]);
   return t;
 }
 
@@ -1395,6 +1436,7 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
   const phase=WORKOUT_DATA.phases.find(p=>p.id===settings.currentPhase)||WORKOUT_DATA.phases[0];
   const dayData=phase.days[settings.currentDayIndex];
   const [started,setStarted]=useState(false);
+  const [sessionStartedAt,setSessionStartedAt]=useState(null);
   const [done,setDone]=useState(false);
   const [sets,setSets]=useState({});
   const [warmupLogs,setWarmupLogs]=useState({});
@@ -1406,7 +1448,7 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
   const [showEndEarly,setShowEndEarly]=useState(false);
   const [showGuideActions,setShowGuideActions]=useState(false);
   const timerRef=useRef();
-  const elapsed=useElapsed(started&&!done);
+  const elapsed=useElapsed(started&&!done,sessionStartedAt);
   const em=Math.floor(elapsed/60),es=elapsed%60;
 
   useEffect(()=>{
@@ -1427,12 +1469,25 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
       }
       exp[i]=i===0;
     });
-    setSets(init);setWarmupLogs({});setExpanded(exp);setStarted(false);setDone(false);setTimer(null);setSessionNote('');setShowModeSheet(false);setShowEndEarly(false);setShowGuideActions(false);
+    const draft=getActiveWorkoutDraft();
+    const canRestore=draft?.started&&draft.phase===settings.currentPhase&&draft.dayIndex===settings.currentDayIndex;
+    const restoredTimer=canRestore&&draft.timer?.endsAt
+      ?{...draft.timer,rem:Math.max(0,Math.ceil((draft.timer.endsAt-Date.now())/1000)),full:false}
+      :null;
+    setSets(canRestore&&draft.sets?draft.sets:init);
+    setWarmupLogs(canRestore&&draft.warmupLogs?draft.warmupLogs:{});
+    setExpanded(canRestore&&draft.expanded?draft.expanded:exp);
+    setStarted(!!canRestore);
+    setSessionStartedAt(canRestore?draft.sessionStartedAt||Date.now():null);
+    setDone(false);
+    setTimer(restoredTimer&&restoredTimer.rem>0?restoredTimer:null);
+    setSessionNote(canRestore?draft.sessionNote||'':'');
+    setShowModeSheet(false);setShowEndEarly(false);setShowGuideActions(false);
   },[settings.currentDayIndex,settings.currentPhase]);
 
   useEffect(()=>{
     if(!autoStartRequest)return;
-    setStarted(true);
+    startWorkout();
     onAutoStartConsumed&&onAutoStartConsumed();
   },[autoStartRequest,onAutoStartConsumed]);
 
@@ -1442,6 +1497,7 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
         setTimer(t=>{
           if(!t||t.rem<=0){clearInterval(timerRef.current);return t?{...t,rem:0}:null;}
           if(t.rem===1){playBeep('end');vibrate([50,30,50]);}
+          else if(t.rem<=4){vibrate(18);}
           return{...t,rem:t.rem-1};
         });
       },1000);
@@ -1450,6 +1506,28 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
   },[timer?.id,timer?.full]);
 
   useEffect(()=>{S.set('bf_guided_workout',guidedMode);},[guidedMode]);
+
+  useEffect(()=>{
+    if(!started||done)return;
+    S.set(ACTIVE_WORKOUT_KEY,{
+      phase:settings.currentPhase,
+      dayIndex:settings.currentDayIndex,
+      started:true,
+      sessionStartedAt:sessionStartedAt||Date.now(),
+      sets,
+      warmupLogs,
+      expanded,
+      sessionNote,
+      guidedMode,
+      timer:timer?{...timer,full:false}:null,
+      savedAt:Date.now()
+    });
+  },[started,done,settings.currentPhase,settings.currentDayIndex,sessionStartedAt,sets,warmupLogs,expanded,sessionNote,guidedMode,timer?.id,timer?.dur,timer?.endsAt,timer?.fromLabel,timer?.nextLabel]);
+
+  const startWorkout=()=>{
+    setSessionStartedAt(Date.now());
+    setStarted(true);
+  };
 
   const updateSet=(exName,i,f,v)=>{
     setSets(prev=>{
@@ -1461,7 +1539,7 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
   };
 
   const addTimerSeconds=seconds=>{
-    setTimer(t=>t?{...t,dur:t.dur+seconds,rem:t.rem+seconds}:t);
+    setTimer(t=>t?{...t,dur:t.dur+seconds,rem:t.rem+seconds,endsAt:(t.endsAt||Date.now()+t.rem*1000)+seconds*1000}:t);
   };
 
   const stopTimer=()=>{
@@ -1477,6 +1555,7 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
       id:Date.now(),
       dur,
       rem:dur,
+      endsAt:Date.now()+dur*1000,
       full:false,
       label:'Rest',
       fromLabel,
@@ -1528,6 +1607,29 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
   const finishWorkout=()=>{
     const totalVol=Object.values(sets).reduce((a,ss)=>
       a+ss.filter(s=>s.done&&!s.skipped).reduce((b,s)=>b+(parseFloat(s.weight)||0)*(parseInt(s.reps)||0),0),0);
+    const exerciseSummaries=dayData.exercises.filter(ex=>!ex.isAbs).map(ex=>{
+      const valid=(sets[ex.name]||[]).filter(s=>s.done&&!s.skipped);
+      const top=repRangeTop(ex.repRange);
+      const prev=getExerciseStats(ex.name);
+      const currentBest=getBestSet(valid);
+      const improved=!!currentBest&&(
+        currentBest.e1rm>(prev?.bestE1RM||0)
+        || currentBest.weight>(prev?.bestWeight||0)
+        || currentBest.volume>(prev?.bestVolume||0)
+      );
+      const hitTop=top>0&&valid.length>=ex.sets&&valid.slice(0,ex.sets).every(s=>(parseInt(s.reps,10)||0)>=top&&hasLoggedLoad(s));
+      const logged=valid.length;
+      const missed=logged>0&&top>0&&!hitTop;
+      return{
+        name:ex.name,
+        logged,
+        total:ex.sets,
+        bestSet:formatSetLabel(currentBest),
+        improved,
+        hitTop,
+        missed
+      };
+    });
     const prHit=dayData.exercises.filter(ex=>{
       const prev=getExerciseStats(ex.name);
       const currentBest=getBestSet((sets[ex.name]||[]).filter(s=>s.done&&!s.skipped));
@@ -1559,9 +1661,14 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
       const dayLogs=asDayLogs(p[key]);
       return {...p,[key]:[...dayLogs,entry]};
     });
+    clearActiveWorkoutDraft();
     setDone({
       elapsed,totalVol,prHit,
       dayName:dayData.name,
+      exerciseSummaries,
+      progressed:exerciseSummaries.filter(s=>s.hitTop).map(s=>s.name),
+      improved:exerciseSummaries.filter(s=>s.improved).map(s=>s.name),
+      missed:exerciseSummaries.filter(s=>s.missed).map(s=>s.name),
       nextDayIndex,
       nextDayName:phase.days[nextDayIndex].name,
       nextDayNum:phase.days[nextDayIndex].dayNum,
@@ -1586,6 +1693,25 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
   const nextStep=activeStepIndex>-1?workoutSteps[activeStepIndex+1]||null:null;
   const loggedStepCount=workoutSteps.filter(step=>step.done).length;
   const flowPct=workoutSteps.length>0?Math.round((loggedStepCount/workoutSteps.length)*100):0;
+  const getExerciseCoach=ex=>{
+    if(!ex||ex.isAbs)return null;
+    const top=repRangeTop(ex.repRange);
+    const current=countableSets(sets[ex.name]||[]);
+    const completed=current.filter(s=>s.done);
+    const last=getLastSession(ex.name)||[];
+    const lastLine=last.length?last.slice(0,ex.sets).map(formatSetLabel).join(' · '):'No previous logged sets';
+    const hitTop=top>0&&completed.length>=ex.sets&&completed.slice(0,ex.sets).every(s=>(parseInt(s.reps,10)||0)>=top&&hasLoggedLoad(s));
+    const repsToTop=top>0?Math.max(0,(ex.sets*top)-completed.reduce((a,s)=>a+(parseInt(s.reps,10)||0),0)):0;
+    return{
+      top,
+      lastLine,
+      hitTop,
+      repsToTop,
+      goalLine:top>0?`Goal: hit ${top} reps on all ${ex.sets} sets to earn the next weight jump.`:'Goal: complete the programmed work cleanly.',
+      progressLine:hitTop?'Progression earned for next time.':completed.length?`${repsToTop} reps left to fully own this exercise today.`:'Beat or match last time, then chase the top of the range.'
+    };
+  };
+  const activeCoach=activeStep?.type==='work'?getExerciseCoach(activeStep.exercise):null;
 
   const logGuidedStep=()=>{
     if(!activeStep)return;
@@ -1694,6 +1820,28 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
             {d.prHit.map(n=><div key={n} style={{fontSize:13,color:'var(--t1)',marginTop:4}}>· {n}</div>)}
           </div>
         )}
+        {(d.progressed?.length>0||d.improved?.length>0||d.missed?.length>0)&&(
+          <div style={{background:'var(--s2)',border:'1px solid var(--bdr2)',borderRadius:12,padding:'14px 16px',width:'100%',display:'grid',gap:10}}>
+            {d.progressed?.length>0&&(
+              <div>
+                <div style={{fontSize:11,color:'var(--grn)',fontWeight:800,textTransform:'uppercase',letterSpacing:'.07em',marginBottom:4}}>Progression Ready</div>
+                <div style={{fontSize:13,color:'var(--t1)',lineHeight:1.55}}>{d.progressed.slice(0,3).join(', ')}{d.progressed.length>3?' +'+(d.progressed.length-3)+' more':''} · add 10 lbs next time.</div>
+              </div>
+            )}
+            {d.improved?.length>0&&(
+              <div>
+                <div style={{fontSize:11,color:'var(--acc)',fontWeight:800,textTransform:'uppercase',letterSpacing:'.07em',marginBottom:4}}>Improved Today</div>
+                <div style={{fontSize:13,color:'var(--t1)',lineHeight:1.55}}>{d.improved.slice(0,4).join(', ')}{d.improved.length>4?' +'+(d.improved.length-4)+' more':''}</div>
+              </div>
+            )}
+            {d.missed?.length>0&&(
+              <div>
+                <div style={{fontSize:11,color:'var(--t2)',fontWeight:800,textTransform:'uppercase',letterSpacing:'.07em',marginBottom:4}}>Targets To Chase</div>
+                <div style={{fontSize:13,color:'var(--t1)',lineHeight:1.55}}>{d.missed.slice(0,4).join(', ')}{d.missed.length>4?' +'+(d.missed.length-4)+' more':''}</div>
+              </div>
+            )}
+          </div>
+        )}
         <div style={{background:'var(--s2)',border:'1px solid var(--bdr2)',borderRadius:12,padding:'14px 20px',textAlign:'center',width:'100%'}}>
           <div style={{fontSize:11,color:'var(--t2)',textTransform:'uppercase',letterSpacing:'.07em',marginBottom:4}}>Up Next</div>
           <div style={{fontSize:15,fontWeight:700}}>Day {d.nextDayNum} · {d.nextDayName}</div>
@@ -1799,6 +1947,13 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
                           ?'Ab circuit · complete the full round'
                           :`Set ${activeStep.setIndex+1} of ${activeStep.totalSets} · Target ${activeStep.exercise.repRange}`}
                     </div>
+                    {activeCoach&&(
+                      <div className="live-hint" style={{marginTop:14}}>
+                        <b style={{color:'var(--t1)'}}>Last time:</b> {activeCoach.lastLine}<br/>
+                        <b style={{color:'var(--t1)'}}>Today:</b> {activeCoach.goalLine}<br/>
+                        <span style={{color:activeCoach.hitTop?'var(--grn)':'var(--t2)',fontWeight:800}}>{activeCoach.progressLine}</span>
+                      </div>
+                    )}
 
                     {activeStep.type==='warmup'?(
                       <div className="live-target">
@@ -1968,7 +2123,7 @@ function WorkoutScreen({store,autoStartRequest,onAutoStartConsumed}){
               <div style={{fontSize:12,color:'var(--t3)',paddingBottom:10}}>Optional exercises can be skipped and finished later.</div>
             )}
             {!started?(
-              <button className="btn" onClick={()=>setStarted(true)}>Start Workout</button>
+              <button className="btn" onClick={startWorkout}>Start Workout</button>
             ):allComplete?(
               <button className="btn grn" onClick={finishWorkout}>Finish Session ✓</button>
             ):(
@@ -2566,12 +2721,18 @@ function App(){
     setPendingWorkoutStart(v=>v+1);
     setScreen('today');
   };
+  const resumeWorkoutFromHome=draft=>{
+    if(draft?.phase&&Number.isInteger(draft.dayIndex)){
+      store.setSettings({currentPhase:draft.phase,currentDayIndex:draft.dayIndex});
+    }
+    setScreen('today');
+  };
   const clearPendingWorkoutStart=useCallback(()=>{
     setPendingWorkoutStart(0);
   },[]);
   return(
     <>
-      {screen==='home'    &&<HomeScreen store={store} setScreen={setScreen} onStartWorkout={startWorkoutFromHome}/>}
+      {screen==='home'    &&<HomeScreen store={store} setScreen={setScreen} onStartWorkout={startWorkoutFromHome} onResumeWorkout={resumeWorkoutFromHome}/>}
       {screen==='today'   &&<WorkoutScreen store={store} autoStartRequest={pendingWorkoutStart} onAutoStartConsumed={clearPendingWorkoutStart}/>}
       {screen==='history' &&<HistoryScreen store={store}/>}
       {screen==='crossfit'&&<CrossfitScreen/>}
