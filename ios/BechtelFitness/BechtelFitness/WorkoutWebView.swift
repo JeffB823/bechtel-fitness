@@ -181,8 +181,8 @@ struct WorkoutWebView: View {
                     .ignoresSafeArea()
 
                 WorkoutBrowser(model: browser)
-                    .opacity(showingLiveWorkout ? 1 : 0)
-                    .allowsHitTesting(showingLiveWorkout)
+                    .opacity(0)
+                    .allowsHitTesting(false)
 
                 if !showingLiveWorkout {
                     TabView(selection: $selectedTab) {
@@ -218,6 +218,16 @@ struct WorkoutWebView: View {
                     }
                     .tint(AppTheme.gold)
                     .transition(.opacity)
+                } else if let snapshot = browser.snapshot {
+                    NativeLiveWorkoutView(
+                        snapshot: snapshot,
+                        onClose: closeLiveWorkout,
+                        onFinish: { session in
+                            browser.saveNativeWorkoutSession(session)
+                            closeLiveWorkout()
+                        }
+                    )
+                    .transition(.opacity)
                 }
 
                 if browser.isLoading && !browser.hasLoadedContent && browser.snapshot == nil {
@@ -248,7 +258,7 @@ struct WorkoutWebView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
-                if showingLiveWorkout {
+                if showingLiveWorkout && browser.snapshot == nil {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Done") {
                             closeLiveWorkout()
@@ -569,6 +579,28 @@ final class WorkoutBrowserModel: ObservableObject {
         webView?.evaluateJavaScript("window.__bfNativeResetCrossfitWeek && window.__bfNativeResetCrossfitWeek();")
     }
 
+    func saveNativeWorkoutSession(_ session: WorkoutLoggedSession) {
+        let updatedSnapshot = snapshot ?? NativeProgramStore.bundledSnapshot()
+        guard var updatedSnapshot else { return }
+
+        let key = storageDateKey(for: Date())
+        var dayLogs = updatedSnapshot.logs[key] ?? []
+        dayLogs.append(session)
+        updatedSnapshot.logs[key] = dayLogs
+
+        if let phase = updatedSnapshot.currentPhase, !phase.days.isEmpty {
+            updatedSnapshot.settings.currentDayIndex = (updatedSnapshot.settings.currentDayIndex + 1) % phase.days.count
+        }
+
+        snapshot = updatedSnapshot
+
+        persistStorageValue(updatedSnapshot.logs, key: "bf5_l")
+        persistStorageValue(updatedSnapshot.settings, key: "bf5_s")
+        WorkoutNativeStorage.save(key: "bf5_active_workout", value: nil)
+
+        syncNativeWorkoutSessionToWebStorage(logs: updatedSnapshot.logs, settings: updatedSnapshot.settings)
+    }
+
     private func evaluateNavigation(on webView: WKWebView, to screen: WorkoutSection) {
         let script = "window.__bfNativeNavigate && window.__bfNativeNavigate('\(screen.rawValue)');"
         webView.evaluateJavaScript(script)
@@ -611,6 +643,38 @@ final class WorkoutBrowserModel: ObservableObject {
         }
 
         self.snapshot = snapshot
+    }
+
+    private func persistStorageValue<T: Encodable>(_ value: T, key: String) {
+        guard let data = try? JSONEncoder().encode(value),
+              let encoded = String(data: data, encoding: .utf8)
+        else {
+            return
+        }
+        WorkoutNativeStorage.save(key: key, value: encoded)
+    }
+
+    private func syncNativeWorkoutSessionToWebStorage(logs: [String: [WorkoutLoggedSession]], settings: WorkoutEngineSettings) {
+        guard let webView,
+              let logsData = try? JSONEncoder().encode(logs),
+              let settingsData = try? JSONEncoder().encode(settings),
+              let logsString = String(data: logsData, encoding: .utf8),
+              let settingsString = String(data: settingsData, encoding: .utf8),
+              let logsLiteral = jsonLiteral(logsString),
+              let settingsLiteral = jsonLiteral(settingsString)
+        else {
+            return
+        }
+
+        let script = """
+        try {
+          localStorage.setItem('bf5_l', \(logsLiteral));
+          localStorage.setItem('bf5_s', \(settingsLiteral));
+          localStorage.removeItem('bf5_active_workout');
+          window.__bfSendSnapshot && window.__bfSendSnapshot();
+        } catch (error) {}
+        """
+        webView.evaluateJavaScript(script)
     }
 
     private func persistSnapshot(_ snapshot: WorkoutEngineSnapshot?) {

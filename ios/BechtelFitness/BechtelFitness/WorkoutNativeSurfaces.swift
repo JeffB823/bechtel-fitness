@@ -263,8 +263,11 @@ struct WorkoutLoggedSession: Codable, Equatable {
 
     var totalVolume: Double {
         if let volume { return volume }
-        return exercises.reduce(0) { partialResult, exercise in
-            partialResult + exercise.sets.reduce(0) { $0 + (($1.weight ?? 0) * Double($1.reps ?? 0)) }
+        return exercises.reduce(0.0) { partialResult, exercise in
+            partialResult + exercise.sets.reduce(0.0) { setTotal, set in
+                guard set.skipped != true else { return setTotal }
+                return setTotal + ((set.weight ?? 0) * Double(set.reps ?? 0))
+            }
         }
     }
 }
@@ -284,6 +287,7 @@ struct WorkoutLoggedExercise: Codable, Equatable, Identifiable {
 struct WorkoutLoggedSet: Codable, Equatable {
     var weight: Double?
     var reps: Int?
+    var skipped: Bool?
 }
 
 struct FlattenedWorkoutSession: Identifiable, Equatable {
@@ -318,6 +322,7 @@ struct WorkoutBestSet: Equatable {
     let estimatedOneRepMax: Double
 
     init?(set: WorkoutLoggedSet) {
+        guard set.skipped != true else { return nil }
         let weight = set.weight ?? 0
         let reps = set.reps ?? 0
         guard weight > 0 || reps > 0 else { return nil }
@@ -1345,7 +1350,10 @@ struct NativeLiveWorkoutView: View {
     }
 
     private var completedWorkingSetCount: Int {
-        workingLogs.values.flatMap { $0 }.filter { $0.isDone && !$0.isSkipped }.count
+        guard let workout else { return 0 }
+        return workout.trainingExercises.reduce(0) { count, exercise in
+            count + (workingLogs[exercise.name] ?? []).filter { $0.isDone && !$0.isSkipped }.count
+        }
     }
 
     private var totalWorkingSetCount: Int {
@@ -1986,9 +1994,12 @@ struct NativeLiveWorkoutView: View {
                 sets: loggedSets(for: exercise)
             )
         }
-        let volume = loggedExercises.reduce(0) { total, exercise in
-            total + exercise.sets.reduce(0) { setTotal, set in
-                setTotal + ((set.weight ?? 0) * Double(set.reps ?? 0))
+        let volume = loggedExercises.reduce(0.0) { total, exercise in
+            total + exercise.sets.reduce(0.0) { setTotal, set in
+                guard set.skipped != true else { return setTotal }
+                let weight = set.weight ?? 0
+                let reps = Double(set.reps ?? 0)
+                return setTotal + (weight * reps)
             }
         }
         let prs = workout.exercises.compactMap { exercise -> String? in
@@ -2027,12 +2038,12 @@ struct NativeLiveWorkoutView: View {
         guard exercise.isAbs != true else {
             let completed = workingLogs[exercise.name]?.first?.isDone == true
             let skipped = workingLogs[exercise.name]?.first?.isSkipped == true
-            return completed && !skipped ? [WorkoutLoggedSet(weight: 0, reps: 0)] : []
+            return completed ? [WorkoutLoggedSet(weight: 0, reps: 0, skipped: skipped ? true : nil)] : []
         }
 
         return (workingLogs[exercise.name] ?? [])
-            .filter { $0.isDone && !$0.isSkipped }
-            .map { WorkoutLoggedSet(weight: $0.weight, reps: $0.reps) }
+            .filter(\.isDone)
+            .map { WorkoutLoggedSet(weight: $0.weight, reps: $0.reps, skipped: $0.isSkipped ? true : nil) }
     }
 
     private func nextWorkoutLabel() -> String {
@@ -2295,6 +2306,7 @@ private struct NativeWorkoutBestSet: Equatable {
     let estimatedOneRepMax: Double
 
     init?(set: WorkoutLoggedSet) {
+        guard set.skipped != true else { return nil }
         let weight = set.weight ?? 0
         let reps = set.reps ?? 0
         guard weight > 0 || reps > 0 else { return nil }

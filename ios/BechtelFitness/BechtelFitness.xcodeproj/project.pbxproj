@@ -436,7 +436,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BechtelFitness/BechtelFitness.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = QMAMF4Y36A;
 				DEVELOPMENT_ASSET_PATHS = "";
 				GENERATE_INFOPLIST_FILE = NO;
@@ -446,7 +446,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeffbechtel.BechtelFitness;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -462,7 +462,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BechtelFitness/BechtelFitness.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = QMAMF4Y36A;
 				DEVELOPMENT_ASSET_PATHS = "";
 				GENERATE_INFOPLIST_FILE = NO;
@@ -472,7 +472,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeffbechtel.BechtelFitness;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -486,7 +486,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = WatchCompanion/BechtelFitnessWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = QMAMF4Y36A;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = WatchCompanion/Info.plist;
@@ -494,7 +494,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeffbechtel.BechtelFitness.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -512,7 +512,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = WatchCompanion/BechtelFitnessWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = QMAMF4Y36A;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = WatchCompanion/Info.plist;
@@ -520,7 +520,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeffbechtel.BechtelFitness.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
