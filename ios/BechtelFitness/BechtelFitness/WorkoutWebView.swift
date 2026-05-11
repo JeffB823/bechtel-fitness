@@ -32,6 +32,11 @@ enum WorkoutNativeStorage {
         }
     }
 
+    static func value(for key: String) -> String? {
+        guard trackedKeys.contains(key) else { return nil }
+        return UserDefaults.standard.string(forKey: mirrorKey(for: key))
+    }
+
     private static func mirrorKey(for key: String) -> String {
         mirrorPrefix + key
     }
@@ -268,7 +273,11 @@ struct WorkoutWebView: View {
                 }
             }
             .onAppear {
-                syncSelectedTab(selectedTab)
+                if browser.hasActiveWorkoutDraft {
+                    resumeLiveWorkout()
+                } else {
+                    syncSelectedTab(selectedTab)
+                }
             }
             .onChange(of: selectedTab) { _, section in
                 syncSelectedTab(section)
@@ -284,7 +293,9 @@ struct WorkoutWebView: View {
                 NativeWorkoutHomeView(
                     snapshot: snapshot,
                     isRefreshing: browser.isLoading,
+                    hasActiveWorkout: browser.hasActiveWorkoutDraft,
                     onOpenWorkout: openLiveWorkout,
+                    onResumeWorkout: resumeLiveWorkout,
                     onOpenProgram: { select(.plan) }
                 )
             } else {
@@ -372,6 +383,18 @@ struct WorkoutWebView: View {
 
     private func openLiveWorkout() {
         selectedTab = .today
+        if browser.hasActiveWorkoutDraft {
+            browser.restoreNativeWorkoutDraftContext()
+        }
+        browser.navigate(to: .today)
+        browser.requestSnapshot()
+        browser.setNativeLiveMode(true)
+        showingLiveWorkout = true
+    }
+
+    private func resumeLiveWorkout() {
+        selectedTab = .today
+        browser.restoreNativeWorkoutDraftContext()
         browser.navigate(to: .today)
         browser.requestSnapshot()
         browser.setNativeLiveMode(true)
@@ -381,6 +404,7 @@ struct WorkoutWebView: View {
     private func closeLiveWorkout() {
         showingLiveWorkout = false
         browser.setNativeLiveMode(false)
+        browser.refreshActiveWorkoutDraftStatus()
         browser.requestSnapshot()
     }
 
@@ -448,6 +472,7 @@ final class WorkoutBrowserModel: ObservableObject {
     @Published var canGoForward = false
     @Published var errorMessage: String?
     @Published var activeScreen: WorkoutSection = WorkoutNativeStorage.activeScreen()
+    @Published private(set) var hasActiveWorkoutDraft = WorkoutNativeStorage.value(for: "bf5_active_workout") != nil
     @Published var snapshot: WorkoutEngineSnapshot? {
         didSet {
             persistSnapshot(snapshot)
@@ -546,6 +571,26 @@ final class WorkoutBrowserModel: ObservableObject {
         applyNativePresentationMode()
     }
 
+    func refreshActiveWorkoutDraftStatus() {
+        hasActiveWorkoutDraft = WorkoutNativeStorage.value(for: "bf5_active_workout") != nil
+    }
+
+    func restoreNativeWorkoutDraftContext() {
+        refreshActiveWorkoutDraftStatus()
+        guard
+            let rawDraft = WorkoutNativeStorage.value(for: "bf5_active_workout"),
+            let data = rawDraft.data(using: .utf8),
+            let draft = try? JSONDecoder().decode(NativeActiveWorkoutDraft.self, from: data),
+            var snapshot
+        else {
+            return
+        }
+
+        snapshot.settings.currentPhase = draft.phase
+        snapshot.settings.currentDayIndex = draft.dayIndex
+        self.snapshot = snapshot
+    }
+
     func applyNativePresentationMode() {
         let flag = nativeLiveModeEnabled ? "true" : "false"
         webView?.evaluateJavaScript("window.__bfNativeSetLiveMode && window.__bfNativeSetLiveMode(\(flag));")
@@ -597,6 +642,7 @@ final class WorkoutBrowserModel: ObservableObject {
         persistStorageValue(updatedSnapshot.logs, key: "bf5_l")
         persistStorageValue(updatedSnapshot.settings, key: "bf5_s")
         WorkoutNativeStorage.save(key: "bf5_active_workout", value: nil)
+        refreshActiveWorkoutDraftStatus()
 
         syncNativeWorkoutSessionToWebStorage(logs: updatedSnapshot.logs, settings: updatedSnapshot.settings)
     }

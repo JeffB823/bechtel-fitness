@@ -413,7 +413,9 @@ struct CrossfitDayLog: Codable, Equatable {
 struct NativeWorkoutHomeView: View {
     let snapshot: WorkoutEngineSnapshot
     let isRefreshing: Bool
+    let hasActiveWorkout: Bool
     let onOpenWorkout: () -> Void
+    let onResumeWorkout: () -> Void
     let onOpenProgram: () -> Void
 
     private var weekContext: WorkoutWeekContext {
@@ -467,14 +469,14 @@ struct NativeWorkoutHomeView: View {
                     .lineLimit(2)
             }
 
-            Button(action: onOpenWorkout) {
-                Label("Start Today's Workout", systemImage: "play.fill")
+            Button(action: hasActiveWorkout ? onResumeWorkout : onOpenWorkout) {
+                Label(hasActiveWorkout ? "Resume Active Workout" : "Start Today's Workout", systemImage: hasActiveWorkout ? "arrow.clockwise" : "play.fill")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(PrimaryButtonStyle())
             .disabled(todayWorkout == nil)
-            .accessibilityLabel("Start Today's Workout")
-            .accessibilityHint("Opens the live workout flow for the current programmed day.")
+            .accessibilityLabel(hasActiveWorkout ? "Resume Active Workout" : "Start Today's Workout")
+            .accessibilityHint(hasActiveWorkout ? "Reopens your in-progress workout." : "Opens the live workout flow for the current programmed day.")
         }
         .padding(AppTheme.Spacing.l)
         .background(AppTheme.navy.opacity(0.92), in: RoundedRectangle(cornerRadius: AppTheme.Radius.card))
@@ -1404,13 +1406,23 @@ struct NativeLiveWorkoutView: View {
         }
         .foregroundStyle(.white)
         .onAppear {
-            startedAt = Date()
-            initializeLogsIfNeeded()
+            if !restoreDraftIfAvailable() {
+                startedAt = Date()
+                initializeLogsIfNeeded()
+                persistDraft()
+            }
         }
         .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { _ in
             guard activeRest != nil else { return }
             remainingRest = max(0, remainingRest - 1)
         }
+        .onChange(of: workingLogs) { _, _ in persistDraft() }
+        .onChange(of: warmupLogs) { _, _ in persistDraft() }
+        .onChange(of: skippedWarmups) { _, _ in persistDraft() }
+        .onChange(of: skippedWorkingSets) { _, _ in persistDraft() }
+        .onChange(of: activeRest) { _, _ in persistDraft() }
+        .onChange(of: remainingRest) { _, _ in persistDraft() }
+        .onChange(of: sessionNote) { _, _ in persistDraft() }
     }
 
     private func header(_ workout: WorkoutDay) -> some View {
@@ -1850,6 +1862,77 @@ struct NativeLiveWorkoutView: View {
         workingLogs = initial
     }
 
+    @discardableResult
+    private func restoreDraftIfAvailable() -> Bool {
+        guard
+            let rawDraft = WorkoutNativeStorage.value(for: "bf5_active_workout"),
+            let data = rawDraft.data(using: .utf8),
+            let draft = try? JSONDecoder().decode(NativeActiveWorkoutDraft.self, from: data),
+            draft.phase == phase?.id,
+            draft.dayIndex == snapshot.settings.currentDayIndex
+        else {
+            return false
+        }
+
+        startedAt = draft.startedAt
+        workingLogs = draft.workingLogs
+        warmupLogs = draft.warmupLogs
+        skippedWarmups = draft.skippedWarmups
+        skippedWorkingSets = draft.skippedWorkingSets
+        sessionNote = draft.sessionNote
+
+        if let rest = draft.activeRest, let restEndsAt = draft.restEndsAt {
+            let remaining = max(0, Int(restEndsAt.timeIntervalSinceNow.rounded()))
+            activeRest = remaining > 0 ? rest : nil
+            remainingRest = remaining
+        } else {
+            activeRest = nil
+            remainingRest = 0
+        }
+
+        if workingLogs.isEmpty {
+            initializeLogsIfNeeded()
+        }
+        persistDraft()
+        return true
+    }
+
+    private func persistDraft() {
+        guard
+            finishedSummary == nil,
+            let phaseID = phase?.id,
+            workout != nil,
+            !workingLogs.isEmpty
+        else {
+            return
+        }
+
+        let restEndsAt = activeRest == nil ? nil : Date().addingTimeInterval(TimeInterval(max(0, remainingRest)))
+        let draft = NativeActiveWorkoutDraft(
+            nativeVersion: 1,
+            phase: phaseID,
+            dayIndex: snapshot.settings.currentDayIndex,
+            startedAt: startedAt,
+            workingLogs: workingLogs,
+            warmupLogs: warmupLogs,
+            skippedWarmups: skippedWarmups,
+            skippedWorkingSets: skippedWorkingSets,
+            activeRest: activeRest,
+            restEndsAt: restEndsAt,
+            sessionNote: sessionNote,
+            savedAt: Date()
+        )
+
+        guard
+            let data = try? JSONEncoder().encode(draft),
+            let encoded = String(data: data, encoding: .utf8)
+        else {
+            return
+        }
+
+        WorkoutNativeStorage.save(key: "bf5_active_workout", value: encoded)
+    }
+
     private func log(for step: NativeWorkoutStep) -> NativeWorkoutSetLog {
         workingLogs[step.exerciseName]?[safe: step.setIndex] ?? NativeWorkoutSetLog(weight: 0, reps: 0, isDone: false, isSkipped: false)
     }
@@ -2272,14 +2355,29 @@ private struct NativeWorkoutWarmup: Equatable {
     var weight: Double = 0
 }
 
-private struct NativeWorkoutSetLog: Equatable {
+struct NativeActiveWorkoutDraft: Codable, Equatable {
+    var nativeVersion: Int
+    var phase: Int
+    var dayIndex: Int
+    var startedAt: Date
+    var workingLogs: [String: [NativeWorkoutSetLog]]
+    var warmupLogs: [String: Set<Int>]
+    var skippedWarmups: [String: Set<Int>]
+    var skippedWorkingSets: [String: Set<Int>]
+    var activeRest: NativeWorkoutRest?
+    var restEndsAt: Date?
+    var sessionNote: String
+    var savedAt: Date
+}
+
+struct NativeWorkoutSetLog: Codable, Equatable {
     var weight: Double
     var reps: Int
     var isDone: Bool
     var isSkipped: Bool
 }
 
-private struct NativeWorkoutRest: Equatable {
+struct NativeWorkoutRest: Codable, Equatable {
     let fromLabel: String
     let nextLabel: String
     let duration: Int
