@@ -7,7 +7,9 @@ enum WorkoutNativeStorage {
         "bf5_l",
         "bf5_sc",
         "bf5_cf_week",
-        "bf5_cf_logs"
+        "bf5_cf_logs",
+        "bf5_active_workout",
+        "bf_guided_workout"
     ]
     private static let mirrorPrefix = "bf.native.mirror."
 
@@ -457,6 +459,8 @@ final class WorkoutBrowserModel: ObservableObject {
         let folderURL = supportURL.appendingPathComponent("BechtelFitness", isDirectory: true)
         try? fileManager.createDirectory(at: folderURL, withIntermediateDirectories: true)
         cacheURL = folderURL.appendingPathComponent("last-snapshot.json")
+
+        snapshot = NativeProgramStore.bundledSnapshot()
 
         let size = (try? fileManager.attributesOfItem(atPath: cacheURL.path)[.size] as? NSNumber)?.intValue ?? 0
         guard size > 0, size <= 200_000 else { return }
@@ -1114,7 +1118,7 @@ private let nativeStorageBridgeScript = """
   if (window.__bfNativeStorageBridgeLoaded) return;
   window.__bfNativeStorageBridgeLoaded = true;
 
-  var trackedKeys = ['bf5_s', 'bf5_l', 'bf5_sc', 'bf5_cf_week', 'bf5_cf_logs'];
+  var trackedKeys = ['bf5_s', 'bf5_l', 'bf5_sc', 'bf5_cf_week', 'bf5_cf_logs', 'bf5_active_workout', 'bf_guided_workout'];
 
   function shouldTrack(key) {
     return trackedKeys.indexOf(key) !== -1;
